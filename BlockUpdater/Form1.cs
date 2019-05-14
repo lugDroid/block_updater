@@ -88,30 +88,28 @@ namespace CopyBlocks
             }
         }
 
-        // read project library master copies folder and adds all elements to given list box
-        private void readProjectLibrary(CheckedListBox projectListBox, MasterCopyFolder mCopiesFolder, string path)
+        // read project library master copies folder and returns list
+        private List<MasterCopy> ReadProjectLibrary(MasterCopyFolder mCopiesFolder)
         {
+            // check we have some master copies folder to work with
             if (mCopiesFolder == null)
                 throw new ArgumentNullException(nameof(mCopiesFolder), "Parameter is null");
 
-            // Disable list box updating before adding new elements
-            projectListBox.BeginUpdate();
+            var masterCopies = new List<MasterCopy>();
 
-            // Add new elements
-            path = path + mCopiesFolder.Name + "/";
-
+            // Add new elements to list
             foreach (var mCopy in mCopiesFolder.MasterCopies)
             {
-                projectListBox.Items.Add(path + mCopy.Name);
+                masterCopies.Add(mCopy);
             }
 
+            // Check for elements in subfolders and add them to the list too
             foreach (var subfolder in mCopiesFolder.Folders)
             {
-                this.readProjectLibrary(projectListBox, subfolder, path);
+                masterCopies.AddRange(ReadProjectLibrary(subfolder));
             }
 
-            // Enable list box updating again
-            projectListBox.EndUpdate();
+            return masterCopies;
         }
 
         // BUTTON EVENTS
@@ -191,7 +189,19 @@ namespace CopyBlocks
             }
 
             // Read project library
-            this.readProjectLibrary(projectLibraryCheckList, MyProject.ProjectLibrary.MasterCopyFolder, "");
+            List<MasterCopy> libMasterCopies = this.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder);
+
+            // Disable list box updating before adding new elements
+            projectLibraryCheckList.BeginUpdate();
+
+            // Add master copies from list to checked list
+            foreach (MasterCopy copy in libMasterCopies)
+            {
+                projectLibraryCheckList.Items.Add(copy.Name + copy.Parent);
+            }
+
+            // Enable list box updating again
+            projectLibraryCheckList.EndUpdate();
         }
 
         // Check items selected
