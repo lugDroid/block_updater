@@ -60,10 +60,11 @@
             // 
             this.statusBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.statusBox.Location = new System.Drawing.Point(3, 605);
+            this.statusBox.Location = new System.Drawing.Point(3, 559);
             this.statusBox.Multiline = true;
             this.statusBox.Name = "statusBox";
-            this.statusBox.Size = new System.Drawing.Size(916, 40);
+            this.statusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.statusBox.Size = new System.Drawing.Size(916, 93);
             this.statusBox.TabIndex = 1;
             // 
             // btn_Close
@@ -84,7 +85,7 @@
             this.devicesCheckList.FormattingEnabled = true;
             this.devicesCheckList.Location = new System.Drawing.Point(294, 3);
             this.devicesCheckList.Name = "devicesCheckList";
-            this.devicesCheckList.Size = new System.Drawing.Size(311, 589);
+            this.devicesCheckList.Size = new System.Drawing.Size(311, 544);
             this.devicesCheckList.TabIndex = 3;
             // 
             // btn_ConnectProject
@@ -125,7 +126,7 @@
             this.projectLibraryCheckList.FormattingEnabled = true;
             this.projectLibraryCheckList.Location = new System.Drawing.Point(3, 3);
             this.projectLibraryCheckList.Name = "projectLibraryCheckList";
-            this.projectLibraryCheckList.Size = new System.Drawing.Size(285, 589);
+            this.projectLibraryCheckList.Size = new System.Drawing.Size(285, 544);
             this.projectLibraryCheckList.TabIndex = 8;
             // 
             // resultsTextBox
@@ -138,7 +139,7 @@
             this.resultsTextBox.Name = "resultsTextBox";
             this.resultsTextBox.ReadOnly = true;
             this.resultsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.resultsTextBox.Size = new System.Drawing.Size(302, 590);
+            this.resultsTextBox.Size = new System.Drawing.Size(302, 544);
             this.resultsTextBox.TabIndex = 9;
             // 
             // contextMenuStrip1
@@ -165,8 +166,8 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 72);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.04947F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.95053F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 84.8855F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15.1145F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(922, 655);
             this.tableLayoutPanel1.TabIndex = 12;
             // 
@@ -186,7 +187,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(916, 596);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(916, 550);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
             // MainForm

@@ -5,6 +5,7 @@ using Siemens.Engineering.Library;
 using Siemens.Engineering.Library.MasterCopies;
 using Siemens.Engineering.Library.Types;
 using Siemens.Engineering.SW;
+using Siemens.Engineering.SW.Blocks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -89,24 +90,28 @@ namespace CopyBlocks
         }
 
         // read project library master copies folder and returns list
-        private List<MasterCopy> ReadProjectLibrary(MasterCopyFolder mCopiesFolder)
+        private Dictionary<string, MasterCopy> ReadProjectLibrary(MasterCopyFolder mCopiesFolder, string path)
         {
             // check we have some master copies folder to work with
             if (mCopiesFolder == null)
                 throw new ArgumentNullException(nameof(mCopiesFolder), "Parameter is null");
 
-            var masterCopies = new List<MasterCopy>();
+            var masterCopies = new Dictionary<string, MasterCopy>();
 
             // Add new elements to list
             foreach (var mCopy in mCopiesFolder.MasterCopies)
             {
-                masterCopies.Add(mCopy);
+                path = mCopiesFolder.Name + "/" + mCopy.Name;
+                masterCopies.Add(path, mCopy);
             }
 
             // Check for elements in subfolders and add them to the list too
             foreach (var subfolder in mCopiesFolder.Folders)
             {
-                masterCopies.AddRange(ReadProjectLibrary(subfolder));
+                masterCopies = masterCopies.Concat(ReadProjectLibrary(subfolder, mCopiesFolder.Name + "/"))
+                    .ToLookup(x => x.Key, x => x.Value)
+                    .ToDictionary(x => x.Key, g => g.First());
+                //masterCopies.AddRange(ReadProjectLibrary(subfolder, path));
             }
 
             return masterCopies;
@@ -178,7 +183,7 @@ namespace CopyBlocks
 
             foreach (var device in MyProject.Devices)
             {
-                deviceList.Add(device.TypeIdentifier + " - " + device.Name.ToString());   
+                deviceList.Add(device.Name.ToString());   
             }
 
             deviceList.Sort();
@@ -189,15 +194,17 @@ namespace CopyBlocks
             }
 
             // Read project library
-            List<MasterCopy> libMasterCopies = this.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder);
+            //List<MasterCopy> libMasterCopies = this.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder);
+            Dictionary<string, MasterCopy> libMasterCopies = this.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
 
             // Disable list box updating before adding new elements
             projectLibraryCheckList.BeginUpdate();
 
             // Add master copies from list to checked list
-            foreach (MasterCopy copy in libMasterCopies)
+            //foreach (MasterCopy copy in libMasterCopies)
+            foreach(KeyValuePair<string, MasterCopy> entry in libMasterCopies)
             {
-                projectLibraryCheckList.Items.Add(copy.Name + copy.Parent);
+                projectLibraryCheckList.Items.Add(entry.Key);
             }
 
             // Enable list box updating again
@@ -211,17 +218,47 @@ namespace CopyBlocks
             // Determine if there are any devices checked.  
             if (devicesCheckList.CheckedItems.Count != 0)
             {
+                statusBox.AppendText(Environment.NewLine + "Systems selected: " + devicesCheckList.CheckedItems.Count);
+
                 // If so loop through all devices checking if they have been selected
                 foreach (var device in MyProject.Devices)
                 {
                     if (devicesCheckList.CheckedItems.Contains(device.Name))
                     {
+                        statusBox.AppendText(Environment.NewLine + "Applying changes to system " + device.Name);
+
                         foreach (var deviceItem in device.DeviceItems)
                         {
                             SoftwareContainer softwareContainer = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
                             if (softwareContainer != null)
                             {
                                 PlcSoftware software = softwareContainer.Software as PlcSoftware;
+
+                                string pathToFind = "/DB/Analogues";
+                                string[] pathArray = pathToFind.Split('/');
+
+                                int i = 0;
+
+                                do
+                                {
+                                    if (software.BlockGroup.Groups.Contains(pathArray[i]))
+                                    {
+
+                                    }
+                                    i++;
+                                } while (i < pathArray.Length);
+
+                                string str = "";
+
+                                foreach (var group in software.BlockGroup.Groups)
+                                {
+                                    str = str + group.Name.ToString() + Environment.NewLine;
+                                    foreach (var block in group.Blocks)
+                                    {
+                                        str = str + group.Name.ToString() + " - " + block.Name.ToString() + Environment.NewLine;
+                                    }
+                                }
+
 
                                 // iterate over project library items and check if they have been selected
                                 // comparing against checked list
@@ -234,20 +271,9 @@ namespace CopyBlocks
                                 //{
                                 //    software.BlockGroup.Blocks.CreateFrom(softwareBlock);
                                 //}
-                                
 
-                                //string str = "";
-                                
-                                //foreach (var group in software.BlockGroup.Groups)
-                                //{
-                                    //str = str + group.Name.ToString() + Environment.NewLine;
-                                    //foreach (var block in group.Blocks)
-                                    //{
-                                    //    str = str + group.Name.ToString() + " - " + block.Name.ToString() + Environment.NewLine;
-                                    //}
-                                //}
 
-                                //resultsTextBox.Text = str;
+                                resultsTextBox.Text = str;
                             }
                         }
                     }
