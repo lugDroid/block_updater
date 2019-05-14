@@ -194,7 +194,6 @@ namespace CopyBlocks
             }
 
             // Read project library
-            //List<MasterCopy> libMasterCopies = this.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder);
             Dictionary<string, MasterCopy> libMasterCopies = this.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
 
             // Disable list box updating before adding new elements
@@ -234,46 +233,22 @@ namespace CopyBlocks
                             {
                                 PlcSoftware software = softwareContainer.Software as PlcSoftware;
 
-                                string pathToFind = "/DB/Analogues";
-                                string[] pathArray = pathToFind.Split('/');
+                                MasterCopyFolder masterFolder = MyProject.ProjectLibrary.MasterCopyFolder;
 
-                                int i = 0;
-
-                                do
+                                // copy library root folder master copies to current system
+                                foreach (var masterCopy in masterFolder.MasterCopies)
                                 {
-                                    if (software.BlockGroup.Groups.Contains(pathArray[i]))
-                                    {
-
-                                    }
-                                    i++;
-                                } while (i < pathArray.Length);
-
-                                string str = "";
-
-                                foreach (var group in software.BlockGroup.Groups)
+                                    software.BlockGroup.Blocks.CreateFrom(masterCopy);
+                                }
+                                
+                                // copy first level of subfolders master copies
+                                foreach (var subfolder in masterFolder.Folders)
                                 {
-                                    str = str + group.Name.ToString() + Environment.NewLine;
-                                    foreach (var block in group.Blocks)
+                                    foreach (var masterCopy in subfolder.MasterCopies)
                                     {
-                                        str = str + group.Name.ToString() + " - " + block.Name.ToString() + Environment.NewLine;
+                                        software.BlockGroup.Blocks.CreateFrom(masterCopy);
                                     }
                                 }
-
-
-                                // iterate over project library items and check if they have been selected
-                                // comparing against checked list
-                                //foreach (var masterCopy in )
-
-                                //foreach (string blockPath in projectLibraryCheckList.CheckedItems)
-
-                                // copy selected blocks from project library
-                                //foreach (var softwareBlock in projectLibrarySelected)
-                                //{
-                                //    software.BlockGroup.Blocks.CreateFrom(softwareBlock);
-                                //}
-
-
-                                resultsTextBox.Text = str;
                             }
                         }
                     }
@@ -287,8 +262,6 @@ namespace CopyBlocks
                 //}
                 //MessageBox.Show(s);
             }
-
-            
         }
     }
 }

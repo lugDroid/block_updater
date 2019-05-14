@@ -9,7 +9,7 @@ namespace CopyBlocks
 {
     /// <summary>
     /// Represents a TIA Portal library folder
-    /// Can contain subfolders and plc blocks
+    /// can contain subfolders and plc blocks
     /// /// </summary>
     class Folder
     {
@@ -21,5 +21,15 @@ namespace CopyBlocks
         public string Name { get; set; }
         public List<Folder> SubFolders { get; set; }
         public List<PlcBlock> Blocks { get; set; }
+
+        public void AddFolder(Folder newFolder)
+        {
+            SubFolders.Add(newFolder);
+        }
+
+        public void AddBlock(PlcBlock newBlock)
+        {
+            Blocks.Add(newBlock);
+        }
     }
 }
