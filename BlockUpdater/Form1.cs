@@ -74,6 +74,20 @@ namespace CopyBlocks
             MyTiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
         }
 
+        // open existing TIA Portal project
+        private void OpenProject(string ProjectPath)
+        {
+            try
+            {
+                MyProject = MyTiaPortal.Projects.Open(new FileInfo(ProjectPath));
+                statusBox.Text = "Project " + ProjectPath + " opened";
+            }
+            catch (Exception ex)
+            {
+                statusBox.Text = "Error while opening project: " + ProjectPath + " - " + ex.Message;
+            }
+        }
+
         // read project library master copies folder and adds all elements to given list box
         private void readProjectLibrary(CheckedListBox projectListBox, MasterCopyFolder mCopiesFolder, string path)
         {
@@ -101,6 +115,8 @@ namespace CopyBlocks
         }
 
         // BUTTON EVENTS
+
+        // open project button
         private void btn_OpenProject_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileSearch = new OpenFileDialog();
@@ -119,19 +135,7 @@ namespace CopyBlocks
             }
         }
 
-        private void OpenProject(string ProjectPath)
-        {
-            try
-            {
-                MyProject = MyTiaPortal.Projects.Open(new FileInfo(ProjectPath));
-                statusBox.Text = "Project " + ProjectPath + " opened";
-            }
-            catch (Exception ex)
-            {
-                statusBox.Text = "Error while opening project: " + ProjectPath + " - " + ex.Message;
-            }
-        }
-
+        // close TIA Portal button
         private void btn_Close_Click(object sender, EventArgs e)
         {
             MyTiaPortal.Dispose();
