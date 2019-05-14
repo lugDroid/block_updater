@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btn_OpenProject = new System.Windows.Forms.Button();
             this.statusBox = new System.Windows.Forms.TextBox();
             this.btn_Close = new System.Windows.Forms.Button();
@@ -37,6 +38,12 @@
             this.btn_CheckSelection = new System.Windows.Forms.Button();
             this.projectLibraryCheckList = new System.Windows.Forms.CheckedListBox();
             this.resultsTextBox = new System.Windows.Forms.TextBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_OpenProject
@@ -51,15 +58,17 @@
             // 
             // statusBox
             // 
-            this.statusBox.Location = new System.Drawing.Point(12, 517);
+            this.statusBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.statusBox.Location = new System.Drawing.Point(3, 605);
             this.statusBox.Multiline = true;
             this.statusBox.Name = "statusBox";
-            this.statusBox.Size = new System.Drawing.Size(819, 45);
+            this.statusBox.Size = new System.Drawing.Size(916, 40);
             this.statusBox.TabIndex = 1;
             // 
             // btn_Close
             // 
-            this.btn_Close.Location = new System.Drawing.Point(718, 12);
+            this.btn_Close.Location = new System.Drawing.Point(820, 12);
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.Size = new System.Drawing.Size(113, 47);
             this.btn_Close.TabIndex = 2;
@@ -69,10 +78,13 @@
             // 
             // devicesCheckList
             // 
+            this.devicesCheckList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.devicesCheckList.FormattingEnabled = true;
-            this.devicesCheckList.Location = new System.Drawing.Point(289, 72);
+            this.devicesCheckList.Location = new System.Drawing.Point(294, 3);
             this.devicesCheckList.Name = "devicesCheckList";
-            this.devicesCheckList.Size = new System.Drawing.Size(268, 439);
+            this.devicesCheckList.Size = new System.Drawing.Size(311, 589);
             this.devicesCheckList.TabIndex = 3;
             // 
             // btn_ConnectProject
@@ -107,40 +119,94 @@
             // 
             // projectLibraryCheckList
             // 
+            this.projectLibraryCheckList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.projectLibraryCheckList.FormattingEnabled = true;
-            this.projectLibraryCheckList.Location = new System.Drawing.Point(12, 72);
+            this.projectLibraryCheckList.Location = new System.Drawing.Point(3, 3);
             this.projectLibraryCheckList.Name = "projectLibraryCheckList";
-            this.projectLibraryCheckList.Size = new System.Drawing.Size(268, 439);
+            this.projectLibraryCheckList.Size = new System.Drawing.Size(285, 589);
             this.projectLibraryCheckList.TabIndex = 8;
             // 
             // resultsTextBox
             // 
-            this.resultsTextBox.Location = new System.Drawing.Point(564, 72);
+            this.resultsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.resultsTextBox.Location = new System.Drawing.Point(611, 3);
             this.resultsTextBox.Multiline = true;
             this.resultsTextBox.Name = "resultsTextBox";
             this.resultsTextBox.ReadOnly = true;
             this.resultsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.resultsTextBox.Size = new System.Drawing.Size(267, 439);
+            this.resultsTextBox.Size = new System.Drawing.Size(302, 590);
             this.resultsTextBox.TabIndex = 9;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(61, 4);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 277F));
+            this.tableLayoutPanel1.Controls.Add(this.statusBox, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 72);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 92.04947F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 7.95053F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(922, 655);
+            this.tableLayoutPanel1.TabIndex = 12;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.86184F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.13816F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 307F));
+            this.tableLayoutPanel2.Controls.Add(this.projectLibraryCheckList, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.devicesCheckList, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.resultsTextBox, 2, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(916, 596);
+            this.tableLayoutPanel2.TabIndex = 2;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(843, 574);
-            this.Controls.Add(this.resultsTextBox);
-            this.Controls.Add(this.projectLibraryCheckList);
+            this.ClientSize = new System.Drawing.Size(947, 740);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btn_CheckSelection);
             this.Controls.Add(this.btn_ReadProject);
             this.Controls.Add(this.btn_ConnectProject);
-            this.Controls.Add(this.devicesCheckList);
             this.Controls.Add(this.btn_Close);
-            this.Controls.Add(this.statusBox);
             this.Controls.Add(this.btn_OpenProject);
             this.Name = "MainForm";
             this.Text = "Form1";
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -155,6 +221,10 @@
         private System.Windows.Forms.Button btn_CheckSelection;
         private System.Windows.Forms.CheckedListBox projectLibraryCheckList;
         private System.Windows.Forms.TextBox resultsTextBox;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
     }
 }
 
