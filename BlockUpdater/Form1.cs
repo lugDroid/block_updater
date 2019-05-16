@@ -117,6 +117,63 @@ namespace CopyBlocks
             return masterCopies;
         }
 
+        // search project library for the block required and returns it
+        private MasterCopy GetMasterCopy(MasterCopyFolder libraryFolder,string blockName)
+        {
+            // look for block in current folder
+            foreach (var masterCopy in libraryFolder.MasterCopies)
+            {
+                if (masterCopy.Name.Equals(blockName))
+                {
+                    Console.WriteLine("Block to be copied found in " + libraryFolder.Name);
+                    return masterCopy;
+                }
+            }
+
+            // if not in this folder check subfolders
+            foreach (var subfolder in libraryFolder.Folders)
+            {
+                MasterCopy result = GetMasterCopy(subfolder, blockName);
+
+                if (result != null)
+                    return result;
+            }
+
+            Console.WriteLine("Block to be copied not found");
+            return null;
+        }
+
+        // copy block from provided project library to folder in provided plc software object
+        // returns true if copied, false otherwise
+        private bool CopyToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockUserGroup software, string destFolder)
+        {
+            // if not in the right folder and there are no more subfolders return
+            //if (software.Groups.Count == 0 && !software.Name.Equals(destFolder))
+            //{
+            //    Console.WriteLine("No more subfolders in " + software.Name);
+            //    return false;
+            //}
+
+            // checks if it's already on the right folder to proceed with the copy
+            if (software.Name.Equals(destFolder))
+            {
+                Console.WriteLine("Destination folder found");
+                software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName));
+                return true;
+            }
+
+            // if it's not in the right folder, recursively check subfolders
+            foreach (var group in software.Groups)
+            {
+                Console.WriteLine("Checking " + software.Name + " subfolders");
+                if (CopyToFolder(blockName, libraryFolder, group, destFolder))
+                    return true;
+            }
+
+            Console.WriteLine("Destination folder not found");
+            return false;
+        }
+
         // BUTTON EVENTS
 
         // open project button
@@ -146,11 +203,13 @@ namespace CopyBlocks
         }
 
         // connect to existing project
+        // and read project library and devices
         private void btn_ConnectProject_Click(object sender, EventArgs e)
         {
-            
+            // Projec connection
+            // TODO refactor into function
             IList<TiaPortalProcess> processes = TiaPortal.GetProcesses();
-            statusBox.Text = "Attempting to connect..." + processes.Count + " processes found";
+            statusBox.AppendText("Attempting to connect..." + processes.Count + " processes found");
 
             switch (processes.Count)
             {
@@ -173,17 +232,14 @@ namespace CopyBlocks
                     statusBox.Text = "More than one running instance of TIA Portal was found!";
                     return;
             }
-        }
 
-        // Read project and display devices and library items on check lists
-        private void btn_ReadProject_Click(object sender, EventArgs e)
-        {
             // Read project Devices and add them to check list
+            // TODO Refactor into function
             ArrayList deviceList = new ArrayList();
 
             foreach (var device in MyProject.Devices)
             {
-                deviceList.Add(device.Name.ToString());   
+                deviceList.Add(device.Name.ToString());
             }
 
             deviceList.Sort();
@@ -201,13 +257,19 @@ namespace CopyBlocks
 
             // Add master copies from list to checked list
             //foreach (MasterCopy copy in libMasterCopies)
-            foreach(KeyValuePair<string, MasterCopy> entry in libMasterCopies)
+            foreach (KeyValuePair<string, MasterCopy> entry in libMasterCopies)
             {
                 projectLibraryCheckList.Items.Add(entry.Key);
             }
 
             // Enable list box updating again
             projectLibraryCheckList.EndUpdate();
+        }
+
+
+        private void btn_ReadProject_Click(object sender, EventArgs e)
+        {
+            
         }
 
         // Check items selected
@@ -232,35 +294,28 @@ namespace CopyBlocks
                             if (softwareContainer != null)
                             {
                                 PlcSoftware software = softwareContainer.Software as PlcSoftware;
-
                                 MasterCopyFolder masterFolder = MyProject.ProjectLibrary.MasterCopyFolder;
 
-                                // copy library root folder master copies to current system
-                                foreach (var masterCopy in masterFolder.MasterCopies)
+                                string blockToCopy = "XV30_DB";
+                                string destFolder = "OB";
+
+                                // if destination folder is root folder just copy the block
+                                // otherwise call recursive function
+                                if (destFolder.Equals("root"))
                                 {
-                                    software.BlockGroup.Blocks.CreateFrom(masterCopy);
+                                    software.BlockGroup.Blocks.CreateFrom(GetMasterCopy(masterFolder, blockToCopy));
                                 }
-                                
-                                // copy first level of subfolders master copies
-                                foreach (var subfolder in masterFolder.Folders)
+                                else
                                 {
-                                    foreach (var masterCopy in subfolder.MasterCopies)
+                                    foreach (var group in software.BlockGroup.Groups)
                                     {
-                                        software.BlockGroup.Blocks.CreateFrom(masterCopy);
+                                        CopyToFolder(blockToCopy, masterFolder, group, destFolder);
                                     }
                                 }
                             }
                         }
                     }
-                    
                 }
-                // If so, loop through all checked items and print results.  
-                //string s = "";
-                //for (int x = 0; x < devicesCheckList.CheckedItems.Count; x++)
-                //{
-                //    s = s + "Checked Item " + (x + 1).ToString() + " = " + devicesCheckList.CheckedItems[x].ToString() + "\n";
-                //}
-                //MessageBox.Show(s);
             }
         }
     }
