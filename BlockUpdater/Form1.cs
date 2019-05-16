@@ -1,46 +1,20 @@
 ﻿using Microsoft.Win32;
 using Siemens.Engineering;
 using Siemens.Engineering.HW.Features;
-using Siemens.Engineering.Library;
 using Siemens.Engineering.Library.MasterCopies;
-using Siemens.Engineering.Library.Types;
 using Siemens.Engineering.SW;
-using Siemens.Engineering.SW.Blocks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CopyBlocks
 {
     public partial class MainForm : Form
     {
-        public TiaPortal MyTiaPortal
-        {
-            get; set;
-        }
-        public Project MyProject
-        {
-            get; set;
-        }
-
         public static TiaPortalProcess _tiaProcess;
-
-        public MainForm()
-        {
-            InitializeComponent();
-            AppDomain CurrentDomain = AppDomain.CurrentDomain;
-            CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
-        }
-
         private static Assembly MyResolver(object sender, ResolveEventArgs args)
         {
             int index = args.Name.IndexOf(',');
@@ -68,110 +42,15 @@ namespace CopyBlocks
 
             return null;
         }
+        private TiaPortal TiaPortalInstance = BlockManagement.TiaPortalInstance;
+        private Project ProjectInstance = BlockManagement.ProjectInstance;
+        
 
-        // FUNCTIONS
-        private void StartTIA(object sender, EventArgs e)
+        public MainForm()
         {
-            MyTiaPortal = new TiaPortal(TiaPortalMode.WithoutUserInterface);
-        }
-
-        // open existing TIA Portal project
-        private void OpenProject(string ProjectPath)
-        {
-            try
-            {
-                MyProject = MyTiaPortal.Projects.Open(new FileInfo(ProjectPath));
-                statusBox.Text = "Project " + ProjectPath + " opened";
-            }
-            catch (Exception ex)
-            {
-                statusBox.Text = "Error while opening project: " + ProjectPath + " - " + ex.Message;
-            }
-        }
-
-        // read project library master copies folder and returns list
-        private Dictionary<string, MasterCopy> ReadProjectLibrary(MasterCopyFolder mCopiesFolder, string path)
-        {
-            // check we have some master copies folder to work with
-            if (mCopiesFolder == null)
-                throw new ArgumentNullException(nameof(mCopiesFolder), "Parameter is null");
-
-            var masterCopies = new Dictionary<string, MasterCopy>();
-
-            // Add new elements to list
-            foreach (var mCopy in mCopiesFolder.MasterCopies)
-            {
-                path = mCopiesFolder.Name + "/" + mCopy.Name;
-                masterCopies.Add(path, mCopy);
-            }
-
-            // Check for elements in subfolders and add them to the list too
-            foreach (var subfolder in mCopiesFolder.Folders)
-            {
-                masterCopies = masterCopies.Concat(ReadProjectLibrary(subfolder, mCopiesFolder.Name + "/"))
-                    .ToLookup(x => x.Key, x => x.Value)
-                    .ToDictionary(x => x.Key, g => g.First());
-                //masterCopies.AddRange(ReadProjectLibrary(subfolder, path));
-            }
-
-            return masterCopies;
-        }
-
-        // search project library for the block required and returns it
-        private MasterCopy GetMasterCopy(MasterCopyFolder libraryFolder,string blockName)
-        {
-            // look for block in current folder
-            foreach (var masterCopy in libraryFolder.MasterCopies)
-            {
-                if (masterCopy.Name.Equals(blockName))
-                {
-                    Console.WriteLine("Block to be copied found in " + libraryFolder.Name);
-                    return masterCopy;
-                }
-            }
-
-            // if not in this folder check subfolders
-            foreach (var subfolder in libraryFolder.Folders)
-            {
-                MasterCopy result = GetMasterCopy(subfolder, blockName);
-
-                if (result != null)
-                    return result;
-            }
-
-            Console.WriteLine("Block to be copied not found");
-            return null;
-        }
-
-        // copy block from provided project library to folder in provided plc software object
-        // returns true if copied, false otherwise
-        private bool CopyToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockUserGroup software, string destFolder)
-        {
-            // if not in the right folder and there are no more subfolders return
-            //if (software.Groups.Count == 0 && !software.Name.Equals(destFolder))
-            //{
-            //    Console.WriteLine("No more subfolders in " + software.Name);
-            //    return false;
-            //}
-
-            // checks if it's already on the right folder to proceed with the copy
-            if (software.Name.Equals(destFolder))
-            {
-                Console.WriteLine("Destination folder found");
-                software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName));
-                return true;
-            }
-
-            // if it's not in the right folder, recursively check subfolders
-            foreach (var group in software.Groups)
-            {
-                Console.WriteLine("Checking " + software.Name + " subfolders");
-                if (CopyToFolder(blockName, libraryFolder, group, destFolder))
-                    return true;
-            }
-
-            Console.WriteLine("Destination folder not found");
-            return false;
+            InitializeComponent();
+            AppDomain CurrentDomain = AppDomain.CurrentDomain;
+            CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
         }
 
         // BUTTON EVENTS
@@ -179,27 +58,29 @@ namespace CopyBlocks
         // open project button
         private void btn_OpenProject_Click(object sender, EventArgs e)
         {
-            OpenFileDialog fileSearch = new OpenFileDialog();
-
-            fileSearch.Filter = "*.ap15|*.ap15";
-            fileSearch.RestoreDirectory = true;
+            OpenFileDialog fileSearch = new OpenFileDialog
+            {
+                Filter = "*.ap15|*.ap15",
+                RestoreDirectory = true
+            };
             fileSearch.ShowDialog();
 
             string ProjectPath = fileSearch.FileName.ToString();
 
-            this.StartTIA(sender, e);
+            BlockManagement.StartTIA(sender, e);
 
             if (string.IsNullOrEmpty(ProjectPath) == false)
             {
-                OpenProject(ProjectPath);
+                BlockManagement.OpenProject(ProjectPath, statusBox);
             }
         }
 
         // close TIA Portal button
+        // TODO remove, maybe it's not needed anymore?
         private void btn_Close_Click(object sender, EventArgs e)
         {
-            MyTiaPortal.Dispose();
-            statusBox.Text = "TIA Portal disposed";
+            TiaPortalInstance.Dispose();
+            statusBox.AppendText("TIA Portal disposed");
         }
 
         // connect to existing project
@@ -215,21 +96,21 @@ namespace CopyBlocks
             {
                 case 1:
                     _tiaProcess = processes[0];
-                    MyTiaPortal = _tiaProcess.Attach();
+                    TiaPortalInstance = _tiaProcess.Attach();
 
-                    if (MyTiaPortal.Projects.Count <= 0)
+                    if (TiaPortalInstance.Projects.Count <= 0)
                     {
-                        statusBox.Text = "No TIA Portal Project was found!";
+                        statusBox.AppendText("No TIA Portal Project was found!");
                         return;
                     }
-                    statusBox.Text = "Connected to running instance of TIA Portal";
-                    MyProject = MyTiaPortal.Projects[0];
+                    statusBox.AppendText("Connected to running instance of TIA Portal");
+                    ProjectInstance = TiaPortalInstance.Projects[0];
                     break;
                 case 0:
-                    statusBox.Text = "No running instance of TIA Portal was found!";
+                    statusBox.AppendText("No running instance of TIA Portal was found!");
                     return;
                 default:
-                    statusBox.Text = "More than one running instance of TIA Portal was found!";
+                    statusBox.AppendText("More than one running instance of TIA Portal was found!");
                     return;
             }
 
@@ -237,7 +118,7 @@ namespace CopyBlocks
             // TODO Refactor into function
             ArrayList deviceList = new ArrayList();
 
-            foreach (var device in MyProject.Devices)
+            foreach (var device in ProjectInstance.Devices)
             {
                 deviceList.Add(device.Name.ToString());
             }
@@ -250,7 +131,7 @@ namespace CopyBlocks
             }
 
             // Read project library
-            Dictionary<string, MasterCopy> libMasterCopies = this.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
+            Dictionary<string, MasterCopy> libMasterCopies = BlockManagement.ReadProjectLibrary(ProjectInstance.ProjectLibrary.MasterCopyFolder, "");
 
             // Disable list box updating before adding new elements
             projectLibraryCheckList.BeginUpdate();
@@ -282,7 +163,7 @@ namespace CopyBlocks
                 statusBox.AppendText(Environment.NewLine + "Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                 // If so loop through all devices checking if they have been selected
-                foreach (var device in MyProject.Devices)
+                foreach (var device in ProjectInstance.Devices)
                 {
                     if (devicesCheckList.CheckedItems.Contains(device.Name))
                     {
@@ -294,22 +175,35 @@ namespace CopyBlocks
                             if (softwareContainer != null)
                             {
                                 PlcSoftware software = softwareContainer.Software as PlcSoftware;
-                                MasterCopyFolder masterFolder = MyProject.ProjectLibrary.MasterCopyFolder;
+                                MasterCopyFolder masterFolder = ProjectInstance.ProjectLibrary.MasterCopyFolder;
 
-                                string blockToCopy = "XV30_DB";
-                                string destFolder = "OB";
+                                // get blocks to be copied info
+                                foreach (string item in projectLibraryCheckList.CheckedItems)
+                                {
+                                    string destFolder = item.Substring(0, item.IndexOf("/"));
+                                    string blockToCopy = item.Substring(item.IndexOf("/") + 1);
+                                    statusBox.AppendText("Copying " + blockToCopy + " to " + destFolder);
 
-                                // if destination folder is root folder just copy the block
-                                // otherwise call recursive function
-                                if (destFolder.Equals("root"))
-                                {
-                                    software.BlockGroup.Blocks.CreateFrom(GetMasterCopy(masterFolder, blockToCopy));
-                                }
-                                else
-                                {
-                                    foreach (var group in software.BlockGroup.Groups)
+                                    // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
+                                    // Group that is PlcBlockUserGroup so the same functions can't be applied 
+                                    // in both cases, that's the reason for the exception when copying to the root folder
+                                    if (destFolder.Equals("PLC"))
                                     {
-                                        CopyToFolder(blockToCopy, masterFolder, group, destFolder);
+                                        // delete block if already exists
+                                        foreach (var block in software.BlockGroup.Blocks)
+                                        {
+                                            if (blockToCopy.Equals(block.Name))
+                                                block.Delete();
+                                        }
+                                        // now copy block
+                                        software.BlockGroup.Blocks.CreateFrom(BlockManagement.GetMasterCopy(masterFolder, blockToCopy, statusBox));
+                                    }
+                                    else
+                                    {
+                                        foreach (var group in software.BlockGroup.Groups)
+                                        {
+                                            BlockManagement.CopyToFolder(blockToCopy, masterFolder, group, destFolder, statusBox);
+                                        }
                                     }
                                 }
                             }
