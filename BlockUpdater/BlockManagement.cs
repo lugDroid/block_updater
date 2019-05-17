@@ -12,40 +12,35 @@ namespace CopyBlocks
 {
     public static class BlockManagement
     {
-        public static TiaPortal TiaPortalInstance
-        {
-            get; set;
-        }
-        public static Project ProjectInstance
-        {
-            get; set;
-        }      
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static void StartTIA(object sender, EventArgs e)
+        public static TiaPortal StartTIA(object sender, EventArgs e)
         {
-            TiaPortalInstance = new TiaPortal(TiaPortalMode.WithoutUserInterface);
+            return new TiaPortal(TiaPortalMode.WithUserInterface);
         }
 
         /// <summary>
         /// Open existing TIA Portal project
         /// </summary>
         /// <param name="ProjectPath"></param>
-        public static void OpenProject(string ProjectPath, TextBox log)
+        public static Project OpenProject(string ProjectPath, TiaPortal TiaPortalInstance, TextBox log)
         {
+            Project projectInstance;
             try
             {
-                ProjectInstance = TiaPortalInstance.Projects.Open(new FileInfo(ProjectPath));
-                log.AppendText("Project " + ProjectPath + " opened");
+                projectInstance = TiaPortalInstance.Projects.Open(new FileInfo(ProjectPath));
+                log.AppendText("Project " + ProjectPath + " opened");         
             }
             catch (Exception ex)
             {
+                projectInstance = null;
                 log.AppendText("Error while opening project: " + ProjectPath + " - " + ex.Message);
             }
+
+            return projectInstance;
         }
 
         /// <summary>
@@ -61,7 +56,7 @@ namespace CopyBlocks
             {
                 if (masterCopy.Name.Equals(blockName))
                 {
-                    log.AppendText("Block to be copied found in " + libraryFolder.Name);
+                    log.AppendText(Environment.NewLine + "Block to be copied found in " + libraryFolder.Name);
                     return masterCopy;
                 }
             }
@@ -75,7 +70,7 @@ namespace CopyBlocks
                     return result;
             }
 
-            log.AppendText("Block to be copied not found");
+            log.AppendText(Environment.NewLine + "Block to be copied not found");
             return null;
         }
 
@@ -111,7 +106,7 @@ namespace CopyBlocks
             // checks if it's already on the right folder to proceed with the copy
             if (software.Name.Equals(destFolder))
             {
-                log.AppendText("Destination folder found");
+                log.AppendText(Environment.NewLine + "Destination folder found");
                 // delete block if it already exists
                 DeleteBlock(blockName, software);
                 software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName, log));
@@ -121,7 +116,7 @@ namespace CopyBlocks
             // if it's not in the right folder, recursively check subfolders
             foreach (var group in software.Groups)
             {
-                log.AppendText("Checking " + software.Name + " subfolders");
+                log.AppendText(Environment.NewLine + "Checking " + software.Name + " subfolders");
                 if (CopyToFolder(blockName, libraryFolder, group, destFolder, log))
                     return true;
             }

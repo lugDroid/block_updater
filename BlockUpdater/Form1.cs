@@ -75,11 +75,11 @@ namespace CopyBlocks
 
             string ProjectPath = fileSearch.FileName.ToString();
 
-            BlockManagement.StartTIA(sender, e);
+            MyTiaPortal = BlockManagement.StartTIA(sender, e);
 
             if (string.IsNullOrEmpty(ProjectPath) == false)
             {
-                BlockManagement.OpenProject(ProjectPath, statusBox);
+                MyProject = BlockManagement.OpenProject(ProjectPath, MyTiaPortal, statusBox);
             }
         }
 
@@ -98,7 +98,7 @@ namespace CopyBlocks
             // Projec connection
             // TODO refactor into function
             IList<TiaPortalProcess> processes = TiaPortal.GetProcesses();
-            statusBox.AppendText("Attempting to connect..." + processes.Count + " processes found");
+            statusBox.AppendText(Environment.NewLine + "Attempting to connect..." + processes.Count + " processes found");
 
             switch (processes.Count)
             {
@@ -190,7 +190,7 @@ namespace CopyBlocks
                                 {
                                     string destFolder = item.Substring(0, item.IndexOf("/"));
                                     string blockToCopy = item.Substring(item.IndexOf("/") + 1);
-                                    statusBox.AppendText("Copying " + blockToCopy + " to " + destFolder);
+                                    statusBox.AppendText(Environment.NewLine + "Copying " + blockToCopy + " to " + destFolder);
 
                                     // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
                                     // Group that is PlcBlockUserGroup so the same functions can't be applied 
