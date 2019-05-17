@@ -131,33 +131,30 @@ namespace CopyBlocks
         }
 
         /// <summary>
-        /// Read project library master copies folder and returns list
+        /// Read project library master copies folder
         /// </summary>
         /// <param name="masterCopiesFolder"></param>
         /// <param name="path"></param>
-        /// <returns>Dictionary containing the objects and the parent folder</returns>
-        public static Dictionary<string, MasterCopy> ReadProjectLibrary(MasterCopyFolder masterCopiesFolder, string path)
+        /// <returns>String containing the block name and parent folder - Folder/BlockName</returns>
+        public static List<string> ReadProjectLibrary(MasterCopyFolder masterCopiesFolder, string path)
         {
             // check we have some master copies folder to work with
             if (masterCopiesFolder == null)
                 throw new ArgumentNullException(nameof(masterCopiesFolder), "Parameter is null");
 
-            var masterCopies = new Dictionary<string, MasterCopy>();
+            var masterCopies = new List<string>();
 
             // Add new elements to list
             foreach (var mCopy in masterCopiesFolder.MasterCopies)
             {
                 path = masterCopiesFolder.Name + "/" + mCopy.Name;
-                masterCopies.Add(path, mCopy);
+                masterCopies.Add(path);
             }
 
             // Check for elements in subfolders and add them to the list too
             foreach (var subfolder in masterCopiesFolder.Folders)
             {
-                masterCopies = masterCopies.Concat(ReadProjectLibrary(subfolder, masterCopiesFolder.Name + "/"))
-                    .ToLookup(x => x.Key, x => x.Value)
-                    .ToDictionary(x => x.Key, g => g.First());
-                //masterCopies.AddRange(ReadProjectLibrary(subfolder, path));
+                masterCopies.AddRange(ReadProjectLibrary(subfolder, path));
             }
 
             return masterCopies;

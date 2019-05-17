@@ -126,6 +126,10 @@ namespace CopyBlocks
                     statusBox.AppendText(Environment.NewLine);
                     return;
             }
+            // Disable list boxes updating before adding new elements
+            projectLibraryCheckList.BeginUpdate();
+            devicesCheckList.BeginUpdate();
+            blocksCheckList.BeginUpdate();
 
             // Read project Devices and add them to check list
             foreach (var device in MyProject.Devices)
@@ -135,20 +139,19 @@ namespace CopyBlocks
             }
 
             // Read project library
-            Dictionary<string, MasterCopy> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
-
-            // Disable list box updating before adding new elements
-            projectLibraryCheckList.BeginUpdate();
-
+            List<String> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
+                        
             // Add master copies from list to checked list
             //foreach (MasterCopy copy in libMasterCopies)
-            foreach (KeyValuePair<string, MasterCopy> entry in libMasterCopies)
+            foreach (string entry in libMasterCopies)
             {
-                projectLibraryCheckList.Items.Add(entry.Key);
+                projectLibraryCheckList.Items.Add(entry);
             }
 
-            // Enable list box updating again
+            // Enable list boxex updating after elements added
             projectLibraryCheckList.EndUpdate();
+            devicesCheckList.EndUpdate();
+            blocksCheckList.EndUpdate();
         }
 
         // Check items selected
