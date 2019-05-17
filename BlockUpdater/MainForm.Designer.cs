@@ -52,6 +52,7 @@
             // 
             // btn_OpenProject
             // 
+            this.btn_OpenProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_OpenProject.Location = new System.Drawing.Point(12, 12);
             this.btn_OpenProject.Name = "btn_OpenProject";
             this.btn_OpenProject.Size = new System.Drawing.Size(113, 47);
@@ -63,6 +64,7 @@
             // statusBox
             // 
             this.statusBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.statusBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.statusBox.Location = new System.Drawing.Point(3, 690);
             this.statusBox.Multiline = true;
             this.statusBox.Name = "statusBox";
@@ -73,6 +75,7 @@
             // btn_Close
             // 
             this.btn_Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_Close.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Close.Location = new System.Drawing.Point(949, 12);
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.Size = new System.Drawing.Size(113, 47);
@@ -83,6 +86,7 @@
             // 
             // btn_ConnectProject
             // 
+            this.btn_ConnectProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_ConnectProject.Location = new System.Drawing.Point(131, 12);
             this.btn_ConnectProject.Name = "btn_ConnectProject";
             this.btn_ConnectProject.Size = new System.Drawing.Size(113, 47);
@@ -93,6 +97,7 @@
             // 
             // btn_CheckSelection
             // 
+            this.btn_CheckSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_CheckSelection.Location = new System.Drawing.Point(250, 12);
             this.btn_CheckSelection.Name = "btn_CheckSelection";
             this.btn_CheckSelection.Size = new System.Drawing.Size(113, 47);
@@ -153,6 +158,7 @@
             // 
             // btn_DeleteSelection
             // 
+            this.btn_DeleteSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_DeleteSelection.Location = new System.Drawing.Point(369, 12);
             this.btn_DeleteSelection.Name = "btn_DeleteSelection";
             this.btn_DeleteSelection.Size = new System.Drawing.Size(113, 47);
@@ -164,34 +170,39 @@
             // ProjectLibraryLabel
             // 
             this.ProjectLibraryLabel.AutoSize = true;
+            this.ProjectLibraryLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ProjectLibraryLabel.Location = new System.Drawing.Point(3, 0);
             this.ProjectLibraryLabel.Name = "ProjectLibraryLabel";
-            this.ProjectLibraryLabel.Size = new System.Drawing.Size(74, 13);
+            this.ProjectLibraryLabel.Size = new System.Drawing.Size(92, 17);
             this.ProjectLibraryLabel.TabIndex = 13;
             this.ProjectLibraryLabel.Text = "Project Library";
             // 
             // DevicesLabel
             // 
             this.DevicesLabel.AutoSize = true;
+            this.DevicesLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DevicesLabel.Location = new System.Drawing.Point(351, 0);
             this.DevicesLabel.Name = "DevicesLabel";
-            this.DevicesLabel.Size = new System.Drawing.Size(82, 13);
+            this.DevicesLabel.Size = new System.Drawing.Size(96, 17);
             this.DevicesLabel.TabIndex = 14;
             this.DevicesLabel.Text = "Project Devices";
             // 
             // BlockLabel
             // 
             this.BlockLabel.AutoSize = true;
+            this.BlockLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BlockLabel.Location = new System.Drawing.Point(699, 0);
             this.BlockLabel.Name = "BlockLabel";
-            this.BlockLabel.Size = new System.Drawing.Size(98, 13);
+            this.BlockLabel.Size = new System.Drawing.Size(113, 17);
             this.BlockLabel.TabIndex = 15;
             this.BlockLabel.Text = "Project PLC Blocks";
             // 
             // projectLibraryCheckList
             // 
+            this.projectLibraryCheckList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.projectLibraryCheckList.CheckOnClick = true;
             this.projectLibraryCheckList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.projectLibraryCheckList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.projectLibraryCheckList.FormattingEnabled = true;
             this.projectLibraryCheckList.Location = new System.Drawing.Point(3, 23);
             this.projectLibraryCheckList.Name = "projectLibraryCheckList";
@@ -200,8 +211,10 @@
             // 
             // blocksCheckList
             // 
+            this.blocksCheckList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.blocksCheckList.CheckOnClick = true;
             this.blocksCheckList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.blocksCheckList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.blocksCheckList.FormattingEnabled = true;
             this.blocksCheckList.Location = new System.Drawing.Point(699, 23);
             this.blocksCheckList.Name = "blocksCheckList";
@@ -211,8 +224,10 @@
             // 
             // devicesCheckList
             // 
+            this.devicesCheckList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.devicesCheckList.CheckOnClick = true;
             this.devicesCheckList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.devicesCheckList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.devicesCheckList.FormattingEnabled = true;
             this.devicesCheckList.Location = new System.Drawing.Point(351, 23);
             this.devicesCheckList.Name = "devicesCheckList";
@@ -224,6 +239,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1076, 847);
             this.Controls.Add(this.btn_DeleteSelection);
             this.Controls.Add(this.tableLayoutPanel1);
