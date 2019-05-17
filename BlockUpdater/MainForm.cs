@@ -152,7 +152,7 @@ namespace CopyBlocks
         }
 
         // Check items selected
-        private void Btn_CheckSelection_Click(object sender, EventArgs e)
+        private void Btn_CopySelection_Click(object sender, EventArgs e)
         {
             // Determine if there are any devices checked.  
             if (devicesCheckList.CheckedItems.Count != 0)
@@ -216,6 +216,11 @@ namespace CopyBlocks
                 statusBox.AppendText("No systems have been selected");
                 statusBox.AppendText(Environment.NewLine);
             }
+        }
+
+        private void Btn_DeleteSelection_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
