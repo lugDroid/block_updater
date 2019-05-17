@@ -32,12 +32,14 @@ namespace CopyBlocks
             try
             {
                 projectInstance = TiaPortalInstance.Projects.Open(new FileInfo(ProjectPath));
-                log.AppendText("Project " + ProjectPath + " opened");         
+                log.AppendText("Project " + ProjectPath + " opened");
+                log.AppendText(Environment.NewLine);
             }
             catch (Exception ex)
             {
                 projectInstance = null;
                 log.AppendText("Error while opening project: " + ProjectPath + " - " + ex.Message);
+                log.AppendText(Environment.NewLine);
             }
 
             return projectInstance;
@@ -56,7 +58,8 @@ namespace CopyBlocks
             {
                 if (masterCopy.Name.Equals(blockName))
                 {
-                    log.AppendText(Environment.NewLine + "Block to be copied found in " + libraryFolder.Name);
+                    log.AppendText("Block to be copied found in " + libraryFolder.Name);
+                    log.AppendText(Environment.NewLine);
                     return masterCopy;
                 }
             }
@@ -70,7 +73,8 @@ namespace CopyBlocks
                     return result;
             }
 
-            log.AppendText(Environment.NewLine + "Block to be copied not found");
+            log.AppendText("Block to be copied not found");
+            log.AppendText(Environment.NewLine);
             return null;
         }
 
@@ -106,7 +110,8 @@ namespace CopyBlocks
             // checks if it's already on the right folder to proceed with the copy
             if (software.Name.Equals(destFolder))
             {
-                log.AppendText(Environment.NewLine + "Destination folder found");
+                log.AppendText("Destination folder found");
+                log.AppendText(Environment.NewLine);
                 // delete block if it already exists
                 DeleteBlock(blockName, software);
                 software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName, log));
@@ -116,7 +121,8 @@ namespace CopyBlocks
             // if it's not in the right folder, recursively check subfolders
             foreach (var group in software.Groups)
             {
-                log.AppendText(Environment.NewLine + "Checking " + software.Name + " subfolders");
+                log.AppendText("Checking " + software.Name + " subfolders");
+                log.AppendText(Environment.NewLine);
                 if (CopyToFolder(blockName, libraryFolder, group, destFolder, log))
                     return true;
             }

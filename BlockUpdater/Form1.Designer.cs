@@ -34,7 +34,6 @@
             this.btn_Close = new System.Windows.Forms.Button();
             this.devicesCheckList = new System.Windows.Forms.CheckedListBox();
             this.btn_ConnectProject = new System.Windows.Forms.Button();
-            this.btn_ReadProject = new System.Windows.Forms.Button();
             this.btn_CheckSelection = new System.Windows.Forms.Button();
             this.projectLibraryCheckList = new System.Windows.Forms.CheckedListBox();
             this.resultsTextBox = new System.Windows.Forms.TextBox();
@@ -54,7 +53,7 @@
             this.btn_OpenProject.TabIndex = 0;
             this.btn_OpenProject.Text = "Open Project";
             this.btn_OpenProject.UseVisualStyleBackColor = true;
-            this.btn_OpenProject.Click += new System.EventHandler(this.btn_OpenProject_Click);
+            this.btn_OpenProject.Click += new System.EventHandler(this.Btn_OpenProject_Click);
             // 
             // statusBox
             // 
@@ -75,7 +74,7 @@
             this.btn_Close.TabIndex = 2;
             this.btn_Close.Text = "Close";
             this.btn_Close.UseVisualStyleBackColor = true;
-            this.btn_Close.Click += new System.EventHandler(this.btn_Close_Click);
+            this.btn_Close.Click += new System.EventHandler(this.Btn_Close_Click);
             // 
             // devicesCheckList
             // 
@@ -83,9 +82,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.devicesCheckList.FormattingEnabled = true;
-            this.devicesCheckList.Location = new System.Drawing.Point(294, 3);
+            this.devicesCheckList.Location = new System.Drawing.Point(293, 3);
             this.devicesCheckList.Name = "devicesCheckList";
-            this.devicesCheckList.Size = new System.Drawing.Size(311, 544);
+            this.devicesCheckList.Size = new System.Drawing.Size(310, 544);
+            this.devicesCheckList.Sorted = true;
             this.devicesCheckList.TabIndex = 3;
             // 
             // btn_ConnectProject
@@ -96,17 +96,7 @@
             this.btn_ConnectProject.TabIndex = 4;
             this.btn_ConnectProject.Text = "Connect Project";
             this.btn_ConnectProject.UseVisualStyleBackColor = true;
-            this.btn_ConnectProject.Click += new System.EventHandler(this.btn_ConnectProject_Click);
-            // 
-            // btn_ReadProject
-            // 
-            this.btn_ReadProject.Location = new System.Drawing.Point(250, 12);
-            this.btn_ReadProject.Name = "btn_ReadProject";
-            this.btn_ReadProject.Size = new System.Drawing.Size(113, 47);
-            this.btn_ReadProject.TabIndex = 5;
-            this.btn_ReadProject.Text = "Read Project";
-            this.btn_ReadProject.UseVisualStyleBackColor = true;
-            this.btn_ReadProject.Click += new System.EventHandler(this.btn_ReadProject_Click);
+            this.btn_ConnectProject.Click += new System.EventHandler(this.Btn_ConnectProject_Click);
             // 
             // btn_CheckSelection
             // 
@@ -114,9 +104,9 @@
             this.btn_CheckSelection.Name = "btn_CheckSelection";
             this.btn_CheckSelection.Size = new System.Drawing.Size(113, 47);
             this.btn_CheckSelection.TabIndex = 6;
-            this.btn_CheckSelection.Text = "Check Selection";
+            this.btn_CheckSelection.Text = "Copy Selection";
             this.btn_CheckSelection.UseVisualStyleBackColor = true;
-            this.btn_CheckSelection.Click += new System.EventHandler(this.btn_CheckSelection_Click);
+            this.btn_CheckSelection.Click += new System.EventHandler(this.Btn_CheckSelection_Click);
             // 
             // projectLibraryCheckList
             // 
@@ -126,7 +116,7 @@
             this.projectLibraryCheckList.FormattingEnabled = true;
             this.projectLibraryCheckList.Location = new System.Drawing.Point(3, 3);
             this.projectLibraryCheckList.Name = "projectLibraryCheckList";
-            this.projectLibraryCheckList.Size = new System.Drawing.Size(285, 544);
+            this.projectLibraryCheckList.Size = new System.Drawing.Size(284, 544);
             this.projectLibraryCheckList.TabIndex = 8;
             // 
             // resultsTextBox
@@ -134,12 +124,12 @@
             this.resultsTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.resultsTextBox.Location = new System.Drawing.Point(611, 3);
+            this.resultsTextBox.Location = new System.Drawing.Point(609, 3);
             this.resultsTextBox.Multiline = true;
             this.resultsTextBox.Name = "resultsTextBox";
             this.resultsTextBox.ReadOnly = true;
             this.resultsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.resultsTextBox.Size = new System.Drawing.Size(302, 544);
+            this.resultsTextBox.Size = new System.Drawing.Size(304, 544);
             this.resultsTextBox.TabIndex = 9;
             // 
             // contextMenuStrip1
@@ -179,7 +169,7 @@
             this.tableLayoutPanel2.ColumnCount = 3;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.86184F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.13816F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 307F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 309F));
             this.tableLayoutPanel2.Controls.Add(this.projectLibraryCheckList, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.devicesCheckList, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.resultsTextBox, 2, 0);
@@ -197,7 +187,6 @@
             this.ClientSize = new System.Drawing.Size(947, 740);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btn_CheckSelection);
-            this.Controls.Add(this.btn_ReadProject);
             this.Controls.Add(this.btn_ConnectProject);
             this.Controls.Add(this.btn_Close);
             this.Controls.Add(this.btn_OpenProject);
@@ -218,7 +207,6 @@
         private System.Windows.Forms.Button btn_Close;
         private System.Windows.Forms.CheckedListBox devicesCheckList;
         private System.Windows.Forms.Button btn_ConnectProject;
-        private System.Windows.Forms.Button btn_ReadProject;
         private System.Windows.Forms.Button btn_CheckSelection;
         private System.Windows.Forms.CheckedListBox projectLibraryCheckList;
         private System.Windows.Forms.TextBox resultsTextBox;
