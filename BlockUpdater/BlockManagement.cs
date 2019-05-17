@@ -1,5 +1,8 @@
 ﻿using Siemens.Engineering;
+using Siemens.Engineering.HW;
+using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.Library.MasterCopies;
+using Siemens.Engineering.SW;
 using Siemens.Engineering.SW.Blocks;
 using System;
 using System.Collections.Generic;
@@ -83,7 +86,7 @@ namespace CopyBlocks
         /// </summary>
         /// <param name="blockName">Name of the block to be deleted</param>
         /// <param name="software">Software on which to look for the block</param
-        public static void DeleteBlock(string blockName, PlcBlockUserGroup software)
+        public static void DeleteBlock(string blockName, PlcBlockUserGroup software, TextBox log)
         {
             PlcBlock blockToDelete = null;
 
@@ -94,7 +97,17 @@ namespace CopyBlocks
             }
 
             if (blockToDelete != null)
+            {
                 blockToDelete.Delete();
+
+                log.AppendText("Block " + blockName + " to be deleted found in " + software.Name + " folder");
+                log.AppendText(Environment.NewLine);
+            }
+            else
+            {
+                log.AppendText("Block " + blockName + " not found in " + software.Name + " folder");
+                log.AppendText(Environment.NewLine);
+            }
         }
 
         /// <summary>
@@ -113,7 +126,7 @@ namespace CopyBlocks
                 log.AppendText("Destination folder found");
                 log.AppendText(Environment.NewLine);
                 // delete block if it already exists
-                DeleteBlock(blockName, software);
+                DeleteBlock(blockName, software, log);
                 software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName, log));
                 return true;
             }
@@ -158,6 +171,50 @@ namespace CopyBlocks
             }
 
             return masterCopies;
+        }
+
+        /// <summary>
+        /// Get software object from provided DeviceItem
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns>PlcSoftware object</returns>
+        public static PlcSoftware GetSoftwareFrom(DeviceItem device)
+        {
+            SoftwareContainer softwareContainer = ((IEngineeringServiceProvider)device).GetService<SoftwareContainer>();
+            if (softwareContainer != null)
+            {
+                return softwareContainer.Software as PlcSoftware;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="software"></param>
+        /// <returns></returns>
+        public static List<string> readBlocks(PlcBlockUserGroup software)
+        {
+            var blocks = new List<string>();
+
+            // get blocks in current folder/group
+            foreach (var block in software.Blocks)
+            {
+                // add them to list
+                string blockType = block.GetType().ToString();
+                blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
+
+                blocks.Add(block.Name + " - " + blockType + " - " + block.Number);
+            }
+
+            // get also blocks in subfolders
+            foreach (var group in software.Groups)
+            {
+                blocks.AddRange(readBlocks(group));
+            }
+
+            return blocks;
         }
     }
 }

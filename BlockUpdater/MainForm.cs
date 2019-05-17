@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Siemens.Engineering;
+using Siemens.Engineering.HW;
 using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.Library.MasterCopies;
 using Siemens.Engineering.SW;
@@ -148,6 +149,34 @@ namespace CopyBlocks
                 projectLibraryCheckList.Items.Add(entry);
             }
 
+            // Read list ob blocks for possible deletion from first device
+            // device represents the rack
+            // first element of DeviceItems (modules in the rack) is the plc
+            PlcSoftware firstPlcSoftware = BlockManagement.GetSoftwareFrom(MyProject.Devices[0].DeviceItems[1]);
+
+            List<String> blocks = new List<string>();
+
+            if (firstPlcSoftware != null)
+            {
+                // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
+                // Group that is PlcBlockUserGroup so the same functions can't be applied in both cases
+                // that's the reason for the exception when reading the blocks in root folder
+                foreach (var block in firstPlcSoftware.BlockGroup.Blocks)
+                {
+                    string blockType = block.GetType().ToString();
+                    blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
+
+                    blocks.Add(block.Name + " - " + blockType + " - " + block.Number);
+                }
+
+                foreach (var group in firstPlcSoftware.BlockGroup.Groups)
+                {
+                    blocks.AddRange(BlockManagement.readBlocks(group));
+                }
+
+                blocksCheckList.Items.AddRange(blocks.ToArray());
+            }
+
             // Enable list boxex updating after elements added
             projectLibraryCheckList.EndUpdate();
             devicesCheckList.EndUpdate();
@@ -173,10 +202,9 @@ namespace CopyBlocks
 
                         foreach (var deviceItem in device.DeviceItems)
                         {
-                            SoftwareContainer softwareContainer = ((IEngineeringServiceProvider)deviceItem).GetService<SoftwareContainer>();
-                            if (softwareContainer != null)
+                            PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
+                            if (software != null)
                             {
-                                PlcSoftware software = softwareContainer.Software as PlcSoftware;
                                 MasterCopyFolder masterFolder = MyProject.ProjectLibrary.MasterCopyFolder;
 
                                 // get blocks to be copied info
@@ -223,7 +251,63 @@ namespace CopyBlocks
 
         private void Btn_DeleteSelection_Click(object sender, EventArgs e)
         {
+            // Determine if are any blocks checked
+            if (blocksCheckList.CheckedItems.Count != 0)
+            {
+                statusBox.AppendText(blocksCheckList.CheckedItems.Count + " blocks have been selected for deletion");
+                statusBox.AppendText(Environment.NewLine);
 
+                foreach (var device in MyProject.Devices)
+                {
+                    statusBox.AppendText("Deleting blocks from " + device.Name);
+                    statusBox.AppendText(Environment.NewLine);
+
+                    // get plc software
+                    // device represents the rack
+                    // first element of DeviceItems (modules in the rack) is the plc
+                    PlcSoftware software = BlockManagement.GetSoftwareFrom(device.DeviceItems[1]);
+
+                    if (software != null)
+                    {
+                        // now remove selected blocks
+                        foreach (string blockName in blocksCheckList.CheckedItems)
+                        {
+                            // clean blockName string
+                            string name = blockName.Substring(0, blockName.IndexOf('-') - 1);
+
+                            statusBox.AppendText("Searching for " + name);
+                            statusBox.AppendText(Environment.NewLine);
+
+                            // first on root folder
+                            foreach (var block in software.BlockGroup.Blocks)
+                            {
+                                if (name.Equals(block.Name))
+                                {
+                                    statusBox.AppendText("Block " + name + " to be deleted found in root folder");
+                                    statusBox.AppendText(Environment.NewLine);
+                                    block.Delete();
+                                }
+                            }
+
+                            // check also subfolders
+                            foreach (var group in software.BlockGroup.Groups)
+                            {
+                                BlockManagement.DeleteBlock(name, group, statusBox);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        statusBox.AppendText("No software found for " + device.Name);
+                        statusBox.AppendText(Environment.NewLine);
+                    }
+                }
+            }
+            else
+            {
+                statusBox.AppendText("No blocks have been selected for deletion");
+                statusBox.AppendText(Environment.NewLine);
+            }
         }
     }
 }
