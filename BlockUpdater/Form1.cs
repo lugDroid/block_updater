@@ -3,10 +3,12 @@ using Siemens.Engineering;
 using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.Library.MasterCopies;
 using Siemens.Engineering.SW;
+using Siemens.Engineering.SW.Blocks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -14,9 +16,15 @@ namespace CopyBlocks
 {
     public partial class MainForm : Form
     {
+        public TiaPortal MyTiaPortal
+        {
+            get; set;
+        }
+        public Project MyProject
+        {
+            get; set;
+        }
         public static TiaPortalProcess _tiaProcess;
-        private TiaPortal TiaPortalInstance = BlockManagement.TiaPortalInstance;
-        private Project ProjectInstance = BlockManagement.ProjectInstance;
 
         public MainForm()
         {
@@ -52,7 +60,7 @@ namespace CopyBlocks
 
             return null;
         }
-        
+
         // EVENTS
 
         // open project button
@@ -79,7 +87,7 @@ namespace CopyBlocks
         // TODO remove, maybe it's not needed anymore?
         private void btn_Close_Click(object sender, EventArgs e)
         {
-            TiaPortalInstance.Dispose();
+            MyTiaPortal.Dispose();
             statusBox.AppendText("TIA Portal disposed");
         }
 
@@ -96,15 +104,15 @@ namespace CopyBlocks
             {
                 case 1:
                     _tiaProcess = processes[0];
-                    TiaPortalInstance = _tiaProcess.Attach();
+                    MyTiaPortal = _tiaProcess.Attach();
 
-                    if (TiaPortalInstance.Projects.Count <= 0)
+                    if (MyTiaPortal.Projects.Count <= 0)
                     {
                         statusBox.AppendText("No TIA Portal Project was found!");
                         return;
                     }
                     statusBox.AppendText("Connected to running instance of TIA Portal");
-                    ProjectInstance = TiaPortalInstance.Projects[0];
+                    MyProject = MyTiaPortal.Projects[0];
                     break;
                 case 0:
                     statusBox.AppendText("No running instance of TIA Portal was found!");
@@ -118,7 +126,7 @@ namespace CopyBlocks
             // TODO Refactor into function
             ArrayList deviceList = new ArrayList();
 
-            foreach (var device in ProjectInstance.Devices)
+            foreach (var device in MyProject.Devices)
             {
                 deviceList.Add(device.Name.ToString());
             }
@@ -131,7 +139,7 @@ namespace CopyBlocks
             }
 
             // Read project library
-            Dictionary<string, MasterCopy> libMasterCopies = BlockManagement.ReadProjectLibrary(ProjectInstance.ProjectLibrary.MasterCopyFolder, "");
+            Dictionary<string, MasterCopy> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
 
             // Disable list box updating before adding new elements
             projectLibraryCheckList.BeginUpdate();
@@ -163,7 +171,7 @@ namespace CopyBlocks
                 statusBox.AppendText(Environment.NewLine + "Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                 // If so loop through all devices checking if they have been selected
-                foreach (var device in ProjectInstance.Devices)
+                foreach (var device in MyProject.Devices)
                 {
                     if (devicesCheckList.CheckedItems.Contains(device.Name))
                     {
@@ -175,7 +183,7 @@ namespace CopyBlocks
                             if (softwareContainer != null)
                             {
                                 PlcSoftware software = softwareContainer.Software as PlcSoftware;
-                                MasterCopyFolder masterFolder = ProjectInstance.ProjectLibrary.MasterCopyFolder;
+                                MasterCopyFolder masterFolder = MyProject.ProjectLibrary.MasterCopyFolder;
 
                                 // get blocks to be copied info
                                 foreach (string item in projectLibraryCheckList.CheckedItems)
