@@ -15,6 +15,16 @@ namespace CopyBlocks
     public partial class MainForm : Form
     {
         public static TiaPortalProcess _tiaProcess;
+        private TiaPortal TiaPortalInstance = BlockManagement.TiaPortalInstance;
+        private Project ProjectInstance = BlockManagement.ProjectInstance;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            AppDomain CurrentDomain = AppDomain.CurrentDomain;
+            CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
+        }
+
         private static Assembly MyResolver(object sender, ResolveEventArgs args)
         {
             int index = args.Name.IndexOf(',');
@@ -42,18 +52,8 @@ namespace CopyBlocks
 
             return null;
         }
-        private TiaPortal TiaPortalInstance = BlockManagement.TiaPortalInstance;
-        private Project ProjectInstance = BlockManagement.ProjectInstance;
         
-
-        public MainForm()
-        {
-            InitializeComponent();
-            AppDomain CurrentDomain = AppDomain.CurrentDomain;
-            CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
-        }
-
-        // BUTTON EVENTS
+        // EVENTS
 
         // open project button
         private void btn_OpenProject_Click(object sender, EventArgs e)
