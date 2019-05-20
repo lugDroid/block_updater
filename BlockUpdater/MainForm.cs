@@ -140,17 +140,16 @@ namespace CopyBlocks
                     devicesCheckList.Items.Add(device.Name);
             }
 
-            // Read project library
+            // Read project library master copies names and add them to check list
             List<String> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
 
-            // Add master copies from list to checked list
-            //foreach (MasterCopy copy in libMasterCopies)
             foreach (string entry in libMasterCopies)
             {
                 projectLibraryCheckList.Items.Add(entry);
             }
 
-            // Read list ob blocks for possible deletion from first device
+            // Read plc blocks and add them to check list
+            // TO DO - Move this code into a function
             // device represents the rack
             // first element of DeviceItems (modules in the rack) is the plc
             PlcSoftware firstPlcSoftware = BlockManagement.GetSoftwareFrom(MyProject.Devices[0].DeviceItems[1]);
@@ -223,6 +222,7 @@ namespace CopyBlocks
                                     }
                                     else
                                     {
+                                        // TO DO - Overload method to take as argument BlockGroup and BlockUserGroup
                                         // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
                                         // Group that is PlcBlockUserGroup so the same functions can't be applied 
                                         // in both cases, that's the reason for the exception when copying to the root folder

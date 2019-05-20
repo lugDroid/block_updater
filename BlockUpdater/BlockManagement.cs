@@ -229,7 +229,7 @@ namespace CopyBlocks
         }
 
         /// <summary>
-        /// 
+        /// Copy provided tag table from project library to provided destination folder in plc
         /// </summary>
         public static bool CopyTagTableToFolder(string tagTableName, MasterCopyFolder libraryFolder, PlcTagTableGroup tagGroup, string destFolder, TextBox log)
         {
@@ -259,7 +259,7 @@ namespace CopyBlocks
         }
 
         /// <summary>
-        /// 
+        /// Delete provided tag table from plc code
         /// </summary>
         /// <param name="tagTableName"></param>
         /// <param name="tagGroup"></param>
