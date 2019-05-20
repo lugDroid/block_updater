@@ -171,7 +171,7 @@ namespace CopyBlocks
 
                 foreach (var group in firstPlcSoftware.BlockGroup.Groups)
                 {
-                    blocks.AddRange(BlockManagement.readBlocks(group));
+                    blocks.AddRange(BlockManagement.ReadBlocks(group));
                 }
 
                 blocksCheckList.Items.AddRange(blocks.ToArray());
@@ -215,28 +215,36 @@ namespace CopyBlocks
                                     statusBox.AppendText("Copying " + blockToCopy + " to " + destFolder);
                                     statusBox.AppendText(Environment.NewLine);
 
-                                    // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
-                                    // Group that is PlcBlockUserGroup so the same functions can't be applied 
-                                    // in both cases, that's the reason for the exception when copying to the root folder
-                                    if (destFolder.Equals("PLC"))
+                                    // check if it's a tag table or software block
+                                    if (destFolder.Equals("PLC tags"))
                                     {
-                                        // delete block if already exists
-                                        foreach (var block in software.BlockGroup.Blocks)
-                                        {
-                                            if (blockToCopy.Equals(block.Name))
-                                                block.Delete();
-                                        }
-                                        // now copy block
-                                        software.BlockGroup.Blocks.CreateFrom(BlockManagement.GetMasterCopy(masterFolder, blockToCopy, statusBox));
+                                        BlockManagement.CopyTagTableToFolder(blockToCopy, masterFolder, software.TagTableGroup, destFolder, statusBox);
                                     }
                                     else
                                     {
-                                        foreach (var group in software.BlockGroup.Groups)
+                                        // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
+                                        // Group that is PlcBlockUserGroup so the same functions can't be applied 
+                                        // in both cases, that's the reason for the exception when copying to the root folder
+                                        if (destFolder.Equals("PLC"))
                                         {
-                                            // Before copying delete block if already exists
-                                            BlockManagement.DeleteBlock(blockToCopy, group, statusBox);
+                                            // delete block if already exists
+                                            foreach (var block in software.BlockGroup.Blocks)
+                                            {
+                                                if (blockToCopy.Equals(block.Name))
+                                                    block.Delete();
+                                            }
                                             // now copy block
-                                            BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, group, destFolder, statusBox);
+                                            software.BlockGroup.Blocks.CreateFrom(BlockManagement.GetMasterCopy(masterFolder, blockToCopy, statusBox));
+                                        }
+                                        else
+                                        {
+                                            foreach (var group in software.BlockGroup.Groups)
+                                            {
+                                                // Before copying delete block if already exists
+                                                BlockManagement.DeleteBlock(blockToCopy, group, statusBox);
+                                                // now copy block
+                                                BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, group, destFolder, statusBox);
+                                            }
                                         }
                                     }
                                 }

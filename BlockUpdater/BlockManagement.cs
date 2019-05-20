@@ -91,7 +91,7 @@ namespace CopyBlocks
         {
             PlcBlock blockToDelete = null;
 
-            foreach (var block in software.Blocks)
+            foreach (PlcBlock block in software.Blocks)
             {
                 if (blockName.Equals(block.Name))
                     blockToDelete = block;
@@ -132,8 +132,11 @@ namespace CopyBlocks
             {
                 log.AppendText("Destination folder found");
                 log.AppendText(Environment.NewLine);
+
                 // delete block if it already exists
                 DeleteBlock(blockName, software, log);
+
+                // create new block from library
                 software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName, log));
                 return true;
             }
@@ -202,7 +205,7 @@ namespace CopyBlocks
         /// </summary>
         /// <param name="software"></param>
         /// <returns>List with all found block names</returns>
-        public static List<string> readBlocks(PlcBlockUserGroup software)
+        public static List<string> ReadBlocks(PlcBlockUserGroup software)
         {
             var blocks = new List<string>();
 
@@ -219,12 +222,76 @@ namespace CopyBlocks
             // get also blocks in subfolders
             foreach (var group in software.Groups)
             {
-                blocks.AddRange(readBlocks(group));
+                blocks.AddRange(ReadBlocks(group));
             }
 
             return blocks;
         }
 
-         
+        /// <summary>
+        /// 
+        /// </summary>
+        public static bool CopyTagTableToFolder(string tagTableName, MasterCopyFolder libraryFolder, PlcTagTableGroup tagGroup, string destFolder, TextBox log)
+        {
+            // check if it's already on the right folder to proceed with the copy
+            if (tagGroup.Name.Equals(destFolder))
+            {
+                log.AppendText("Destination folder found");
+                log.AppendText(Environment.NewLine);
+                // delete existing tag table if already exists
+                DeleteTagTable(tagTableName, tagGroup, log);
+
+                // create new tag table from project library
+                tagGroup.TagTables.CreateFrom(GetMasterCopy(libraryFolder, tagTableName, log));
+                return true;
+            }
+
+            // if it's not in the right folder, recursively check subfolders
+            foreach (PlcTagTableGroup group in tagGroup.Groups)
+            {
+                log.AppendText("Checking " + group.Name + " subfolders");
+                log.AppendText(Environment.NewLine);
+                if (CopyTagTableToFolder(tagTableName, libraryFolder, group, destFolder, log))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tagTableName"></param>
+        /// <param name="tagGroup"></param>
+        /// <param name="log"></param>
+        public static void DeleteTagTable(string tagTableName, PlcTagTableGroup tagGroup, TextBox log)
+        {
+            PlcTagTable tagTableToDelete = null;
+
+            foreach (PlcTagTable tagTable in tagGroup.TagTables)
+            {
+                if (tagTableName.Equals(tagTable.Name))
+                    tagTableToDelete = tagTable;
+            }
+
+            if (tagTableToDelete != null)
+            {
+                tagTableToDelete.Delete();
+
+                log.AppendText("Tag table " + tagTableName + " to be deleted found in " + tagGroup.Name + " tag table folder");
+                log.AppendText(Environment.NewLine);
+            }
+            else
+            {
+                log.AppendText("Tag table " + tagTableName + " not found in " + tagGroup.Name + " tag table folder");
+                log.AppendText(Environment.NewLine);
+
+                // if tag table was not found in current group check subfolders
+                foreach (PlcTagTableGroup group in tagGroup.Groups)
+                {
+                    DeleteTagTable(tagTableName, group, log);
+                }
+            }
+        }
     }
 }
