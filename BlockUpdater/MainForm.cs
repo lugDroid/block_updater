@@ -233,6 +233,9 @@ namespace CopyBlocks
                                     {
                                         foreach (var group in software.BlockGroup.Groups)
                                         {
+                                            // Before copying delete block if already exists
+                                            BlockManagement.DeleteBlock(blockToCopy, group, statusBox);
+                                            // now copy block
                                             BlockManagement.CopyToFolder(blockToCopy, masterFolder, group, destFolder, statusBox);
                                         }
                                     }

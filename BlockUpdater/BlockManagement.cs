@@ -107,6 +107,12 @@ namespace CopyBlocks
             {
                 log.AppendText("Block " + blockName + " not found in " + software.Name + " folder");
                 log.AppendText(Environment.NewLine);
+
+                // if block was not found in current group check subgroups
+                foreach (PlcBlockUserGroup group in software.Groups)
+                {
+                    DeleteBlock(blockName, group, log);
+                }
             }
         }
 
