@@ -408,6 +408,7 @@ namespace CopyBlocks
                                     result.WarningCount + " warnings and " +
                                     result.ErrorCount + " errors"
                                 );
+                                statusBox.AppendText(Environment.NewLine);
                             }
                         }
                     }
