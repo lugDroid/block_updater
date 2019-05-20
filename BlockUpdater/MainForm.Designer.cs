@@ -30,18 +30,20 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.btn_OpenProject = new System.Windows.Forms.Button();
+            this.btnOpenProject = new System.Windows.Forms.Button();
             this.statusBox = new System.Windows.Forms.TextBox();
             this.btn_Close = new System.Windows.Forms.Button();
-            this.btn_ConnectProject = new System.Windows.Forms.Button();
-            this.btn_CheckSelection = new System.Windows.Forms.Button();
+            this.btnConnectProject = new System.Windows.Forms.Button();
+            this.btnCheckSelection = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnSelectNoneBlocks = new System.Windows.Forms.Button();
             this.btnSelectAllBlocks = new System.Windows.Forms.Button();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnSelectNoneDevices = new System.Windows.Forms.Button();
             this.btnSelectAllDevices = new System.Windows.Forms.Button();
             this.ProjectLibraryLabel = new System.Windows.Forms.Label();
             this.DevicesLabel = new System.Windows.Forms.Label();
@@ -52,9 +54,8 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSelectNoneLibrary = new System.Windows.Forms.Button();
             this.btnSelectAllLibrary = new System.Windows.Forms.Button();
-            this.btn_DeleteSelection = new System.Windows.Forms.Button();
-            this.btnSelectNoneDevices = new System.Windows.Forms.Button();
-            this.btnSelectNoneBlocks = new System.Windows.Forms.Button();
+            this.btnDeleteSelection = new System.Windows.Forms.Button();
+            this.btnCompile = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
@@ -62,16 +63,16 @@
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btn_OpenProject
+            // btnOpenProject
             // 
-            this.btn_OpenProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_OpenProject.Location = new System.Drawing.Point(12, 12);
-            this.btn_OpenProject.Name = "btn_OpenProject";
-            this.btn_OpenProject.Size = new System.Drawing.Size(113, 47);
-            this.btn_OpenProject.TabIndex = 0;
-            this.btn_OpenProject.Text = "Open Project";
-            this.btn_OpenProject.UseVisualStyleBackColor = true;
-            this.btn_OpenProject.Click += new System.EventHandler(this.Btn_OpenProject_Click);
+            this.btnOpenProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenProject.Location = new System.Drawing.Point(12, 12);
+            this.btnOpenProject.Name = "btnOpenProject";
+            this.btnOpenProject.Size = new System.Drawing.Size(113, 47);
+            this.btnOpenProject.TabIndex = 0;
+            this.btnOpenProject.Text = "Open Project";
+            this.btnOpenProject.UseVisualStyleBackColor = true;
+            this.btnOpenProject.Click += new System.EventHandler(this.Btn_OpenProject_Click);
             // 
             // statusBox
             // 
@@ -96,27 +97,27 @@
             this.btn_Close.UseVisualStyleBackColor = true;
             this.btn_Close.Click += new System.EventHandler(this.Btn_Close_Click);
             // 
-            // btn_ConnectProject
+            // btnConnectProject
             // 
-            this.btn_ConnectProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ConnectProject.Location = new System.Drawing.Point(131, 12);
-            this.btn_ConnectProject.Name = "btn_ConnectProject";
-            this.btn_ConnectProject.Size = new System.Drawing.Size(113, 47);
-            this.btn_ConnectProject.TabIndex = 4;
-            this.btn_ConnectProject.Text = "Connect Project";
-            this.btn_ConnectProject.UseVisualStyleBackColor = true;
-            this.btn_ConnectProject.Click += new System.EventHandler(this.Btn_ConnectProject_Click);
+            this.btnConnectProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnConnectProject.Location = new System.Drawing.Point(131, 12);
+            this.btnConnectProject.Name = "btnConnectProject";
+            this.btnConnectProject.Size = new System.Drawing.Size(113, 47);
+            this.btnConnectProject.TabIndex = 4;
+            this.btnConnectProject.Text = "Connect Project";
+            this.btnConnectProject.UseVisualStyleBackColor = true;
+            this.btnConnectProject.Click += new System.EventHandler(this.Btn_ConnectProject_Click);
             // 
-            // btn_CheckSelection
+            // btnCheckSelection
             // 
-            this.btn_CheckSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_CheckSelection.Location = new System.Drawing.Point(250, 12);
-            this.btn_CheckSelection.Name = "btn_CheckSelection";
-            this.btn_CheckSelection.Size = new System.Drawing.Size(113, 47);
-            this.btn_CheckSelection.TabIndex = 6;
-            this.btn_CheckSelection.Text = "Copy Selection";
-            this.btn_CheckSelection.UseVisualStyleBackColor = true;
-            this.btn_CheckSelection.Click += new System.EventHandler(this.Btn_CopySelection_Click);
+            this.btnCheckSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheckSelection.Location = new System.Drawing.Point(250, 12);
+            this.btnCheckSelection.Name = "btnCheckSelection";
+            this.btnCheckSelection.Size = new System.Drawing.Size(113, 47);
+            this.btnCheckSelection.TabIndex = 6;
+            this.btnCheckSelection.Text = "Copy Selection";
+            this.btnCheckSelection.UseVisualStyleBackColor = true;
+            this.btnCheckSelection.Click += new System.EventHandler(this.Btn_CopySelection_Click);
             // 
             // contextMenuStrip1
             // 
@@ -180,12 +181,23 @@
             this.tableLayoutPanel5.Controls.Add(this.btnSelectNoneBlocks, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSelectAllBlocks, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(677, 723);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(679, 723);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(334, 34);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(332, 34);
             this.tableLayoutPanel5.TabIndex = 26;
+            // 
+            // btnSelectNoneBlocks
+            // 
+            this.btnSelectNoneBlocks.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSelectNoneBlocks.Location = new System.Drawing.Point(102, 3);
+            this.btnSelectNoneBlocks.Name = "btnSelectNoneBlocks";
+            this.btnSelectNoneBlocks.Size = new System.Drawing.Size(82, 23);
+            this.btnSelectNoneBlocks.TabIndex = 24;
+            this.btnSelectNoneBlocks.Text = "Select None";
+            this.btnSelectNoneBlocks.UseVisualStyleBackColor = true;
+            this.btnSelectNoneBlocks.Click += new System.EventHandler(this.BtnSelectNoneBlocks_Click);
             // 
             // btnSelectAllBlocks
             // 
@@ -206,12 +218,23 @@
             this.tableLayoutPanel4.Controls.Add(this.btnSelectNoneDevices, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnSelectAllDevices, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(340, 723);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(341, 723);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(331, 34);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(332, 34);
             this.tableLayoutPanel4.TabIndex = 25;
+            // 
+            // btnSelectNoneDevices
+            // 
+            this.btnSelectNoneDevices.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSelectNoneDevices.Location = new System.Drawing.Point(102, 3);
+            this.btnSelectNoneDevices.Name = "btnSelectNoneDevices";
+            this.btnSelectNoneDevices.Size = new System.Drawing.Size(82, 23);
+            this.btnSelectNoneDevices.TabIndex = 23;
+            this.btnSelectNoneDevices.Text = "Select None";
+            this.btnSelectNoneDevices.UseVisualStyleBackColor = true;
+            this.btnSelectNoneDevices.Click += new System.EventHandler(this.BtnSelectNoneDevices_Click);
             // 
             // btnSelectAllDevices
             // 
@@ -238,7 +261,7 @@
             // 
             this.DevicesLabel.AutoSize = true;
             this.DevicesLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DevicesLabel.Location = new System.Drawing.Point(340, 0);
+            this.DevicesLabel.Location = new System.Drawing.Point(341, 0);
             this.DevicesLabel.Name = "DevicesLabel";
             this.DevicesLabel.Size = new System.Drawing.Size(96, 17);
             this.DevicesLabel.TabIndex = 14;
@@ -248,7 +271,7 @@
             // 
             this.BlockLabel.AutoSize = true;
             this.BlockLabel.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BlockLabel.Location = new System.Drawing.Point(677, 0);
+            this.BlockLabel.Location = new System.Drawing.Point(679, 0);
             this.BlockLabel.Name = "BlockLabel";
             this.BlockLabel.Size = new System.Drawing.Size(113, 17);
             this.BlockLabel.TabIndex = 15;
@@ -263,7 +286,7 @@
             this.projectLibraryCheckList.FormattingEnabled = true;
             this.projectLibraryCheckList.Location = new System.Drawing.Point(3, 23);
             this.projectLibraryCheckList.Name = "projectLibraryCheckList";
-            this.projectLibraryCheckList.Size = new System.Drawing.Size(331, 694);
+            this.projectLibraryCheckList.Size = new System.Drawing.Size(332, 694);
             this.projectLibraryCheckList.TabIndex = 18;
             // 
             // blocksCheckList
@@ -273,9 +296,9 @@
             this.blocksCheckList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.blocksCheckList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.blocksCheckList.FormattingEnabled = true;
-            this.blocksCheckList.Location = new System.Drawing.Point(677, 23);
+            this.blocksCheckList.Location = new System.Drawing.Point(679, 23);
             this.blocksCheckList.Name = "blocksCheckList";
-            this.blocksCheckList.Size = new System.Drawing.Size(334, 694);
+            this.blocksCheckList.Size = new System.Drawing.Size(332, 694);
             this.blocksCheckList.Sorted = true;
             this.blocksCheckList.TabIndex = 19;
             // 
@@ -286,9 +309,9 @@
             this.devicesCheckList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.devicesCheckList.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.devicesCheckList.FormattingEnabled = true;
-            this.devicesCheckList.Location = new System.Drawing.Point(340, 23);
+            this.devicesCheckList.Location = new System.Drawing.Point(341, 23);
             this.devicesCheckList.Name = "devicesCheckList";
-            this.devicesCheckList.Size = new System.Drawing.Size(331, 694);
+            this.devicesCheckList.Size = new System.Drawing.Size(332, 694);
             this.devicesCheckList.Sorted = true;
             this.devicesCheckList.TabIndex = 20;
             // 
@@ -304,7 +327,7 @@
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(331, 34);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(332, 34);
             this.tableLayoutPanel3.TabIndex = 24;
             // 
             // btnSelectNoneLibrary
@@ -329,38 +352,27 @@
             this.btnSelectAllLibrary.UseVisualStyleBackColor = true;
             this.btnSelectAllLibrary.Click += new System.EventHandler(this.BtnSelectAllLibrary_Click);
             // 
-            // btn_DeleteSelection
+            // btnDeleteSelection
             // 
-            this.btn_DeleteSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_DeleteSelection.Location = new System.Drawing.Point(369, 12);
-            this.btn_DeleteSelection.Name = "btn_DeleteSelection";
-            this.btn_DeleteSelection.Size = new System.Drawing.Size(113, 47);
-            this.btn_DeleteSelection.TabIndex = 13;
-            this.btn_DeleteSelection.Text = "Delete Selection";
-            this.btn_DeleteSelection.UseVisualStyleBackColor = true;
-            this.btn_DeleteSelection.Click += new System.EventHandler(this.Btn_DeleteSelection_Click);
+            this.btnDeleteSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteSelection.Location = new System.Drawing.Point(369, 12);
+            this.btnDeleteSelection.Name = "btnDeleteSelection";
+            this.btnDeleteSelection.Size = new System.Drawing.Size(113, 47);
+            this.btnDeleteSelection.TabIndex = 13;
+            this.btnDeleteSelection.Text = "Delete Selection";
+            this.btnDeleteSelection.UseVisualStyleBackColor = true;
+            this.btnDeleteSelection.Click += new System.EventHandler(this.Btn_DeleteSelection_Click);
             // 
-            // btnSelectNoneDevices
+            // btnCompile
             // 
-            this.btnSelectNoneDevices.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelectNoneDevices.Location = new System.Drawing.Point(102, 3);
-            this.btnSelectNoneDevices.Name = "btnSelectNoneDevices";
-            this.btnSelectNoneDevices.Size = new System.Drawing.Size(82, 23);
-            this.btnSelectNoneDevices.TabIndex = 23;
-            this.btnSelectNoneDevices.Text = "Select None";
-            this.btnSelectNoneDevices.UseVisualStyleBackColor = true;
-            this.btnSelectNoneDevices.Click += new System.EventHandler(this.BtnSelectNoneDevices_Click);
-            // 
-            // btnSelectNoneBlocks
-            // 
-            this.btnSelectNoneBlocks.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelectNoneBlocks.Location = new System.Drawing.Point(103, 3);
-            this.btnSelectNoneBlocks.Name = "btnSelectNoneBlocks";
-            this.btnSelectNoneBlocks.Size = new System.Drawing.Size(82, 23);
-            this.btnSelectNoneBlocks.TabIndex = 24;
-            this.btnSelectNoneBlocks.Text = "Select None";
-            this.btnSelectNoneBlocks.UseVisualStyleBackColor = true;
-            this.btnSelectNoneBlocks.Click += new System.EventHandler(this.BtnSelectNoneBlocks_Click);
+            this.btnCompile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCompile.Location = new System.Drawing.Point(488, 12);
+            this.btnCompile.Name = "btnCompile";
+            this.btnCompile.Size = new System.Drawing.Size(113, 47);
+            this.btnCompile.TabIndex = 14;
+            this.btnCompile.Text = "Compile";
+            this.btnCompile.UseVisualStyleBackColor = true;
+            this.btnCompile.Click += new System.EventHandler(this.BtnCompile_Click);
             // 
             // MainForm
             // 
@@ -368,12 +380,13 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1045, 926);
-            this.Controls.Add(this.btn_DeleteSelection);
+            this.Controls.Add(this.btnCompile);
+            this.Controls.Add(this.btnDeleteSelection);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.btn_CheckSelection);
-            this.Controls.Add(this.btn_ConnectProject);
+            this.Controls.Add(this.btnCheckSelection);
+            this.Controls.Add(this.btnConnectProject);
             this.Controls.Add(this.btn_Close);
-            this.Controls.Add(this.btn_OpenProject);
+            this.Controls.Add(this.btnOpenProject);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "TIA Portal Block Updater";
@@ -390,16 +403,16 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btn_OpenProject;
+        private System.Windows.Forms.Button btnOpenProject;
         private System.Windows.Forms.TextBox statusBox;
         private System.Windows.Forms.Button btn_Close;
-        private System.Windows.Forms.Button btn_ConnectProject;
-        private System.Windows.Forms.Button btn_CheckSelection;
+        private System.Windows.Forms.Button btnConnectProject;
+        private System.Windows.Forms.Button btnCheckSelection;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button btn_DeleteSelection;
+        private System.Windows.Forms.Button btnDeleteSelection;
         private System.Windows.Forms.Label ProjectLibraryLabel;
         private System.Windows.Forms.Label DevicesLabel;
         private System.Windows.Forms.Label BlockLabel;
@@ -415,6 +428,7 @@
         private System.Windows.Forms.Button btnSelectNoneLibrary;
         private System.Windows.Forms.Button btnSelectNoneBlocks;
         private System.Windows.Forms.Button btnSelectNoneDevices;
+        private System.Windows.Forms.Button btnCompile;
     }
 }
 

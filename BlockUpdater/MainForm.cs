@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using Siemens.Engineering;
+using Siemens.Engineering.Compiler;
 using Siemens.Engineering.HW;
 using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.Library.MasterCopies;
@@ -141,7 +142,7 @@ namespace CopyBlocks
 
             // Read project library
             List<String> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
-                        
+
             // Add master copies from list to checked list
             //foreach (MasterCopy copy in libMasterCopies)
             foreach (string entry in libMasterCopies)
@@ -373,6 +374,44 @@ namespace CopyBlocks
             for (int i = 0; i < blocksCheckList.Items.Count; i++)
             {
                 blocksCheckList.SetItemChecked(i, false);
+            }
+        }
+
+        // Compile plc programs
+        private void BtnCompile_Click(object sender, EventArgs e)
+        {
+            // Determine if there are any devices checked.  
+            if (devicesCheckList.CheckedItems.Count != 0)
+            {
+                statusBox.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
+                statusBox.AppendText(Environment.NewLine);
+
+                // If so loop through all devices checking if they have been selected
+                foreach (var device in MyProject.Devices)
+                {
+                    if (devicesCheckList.CheckedItems.Contains(device.Name))
+                    {
+                        statusBox.AppendText("Compiling system " + device.Name);
+                        statusBox.AppendText(Environment.NewLine);
+
+                        foreach (var deviceItem in device.DeviceItems)
+                        {
+                            PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
+                            if (software != null)
+                            {
+                                ICompilable compileService = software.GetService<ICompilable>();
+                                CompilerResult result = compileService.Compile();
+
+                                statusBox.AppendText(
+                                    result.State + ": Compiling finished for system " +
+                                    device.Name + ", " +
+                                    result.WarningCount + " warnings and " +
+                                    result.ErrorCount + " errors"
+                                );
+                            }
+                        }
+                    }
+                }
             }
         }
     }
