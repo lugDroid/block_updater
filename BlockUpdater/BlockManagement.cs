@@ -4,6 +4,7 @@ using Siemens.Engineering.HW.Features;
 using Siemens.Engineering.Library.MasterCopies;
 using Siemens.Engineering.SW;
 using Siemens.Engineering.SW.Blocks;
+using Siemens.Engineering.SW.Tags;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -124,7 +125,7 @@ namespace CopyBlocks
         /// <param name="software">Software to copy the block into</param>
         /// <param name="destFolder">Destination folder on which to copy the block</param>
         /// <returns>True if copied, false otherwise</returns>
-        public static bool CopyToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockUserGroup software, string destFolder, TextBox log)
+        public static bool CopyBlockToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockUserGroup software, string destFolder, TextBox log)
         {
             // checks if it's already on the right folder to proceed with the copy
             if (software.Name.Equals(destFolder))
@@ -142,7 +143,7 @@ namespace CopyBlocks
             {
                 log.AppendText("Checking " + software.Name + " subfolders");
                 log.AppendText(Environment.NewLine);
-                if (CopyToFolder(blockName, libraryFolder, group, destFolder, log))
+                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder, log))
                     return true;
             }
 
@@ -196,10 +197,11 @@ namespace CopyBlocks
         }
 
         /// <summary>
-        /// 
+        /// Reads the blocks in the provided software group
+        /// Recursively check subgroups
         /// </summary>
         /// <param name="software"></param>
-        /// <returns></returns>
+        /// <returns>List with all found block names</returns>
         public static List<string> readBlocks(PlcBlockUserGroup software)
         {
             var blocks = new List<string>();
@@ -222,5 +224,7 @@ namespace CopyBlocks
 
             return blocks;
         }
+
+         
     }
 }

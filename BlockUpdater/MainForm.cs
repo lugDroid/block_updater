@@ -183,7 +183,7 @@ namespace CopyBlocks
             blocksCheckList.EndUpdate();
         }
 
-        // Check items selected
+        // Copy selected blocks from project library
         private void Btn_CopySelection_Click(object sender, EventArgs e)
         {
             // Determine if there are any devices checked.  
@@ -236,7 +236,7 @@ namespace CopyBlocks
                                             // Before copying delete block if already exists
                                             BlockManagement.DeleteBlock(blockToCopy, group, statusBox);
                                             // now copy block
-                                            BlockManagement.CopyToFolder(blockToCopy, masterFolder, group, destFolder, statusBox);
+                                            BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, group, destFolder, statusBox);
                                         }
                                     }
                                 }
@@ -252,6 +252,7 @@ namespace CopyBlocks
             }
         }
 
+        // Delete selected blocks
         private void Btn_DeleteSelection_Click(object sender, EventArgs e)
         {
             // Determine if are any blocks checked
@@ -310,6 +311,60 @@ namespace CopyBlocks
             {
                 statusBox.AppendText("No blocks have been selected for deletion");
                 statusBox.AppendText(Environment.NewLine);
+            }
+        }
+
+        // Select all devices
+        private void BtnSelectAllDevices_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < devicesCheckList.Items.Count; i++)
+            {
+                devicesCheckList.SetItemChecked(i, true);
+            }
+        }
+
+        // Select no devices
+        private void BtnSelectNoneDevices_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < devicesCheckList.Items.Count; i++)
+            {
+                devicesCheckList.SetItemChecked(i, false);
+            }
+        }
+
+        // Select all library blocks
+        private void BtnSelectAllLibrary_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < projectLibraryCheckList.Items.Count; i++)
+            {
+                projectLibraryCheckList.SetItemChecked(i, true);
+            }
+        }
+
+        // Select no library blocks
+        private void BtnSelectNoneLibrary_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < projectLibraryCheckList.Items.Count; i++)
+            {
+                projectLibraryCheckList.SetItemChecked(i, false);
+            }
+        }
+
+        // Select all plc program blocks
+        private void BtnSelectAllBlocks_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < blocksCheckList.Items.Count; i++)
+            {
+                blocksCheckList.SetItemChecked(i, true);
+            }
+        }
+
+        // Select no plc program blocks
+        private void BtnSelectNoneBlocks_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < blocksCheckList.Items.Count; i++)
+            {
+                blocksCheckList.SetItemChecked(i, false);
             }
         }
     }
