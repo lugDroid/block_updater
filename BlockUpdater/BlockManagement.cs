@@ -282,7 +282,7 @@ namespace CopyBlocks
         /// </summary>
         /// <param name="software"></param>
         /// <returns>List with all found block names</returns>
-        public static List<string> ReadBlocks(PlcBlockUserGroup software)
+        public static List<string> ReadPlcBlocks(PlcBlockUserGroup software)
         {
             var blocks = new List<string>();
 
@@ -299,10 +299,63 @@ namespace CopyBlocks
             // get also blocks in subfolders
             foreach (var group in software.Groups)
             {
-                blocks.AddRange(ReadBlocks(group));
+                blocks.AddRange(ReadPlcBlocks(group));
             }
 
             return blocks;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="software"></param>
+        /// <returns></returns>
+        public static List<string> ReadPlcBlocks(PlcBlockSystemGroup software)
+        {
+            var blocks = new List<string>();
+
+            // get blocks in current folder/group
+            foreach (var block in software.Blocks)
+            {
+                // add them to list
+                string blockType = block.GetType().ToString();
+                blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
+
+                blocks.Add(block.Name + " - " + blockType + " - " + block.Number);
+            }
+
+            // get also blocks in subfolders
+            foreach (var group in software.Groups)
+            {
+                blocks.AddRange(ReadPlcBlocks(group));
+            }
+
+            return blocks;
+
+            //var blocks = new List<string>();
+
+            //if (software != null)
+            //{
+            //    // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
+            //    // Group that is PlcBlockUserGroup so the same functions can't be applied in both cases
+            //    // that's the reason for the exception when reading the blocks in root folder
+            //    foreach (var block in software.BlockGroup.Blocks)
+            //    {
+            //        string blockType = block.GetType().ToString();
+            //        blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
+
+            //        blocks.Add(block.Name + " - " + blockType + " - " + block.Number);
+            //    }
+
+            //    foreach (var group in software.BlockGroup.Groups)
+            //    {
+            //        blocks.AddRange(BlockManagement.ReadBlocks(group));
+            //    }
+
+
+            //}
+
+            //return blocks;
         }
 
         /// <summary>
@@ -370,5 +423,6 @@ namespace CopyBlocks
                 }
             }
         }
+
     }
 }

@@ -141,38 +141,18 @@ namespace CopyBlocks
             }
 
             // Read project library master copies names and add them to check list
-            List<String> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
+            List<string> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
 
             projectLibraryCheckList.Items.AddRange(libMasterCopies.ToArray());
 
             // Read plc blocks and add them to check list
-            // TO DO - Move this code into a function
             // device represents the rack
             // first element of DeviceItems (modules in the rack) is the plc
             PlcSoftware firstPlcSoftware = BlockManagement.GetSoftwareFrom(MyProject.Devices[0].DeviceItems[1]);
 
-            List<String> blocks = new List<string>();
+            List<string> plcBlocks = BlockManagement.ReadPlcBlocks(firstPlcSoftware.BlockGroup);
 
-            if (firstPlcSoftware != null)
-            {
-                // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
-                // Group that is PlcBlockUserGroup so the same functions can't be applied in both cases
-                // that's the reason for the exception when reading the blocks in root folder
-                foreach (var block in firstPlcSoftware.BlockGroup.Blocks)
-                {
-                    string blockType = block.GetType().ToString();
-                    blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
-
-                    blocks.Add(block.Name + " - " + blockType + " - " + block.Number);
-                }
-
-                foreach (var group in firstPlcSoftware.BlockGroup.Groups)
-                {
-                    blocks.AddRange(BlockManagement.ReadBlocks(group));
-                }
-
-                blocksCheckList.Items.AddRange(blocks.ToArray());
-            }
+            blocksCheckList.Items.AddRange(plcBlocks.ToArray());
 
             // Enable list boxex updating after elements added
             projectLibraryCheckList.EndUpdate();
