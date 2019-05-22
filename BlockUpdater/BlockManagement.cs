@@ -84,6 +84,7 @@ namespace CopyBlocks
 
         /// <summary>
         /// Delete block from given folder
+        /// Overloaded to accept PlcBlockUserGroup argument
         /// </summary>
         /// <param name="blockName">Name of the block to be deleted</param>
         /// <param name="software">Software on which to look for the block</param
@@ -118,7 +119,44 @@ namespace CopyBlocks
         }
 
         /// <summary>
+        /// Delete block from given folder
+        /// Overloaded to accept PlcBlockSystemGroup argument
+        /// </summary>
+        /// <param name="blockName">Name of the block to be deleted</param>
+        /// <param name="software">Software on which to look for the block</param
+        public static void DeleteBlock(string blockName, PlcBlockSystemGroup software, TextBox log)
+        {
+            PlcBlock blockToDelete = null;
+
+            foreach (PlcBlock block in software.Blocks)
+            {
+                if (blockName.Equals(block.Name))
+                    blockToDelete = block;
+            }
+
+            if (blockToDelete != null)
+            {
+                blockToDelete.Delete();
+
+                log.AppendText("Block " + blockName + " to be deleted found in " + software.Name + " folder");
+                log.AppendText(Environment.NewLine);
+            }
+            else
+            {
+                log.AppendText("Block " + blockName + " not found in " + software.Name + " folder");
+                log.AppendText(Environment.NewLine);
+
+                // if block was not found in current group check subgroups
+                foreach (PlcBlockUserGroup group in software.Groups)
+                {
+                    DeleteBlock(blockName, group, log);
+                }
+            }
+        }
+
+        /// <summary>
         /// Copy block from provided project library to folder in provided plc software object
+        /// Overloaded to accept PlcBlockUserGroup argument
         /// </summary>
         /// <param name="blockName">Name of the block to be copied</param>
         /// <param name="libraryFolder">Project library folder with origin block</param>
@@ -142,6 +180,45 @@ namespace CopyBlocks
             }
 
             // if it's not in the right folder, recursively check subfolders
+            foreach (var group in software.Groups)
+            {
+                log.AppendText("Checking " + software.Name + " subfolders");
+                log.AppendText(Environment.NewLine);
+                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder, log))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Copy block from provided project library to folder in provided plc software object
+        /// Overloaded to accept PlcBlockSystemGroup argument
+        /// </summary>
+        /// <param name="blockName">Name of the block to be copied</param>
+        /// <param name="libraryFolder">Project library folder with origin block</param>
+        /// <param name="software">Software to copy the block into</param>
+        /// <param name="destFolder">Destination folder on which to copy the block</param>
+        /// <returns>True if copied, false otherwise</returns>
+        public static bool CopyBlockToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockSystemGroup software, string destFolder, TextBox log)
+        {
+            // if software is of PlcBlockSystemGroup it means it's on the PLC blocks root folder
+            // library blocks to be copied to root folder are inside 'PLC' folder
+            // checks if library block is to be copied to root
+            if (destFolder.Equals("PLC"))
+            {
+                log.AppendText("Destination folder found");
+                log.AppendText(Environment.NewLine);
+
+                // delete block if it already exists
+                DeleteBlock(blockName, software, log);
+
+                // create new block from library
+                software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName, log));
+                return true;
+            }
+
+            // if library block is not to be copied to root, recursively check subfolders
             foreach (var group in software.Groups)
             {
                 log.AppendText("Checking " + software.Name + " subfolders");

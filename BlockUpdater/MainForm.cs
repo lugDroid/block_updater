@@ -63,7 +63,7 @@ namespace CopyBlocks
             return null;
         }
 
-        // EVENTS
+        // BUTTON EVENTS
 
         // open project button
         private void Btn_OpenProject_Click(object sender, EventArgs e)
@@ -143,10 +143,7 @@ namespace CopyBlocks
             // Read project library master copies names and add them to check list
             List<String> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
 
-            foreach (string entry in libMasterCopies)
-            {
-                projectLibraryCheckList.Items.Add(entry);
-            }
+            projectLibraryCheckList.Items.AddRange(libMasterCopies.ToArray());
 
             // Read plc blocks and add them to check list
             // TO DO - Move this code into a function
@@ -221,32 +218,8 @@ namespace CopyBlocks
                                         BlockManagement.CopyTagTableToFolder(blockToCopy, masterFolder, software.TagTableGroup, destFolder, statusBox);
                                     }
                                     else
-                                    {
-                                        // TO DO - Overload method to take as argument BlockGroup and BlockUserGroup
-                                        // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
-                                        // Group that is PlcBlockUserGroup so the same functions can't be applied 
-                                        // in both cases, that's the reason for the exception when copying to the root folder
-                                        if (destFolder.Equals("PLC"))
-                                        {
-                                            // delete block if already exists
-                                            foreach (var block in software.BlockGroup.Blocks)
-                                            {
-                                                if (blockToCopy.Equals(block.Name))
-                                                    block.Delete();
-                                            }
-                                            // now copy block
-                                            software.BlockGroup.Blocks.CreateFrom(BlockManagement.GetMasterCopy(masterFolder, blockToCopy, statusBox));
-                                        }
-                                        else
-                                        {
-                                            foreach (var group in software.BlockGroup.Groups)
-                                            {
-                                                // Before copying delete block if already exists
-                                                BlockManagement.DeleteBlock(blockToCopy, group, statusBox);
-                                                // now copy block
-                                                BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, group, destFolder, statusBox);
-                                            }
-                                        }
+                                    {                                       
+                                        BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, software.BlockGroup, destFolder, statusBox);
                                     }
                                 }
                             }
