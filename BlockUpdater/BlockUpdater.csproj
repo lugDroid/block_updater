@@ -53,6 +53,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlertForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AlertForm.Designer.cs">
+      <DependentUpon>AlertForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CopyBlocksForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CopyBlocksForm.Designer.cs">
+      <DependentUpon>CopyBlocksForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteBlocksForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeleteBlocksForm.Designer.cs">
+      <DependentUpon>DeleteBlocksForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +80,15 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="BlockManagement.cs" />
+    <EmbeddedResource Include="AlertForm.resx">
+      <DependentUpon>AlertForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CopyBlocksForm.resx">
+      <DependentUpon>CopyBlocksForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeleteBlocksForm.resx">
+      <DependentUpon>DeleteBlocksForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

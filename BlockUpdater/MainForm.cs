@@ -1,16 +1,10 @@
 ﻿using Microsoft.Win32;
 using Siemens.Engineering;
 using Siemens.Engineering.Compiler;
-using Siemens.Engineering.HW;
-using Siemens.Engineering.HW.Features;
-using Siemens.Engineering.Library.MasterCopies;
 using Siemens.Engineering.SW;
-using Siemens.Engineering.SW.Blocks;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -106,6 +100,7 @@ namespace CopyBlocks
             switch (processes.Count)
             {
                 case 1:
+
                     _tiaProcess = processes[0];
                     MyTiaPortal = _tiaProcess.Attach();
 
@@ -115,254 +110,85 @@ namespace CopyBlocks
                         statusBox.AppendText(Environment.NewLine);
                         return;
                     }
+
                     statusBox.AppendText("Connected to running instance of TIA Portal");
                     statusBox.AppendText(Environment.NewLine);
+
                     MyProject = MyTiaPortal.Projects[0];
+
+                    btnCheckSelection.Enabled = true;
+                    btnDeleteSelection.Enabled = true;
+                    btnCompile.Enabled = true;
+
                     break;
+
                 case 0:
+
                     statusBox.AppendText("No running instance of TIA Portal was found!");
                     statusBox.AppendText(Environment.NewLine);
+
                     return;
+
                 default:
+
                     statusBox.AppendText("More than one running instance of TIA Portal was found!");
                     statusBox.AppendText(Environment.NewLine);
+
                     return;
             }
-
-            // Read project Devices and add them to check list
-            devicesCheckList.BeginUpdate();
-
-            foreach (var device in MyProject.Devices)
-            {
-                if (device.TypeIdentifier != "System:Device.PC")
-                    devicesCheckList.Items.Add(device.Name);
-            }
-
-            devicesCheckList.EndUpdate();
-
-            // Read project library master copies names and add them to check list
-            List<string> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
-            
-            projectLibraryCheckList.Items.AddRange(libMasterCopies.ToArray());
-
-            // Read plc blocks and add them to check list
-            // device represents the rack
-            // first element of DeviceItems (modules in the rack) is the plc
-            PlcSoftware firstPlcSoftware = BlockManagement.GetSoftwareFrom(MyProject.Devices[0].DeviceItems[1]);
-            Console.WriteLine(MyProject.Devices[0].Name);
-            List<string> plcBlocks = BlockManagement.ReadPlcBlocks(firstPlcSoftware.BlockGroup);
-
-            blocksCheckList.Items.AddRange(plcBlocks.ToArray());
-
         }
 
-        // Copy selected blocks from project library
+        // Show copy blocks form
         private void Btn_CopySelection_Click(object sender, EventArgs e)
         {
-            // Determine if there are any devices checked.  
-            if (devicesCheckList.CheckedItems.Count != 0)
-            {
-                statusBox.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
-                statusBox.AppendText(Environment.NewLine);
-
-                // If so loop through all devices checking if they have been selected
-                foreach (var device in MyProject.Devices)
-                {
-                    if (devicesCheckList.CheckedItems.Contains(device.Name))
-                    {
-                        statusBox.AppendText("Applying changes to system " + device.Name);
-                        statusBox.AppendText(Environment.NewLine);
-
-                        foreach (var deviceItem in device.DeviceItems)
-                        {
-                            PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
-                            if (software != null)
-                            {
-                                MasterCopyFolder masterFolder = MyProject.ProjectLibrary.MasterCopyFolder;
-
-                                // get blocks to be copied info
-                                foreach (string item in projectLibraryCheckList.CheckedItems)
-                                {
-                                    string destFolder = item.Substring(0, item.IndexOf("/"));
-                                    string blockToCopy = item.Substring(item.IndexOf("/") + 1);
-                                    statusBox.AppendText("Copying " + blockToCopy + " to " + destFolder);
-                                    statusBox.AppendText(Environment.NewLine);
-
-                                    // check if it's a tag table or software block
-                                    if (destFolder.Equals("PLC tags"))
-                                    {
-                                        BlockManagement.CopyTagTableToFolder(blockToCopy, masterFolder, software.TagTableGroup, destFolder, statusBox);
-                                    }
-                                    else
-                                    {                                       
-                                        BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, software.BlockGroup, destFolder, statusBox);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                statusBox.AppendText("No systems have been selected");
-                statusBox.AppendText(Environment.NewLine);
-            }
+            var copyBlocksForm = new CopyBlocksForm(MyProject, statusBox);
+            copyBlocksForm.Show();
         }
 
-        // Delete selected blocks
+        // Show delete blocks form
         private void Btn_DeleteSelection_Click(object sender, EventArgs e)
         {
-            // Determine if are any blocks checked
-            if (blocksCheckList.CheckedItems.Count != 0)
-            {
-                statusBox.AppendText(blocksCheckList.CheckedItems.Count + " blocks have been selected for deletion");
-                statusBox.AppendText(Environment.NewLine);
-
-                foreach (var device in MyProject.Devices)
-                {
-                    statusBox.AppendText("Deleting blocks from " + device.Name);
-                    statusBox.AppendText(Environment.NewLine);
-
-                    // get plc software
-                    // device represents the rack
-                    // first element of DeviceItems (modules in the rack) is the plc
-                    PlcSoftware software = BlockManagement.GetSoftwareFrom(device.DeviceItems[1]);
-
-                    if (software != null)
-                    {
-                        // now remove selected blocks
-                        foreach (string blockName in blocksCheckList.CheckedItems)
-                        {
-                            // clean blockName string
-                            string name = blockName.Substring(0, blockName.IndexOf('-') - 1);
-
-                            statusBox.AppendText("Searching for " + name);
-                            statusBox.AppendText(Environment.NewLine);
-
-                            // first on root folder
-                            foreach (var block in software.BlockGroup.Blocks)
-                            {
-                                if (name.Equals(block.Name))
-                                {
-                                    statusBox.AppendText("Block " + name + " to be deleted found in root folder");
-                                    statusBox.AppendText(Environment.NewLine);
-                                    block.Delete();
-                                }
-                            }
-
-                            // check also subfolders
-                            foreach (var group in software.BlockGroup.Groups)
-                            {
-                                BlockManagement.DeleteBlock(name, group, statusBox);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        statusBox.AppendText("No software found for " + device.Name);
-                        statusBox.AppendText(Environment.NewLine);
-                    }
-                }
-            }
-            else
-            {
-                statusBox.AppendText("No blocks have been selected for deletion");
-                statusBox.AppendText(Environment.NewLine);
-            }
+            var deleteBlocksForm = new DeleteBlocksForm(MyProject, statusBox);
+            deleteBlocksForm.Show();
         }
 
-        // Select all devices
-        private void BtnSelectAllDevices_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < devicesCheckList.Items.Count; i++)
-            {
-                devicesCheckList.SetItemChecked(i, true);
-            }
-        }
-
-        // Select no devices
-        private void BtnSelectNoneDevices_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < devicesCheckList.Items.Count; i++)
-            {
-                devicesCheckList.SetItemChecked(i, false);
-            }
-        }
-
-        // Select all library blocks
-        private void BtnSelectAllLibrary_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < projectLibraryCheckList.Items.Count; i++)
-            {
-                projectLibraryCheckList.SetItemChecked(i, true);
-            }
-        }
-
-        // Select no library blocks
-        private void BtnSelectNoneLibrary_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < projectLibraryCheckList.Items.Count; i++)
-            {
-                projectLibraryCheckList.SetItemChecked(i, false);
-            }
-        }
-
-        // Select all plc program blocks
-        private void BtnSelectAllBlocks_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < blocksCheckList.Items.Count; i++)
-            {
-                blocksCheckList.SetItemChecked(i, true);
-            }
-        }
-
-        // Select no plc program blocks
-        private void BtnSelectNoneBlocks_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < blocksCheckList.Items.Count; i++)
-            {
-                blocksCheckList.SetItemChecked(i, false);
-            }
-        }
-
-        // Compile plc programs
+        // Show compile form
         private void BtnCompile_Click(object sender, EventArgs e)
         {
             // Determine if there are any devices checked.  
-            if (devicesCheckList.CheckedItems.Count != 0)
-            {
-                statusBox.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
-                statusBox.AppendText(Environment.NewLine);
+            //if (devicesCheckList.CheckedItems.Count != 0)
+            //{
+            //    statusBox.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
+            //    statusBox.AppendText(Environment.NewLine);
 
-                // If so loop through all devices checking if they have been selected
-                foreach (var device in MyProject.Devices)
-                {
-                    if (devicesCheckList.CheckedItems.Contains(device.Name))
-                    {
-                        statusBox.AppendText("Compiling system " + device.Name);
-                        statusBox.AppendText(Environment.NewLine);
+            //    // If so loop through all devices checking if they have been selected
+            //    foreach (var device in MyProject.Devices)
+            //    {
+            //        if (devicesCheckList.CheckedItems.Contains(device.Name))
+            //        {
+            //            statusBox.AppendText("Compiling system " + device.Name);
+            //            statusBox.AppendText(Environment.NewLine);
 
-                        foreach (var deviceItem in device.DeviceItems)
-                        {
-                            PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
-                            if (software != null)
-                            {
-                                ICompilable compileService = software.GetService<ICompilable>();
-                                CompilerResult result = compileService.Compile();
+            //            foreach (var deviceItem in device.DeviceItems)
+            //            {
+            //                PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
+            //                if (software != null)
+            //                {
+            //                    ICompilable compileService = software.GetService<ICompilable>();
+            //                    CompilerResult result = compileService.Compile();
 
-                                statusBox.AppendText(
-                                    result.State + ": Compiling finished for system " +
-                                    device.Name + ", " +
-                                    result.WarningCount + " warnings and " +
-                                    result.ErrorCount + " errors"
-                                );
-                                statusBox.AppendText(Environment.NewLine);
-                            }
-                        }
-                    }
-                }
-            }
+            //                    statusBox.AppendText(
+            //                        result.State + ": Compiling finished for system " +
+            //                        device.Name + ", " +
+            //                        result.WarningCount + " warnings and " +
+            //                        result.ErrorCount + " errors"
+            //                    );
+            //                    statusBox.AppendText(Environment.NewLine);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
     }
 }

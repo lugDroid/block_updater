@@ -318,7 +318,6 @@ namespace CopyBlocks
             // get blocks in current folder/group
             foreach (var block in software.Blocks)
             {
-                Console.WriteLine(block.Name);
                 // add them to list
                 string blockType = block.GetType().ToString();
                 blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
