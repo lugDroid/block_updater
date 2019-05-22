@@ -128,36 +128,32 @@ namespace CopyBlocks
                     statusBox.AppendText(Environment.NewLine);
                     return;
             }
-            // Disable list boxes updating before adding new elements
-            projectLibraryCheckList.BeginUpdate();
-            devicesCheckList.BeginUpdate();
-            blocksCheckList.BeginUpdate();
 
             // Read project Devices and add them to check list
+            devicesCheckList.BeginUpdate();
+
             foreach (var device in MyProject.Devices)
             {
                 if (device.TypeIdentifier != "System:Device.PC")
                     devicesCheckList.Items.Add(device.Name);
             }
 
+            devicesCheckList.EndUpdate();
+
             // Read project library master copies names and add them to check list
             List<string> libMasterCopies = BlockManagement.ReadProjectLibrary(MyProject.ProjectLibrary.MasterCopyFolder, "");
-
+            
             projectLibraryCheckList.Items.AddRange(libMasterCopies.ToArray());
 
             // Read plc blocks and add them to check list
             // device represents the rack
             // first element of DeviceItems (modules in the rack) is the plc
             PlcSoftware firstPlcSoftware = BlockManagement.GetSoftwareFrom(MyProject.Devices[0].DeviceItems[1]);
-
+            Console.WriteLine(MyProject.Devices[0].Name);
             List<string> plcBlocks = BlockManagement.ReadPlcBlocks(firstPlcSoftware.BlockGroup);
 
             blocksCheckList.Items.AddRange(plcBlocks.ToArray());
 
-            // Enable list boxex updating after elements added
-            projectLibraryCheckList.EndUpdate();
-            devicesCheckList.EndUpdate();
-            blocksCheckList.EndUpdate();
         }
 
         // Copy selected blocks from project library

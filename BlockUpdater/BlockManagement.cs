@@ -278,7 +278,7 @@ namespace CopyBlocks
 
         /// <summary>
         /// Reads the blocks in the provided software group
-        /// Recursively check subgroups
+        /// Overloaded to accept PlcBlockUserGroup argument
         /// </summary>
         /// <param name="software"></param>
         /// <returns>List with all found block names</returns>
@@ -306,17 +306,19 @@ namespace CopyBlocks
         }
 
         /// <summary>
-        /// 
+        /// Reads the blocks in the provided software group
+        /// Overloaded to accept PlcBlockSystemGroup argument
         /// </summary>
         /// <param name="software"></param>
-        /// <returns></returns>
+        /// <returns>List with all found block namesturns>
         public static List<string> ReadPlcBlocks(PlcBlockSystemGroup software)
         {
             var blocks = new List<string>();
-
+            
             // get blocks in current folder/group
             foreach (var block in software.Blocks)
             {
+                Console.WriteLine(block.Name);
                 // add them to list
                 string blockType = block.GetType().ToString();
                 blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
@@ -331,31 +333,6 @@ namespace CopyBlocks
             }
 
             return blocks;
-
-            //var blocks = new List<string>();
-
-            //if (software != null)
-            //{
-            //    // Type of BlockGroup is PlcBlockSystemGroup is not compatible with type of
-            //    // Group that is PlcBlockUserGroup so the same functions can't be applied in both cases
-            //    // that's the reason for the exception when reading the blocks in root folder
-            //    foreach (var block in software.BlockGroup.Blocks)
-            //    {
-            //        string blockType = block.GetType().ToString();
-            //        blockType = blockType.Substring(blockType.LastIndexOf('.') + 1);
-
-            //        blocks.Add(block.Name + " - " + blockType + " - " + block.Number);
-            //    }
-
-            //    foreach (var group in software.BlockGroup.Groups)
-            //    {
-            //        blocks.AddRange(BlockManagement.ReadBlocks(group));
-            //    }
-
-
-            //}
-
-            //return blocks;
         }
 
         /// <summary>
