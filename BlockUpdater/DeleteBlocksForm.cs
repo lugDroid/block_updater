@@ -11,6 +11,7 @@ namespace CopyBlocks
         private Project activeProject;
         private TextBox log;
 
+        // Constructor
         public DeleteBlocksForm(Project activeProject, TextBox log)
         {
             InitializeComponent();
@@ -39,47 +40,13 @@ namespace CopyBlocks
             blocksCheckList.Items.AddRange(plcBlocks.ToArray());
         }
 
+        // TO DO - Find a way to delete it
         private void ProjectLibraryLabel_Click(object sender, EventArgs e)
         {
 
         }
 
-        // Select all plc program blocks
-        private void BtnSelectAllBlocks_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < blocksCheckList.Items.Count; i++)
-            {
-                blocksCheckList.SetItemChecked(i, true);
-            }
-        }
-
-        // Select no plc program blocks
-        private void BtnSelectNoneBlocks_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < blocksCheckList.Items.Count; i++)
-            {
-                blocksCheckList.SetItemChecked(i, false);
-            }
-        }
-
-        // Select all devices
-        private void BtnSelectAllDevices_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < devicesCheckList.Items.Count; i++)
-            {
-                devicesCheckList.SetItemChecked(i, true);
-            }
-        }
-
-        // Select no devices
-        private void BtnSelectNoneDevices_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < devicesCheckList.Items.Count; i++)
-            {
-                devicesCheckList.SetItemChecked(i, false);
-            }
-        }
-
+        // Delete blocks button
         private void BtnDelete_Click(object sender, EventArgs e)
         {
             // Determine if any blocks have been checked
@@ -156,6 +123,48 @@ namespace CopyBlocks
 
                 log.AppendText("No blocks have been selected for deletion");
                 log.AppendText(Environment.NewLine);
+            }
+        }
+
+        // Cancel button
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        // Select all devices
+        private void BtnSelectAllDevices_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < devicesCheckList.Items.Count; i++)
+            {
+                devicesCheckList.SetItemChecked(i, true);
+            }
+        }
+
+        // Select no devices
+        private void BtnSelectNoneDevices_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < devicesCheckList.Items.Count; i++)
+            {
+                devicesCheckList.SetItemChecked(i, false);
+            }
+        }
+
+        // Select all plc program blocks
+        private void BtnSelectAllBlocks_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < blocksCheckList.Items.Count; i++)
+            {
+                blocksCheckList.SetItemChecked(i, true);
+            }
+        }
+
+        // Select no plc program blocks
+        private void BtnSelectNoneBlocks_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < blocksCheckList.Items.Count; i++)
+            {
+                blocksCheckList.SetItemChecked(i, false);
             }
         }
     }

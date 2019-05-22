@@ -59,6 +59,12 @@
     <Compile Include="AlertForm.Designer.cs">
       <DependentUpon>AlertForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompileForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompileForm.Designer.cs">
+      <DependentUpon>CompileForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="CopyBlocksForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +88,9 @@
     <Compile Include="BlockManagement.cs" />
     <EmbeddedResource Include="AlertForm.resx">
       <DependentUpon>AlertForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompileForm.resx">
+      <DependentUpon>CompileForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CopyBlocksForm.resx">
       <DependentUpon>CopyBlocksForm.cs</DependentUpon>

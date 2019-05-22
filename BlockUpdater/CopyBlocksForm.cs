@@ -12,6 +12,7 @@ namespace CopyBlocks
         private Project activeProject;
         private TextBox log;
 
+        // Constructor
         public CopyBlocksForm(Project activeProject, TextBox log)
         {
             InitializeComponent();
@@ -36,13 +37,7 @@ namespace CopyBlocks
             devicesCheckList.EndUpdate();
         }
 
-        // Button events
-
-        private void BtnCancel_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-        }
-
+        // Copy blocks button
         private void BtnCopy_Click(object sender, EventArgs e)
         {
             // Determine if there are any devices checked.  
@@ -116,7 +111,13 @@ namespace CopyBlocks
             }
         }
 
-        // select all library blocks
+        // Cancel button
+        private void BtnCancel_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        // Select all library blocks
         private void BtnSelectAllLibrary_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < projectLibraryCheckList.Items.Count; i++)
@@ -125,7 +126,7 @@ namespace CopyBlocks
             }
         }
 
-        // select no library blocks
+        // Select no library blocks
         private void BtnSelectNoneLibrary_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < projectLibraryCheckList.Items.Count; i++)
@@ -134,7 +135,7 @@ namespace CopyBlocks
             }
         }
 
-        // select all devices
+        // Select all devices
         private void BtnSelectAllDevices_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < devicesCheckList.Items.Count; i++)
@@ -143,7 +144,7 @@ namespace CopyBlocks
             }
         }
 
-        // select no devices
+        // Select no devices
         private void BtnSelectNoneDevices_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < devicesCheckList.Items.Count; i++)

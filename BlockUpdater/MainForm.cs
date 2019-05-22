@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32;
 using Siemens.Engineering;
-using Siemens.Engineering.Compiler;
-using Siemens.Engineering.SW;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +20,7 @@ namespace CopyBlocks
         }
         public static TiaPortalProcess _tiaProcess;
 
+        // Constructor
         public MainForm()
         {
             InitializeComponent();
@@ -29,6 +28,7 @@ namespace CopyBlocks
             CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
         }
 
+        // Resolver
         private static Assembly MyResolver(object sender, ResolveEventArgs args)
         {
             int index = args.Name.IndexOf(',');
@@ -57,9 +57,7 @@ namespace CopyBlocks
             return null;
         }
 
-        // BUTTON EVENTS
-
-        // open project button
+        // Open project button
         private void Btn_OpenProject_Click(object sender, EventArgs e)
         {
             OpenFileDialog fileSearch = new OpenFileDialog
@@ -79,7 +77,7 @@ namespace CopyBlocks
             }
         }
 
-        // close TIA Portal button
+        // Close TIA Portal button
         // TODO remove, maybe it's not needed anymore?
         private void Btn_Close_Click(object sender, EventArgs e)
         {
@@ -88,8 +86,7 @@ namespace CopyBlocks
             statusBox.AppendText(Environment.NewLine);
         }
 
-        // connect to existing project
-        // and read project library and devices
+        // Connect to existing project button
         private void Btn_ConnectProject_Click(object sender, EventArgs e)
         {
             // Project connection
@@ -155,40 +152,8 @@ namespace CopyBlocks
         // Show compile form
         private void BtnCompile_Click(object sender, EventArgs e)
         {
-            // Determine if there are any devices checked.  
-            //if (devicesCheckList.CheckedItems.Count != 0)
-            //{
-            //    statusBox.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
-            //    statusBox.AppendText(Environment.NewLine);
-
-            //    // If so loop through all devices checking if they have been selected
-            //    foreach (var device in MyProject.Devices)
-            //    {
-            //        if (devicesCheckList.CheckedItems.Contains(device.Name))
-            //        {
-            //            statusBox.AppendText("Compiling system " + device.Name);
-            //            statusBox.AppendText(Environment.NewLine);
-
-            //            foreach (var deviceItem in device.DeviceItems)
-            //            {
-            //                PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
-            //                if (software != null)
-            //                {
-            //                    ICompilable compileService = software.GetService<ICompilable>();
-            //                    CompilerResult result = compileService.Compile();
-
-            //                    statusBox.AppendText(
-            //                        result.State + ": Compiling finished for system " +
-            //                        device.Name + ", " +
-            //                        result.WarningCount + " warnings and " +
-            //                        result.ErrorCount + " errors"
-            //                    );
-            //                    statusBox.AppendText(Environment.NewLine);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            var compileForm = new CompileForm(MyProject, statusBox);
+            compileForm.Show();
         }
     }
 }
