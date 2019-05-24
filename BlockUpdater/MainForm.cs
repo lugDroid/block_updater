@@ -142,21 +142,21 @@ namespace CopyBlocks
         private void Btn_CopySelection_Click(object sender, EventArgs e)
         {
             var copyBlocksForm = new CopyBlocksForm(MyProject, statusBox);
-            copyBlocksForm.Show();
+            copyBlocksForm.ShowDialog();
         }
 
         // Show delete blocks form
         private void Btn_DeleteSelection_Click(object sender, EventArgs e)
         {
             var deleteBlocksForm = new DeleteBlocksForm(MyProject, statusBox);
-            deleteBlocksForm.Show();
+            deleteBlocksForm.ShowDialog();
         }
 
         // Show compile form
         private void BtnCompile_Click(object sender, EventArgs e)
         {
             var compileForm = new CompileForm(MyProject, statusBox);
-            compileForm.Show();
+            compileForm.ShowDialog();
         }
     }
 }
