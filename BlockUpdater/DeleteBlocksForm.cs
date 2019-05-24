@@ -40,12 +40,6 @@ namespace CopyBlocks
             blocksCheckList.Items.AddRange(plcBlocks.ToArray());
         }
 
-        // TO DO - Find a way to delete it
-        private void ProjectLibraryLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
         // Delete blocks button
         private void BtnDelete_Click(object sender, EventArgs e)
         {

@@ -131,7 +131,6 @@
             this.ProjectLibraryLabel.Size = new System.Drawing.Size(69, 17);
             this.ProjectLibraryLabel.TabIndex = 15;
             this.ProjectLibraryLabel.Text = "PLC Blocks";
-            this.ProjectLibraryLabel.Click += new System.EventHandler(this.ProjectLibraryLabel_Click);
             // 
             // DevicesLabel
             // 

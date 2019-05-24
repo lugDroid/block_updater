@@ -18,6 +18,17 @@ namespace CopyBlocks
 
             this.activeProject = activeProject;
             this.log = log;
+
+            // Read project Devices and add them to check list
+            devicesCheckList.BeginUpdate();
+
+            foreach (var device in activeProject.Devices)
+            {
+                if (device.TypeIdentifier != "System:Device.PC")
+                    devicesCheckList.Items.Add(device.Name);
+            }
+
+            devicesCheckList.EndUpdate();
         }
 
         // Compile button

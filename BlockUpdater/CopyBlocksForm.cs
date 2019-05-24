@@ -56,12 +56,12 @@ namespace CopyBlocks
 
                         foreach (var deviceItem in device.DeviceItems)
                         {
+                            bool result = false;
+
                             PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
                             if (software != null)
                             {
                                 MasterCopyFolder masterFolder = activeProject.ProjectLibrary.MasterCopyFolder;
-
-                                bool result = false;
 
                                 // get blocks to be copied info
                                 foreach (string item in projectLibraryCheckList.CheckedItems)
@@ -71,7 +71,7 @@ namespace CopyBlocks
                                     log.AppendText("Copying " + blockToCopy + " to " + destFolder);
                                     log.AppendText(Environment.NewLine);
 
-                                    
+
 
                                     // check if it's a tag table or software block
                                     if (destFolder.Equals("PLC tags"))

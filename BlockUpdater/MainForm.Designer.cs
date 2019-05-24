@@ -45,7 +45,7 @@
             // 
             this.btnOpenProject.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnOpenProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenProject.Location = new System.Drawing.Point(119, 105);
+            this.btnOpenProject.Location = new System.Drawing.Point(123, 67);
             this.btnOpenProject.Name = "btnOpenProject";
             this.btnOpenProject.Size = new System.Drawing.Size(130, 45);
             this.btnOpenProject.TabIndex = 0;
@@ -57,7 +57,7 @@
             // 
             this.btn_Close.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btn_Close.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Close.Location = new System.Drawing.Point(119, 394);
+            this.btn_Close.Location = new System.Drawing.Point(123, 356);
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.Size = new System.Drawing.Size(130, 45);
             this.btn_Close.TabIndex = 2;
@@ -69,7 +69,7 @@
             // 
             this.btnConnectProject.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnConnectProject.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConnectProject.Location = new System.Drawing.Point(119, 156);
+            this.btnConnectProject.Location = new System.Drawing.Point(123, 118);
             this.btnConnectProject.Name = "btnConnectProject";
             this.btnConnectProject.Size = new System.Drawing.Size(130, 45);
             this.btnConnectProject.TabIndex = 4;
@@ -82,7 +82,7 @@
             this.btnCheckSelection.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnCheckSelection.Enabled = false;
             this.btnCheckSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCheckSelection.Location = new System.Drawing.Point(119, 207);
+            this.btnCheckSelection.Location = new System.Drawing.Point(123, 169);
             this.btnCheckSelection.Name = "btnCheckSelection";
             this.btnCheckSelection.Size = new System.Drawing.Size(130, 45);
             this.btnCheckSelection.TabIndex = 6;
@@ -105,7 +105,7 @@
             this.btnDeleteSelection.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnDeleteSelection.Enabled = false;
             this.btnDeleteSelection.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeleteSelection.Location = new System.Drawing.Point(119, 258);
+            this.btnDeleteSelection.Location = new System.Drawing.Point(123, 220);
             this.btnDeleteSelection.Name = "btnDeleteSelection";
             this.btnDeleteSelection.Size = new System.Drawing.Size(130, 45);
             this.btnDeleteSelection.TabIndex = 13;
@@ -118,7 +118,7 @@
             this.btnCompile.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnCompile.Enabled = false;
             this.btnCompile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCompile.Location = new System.Drawing.Point(119, 309);
+            this.btnCompile.Location = new System.Drawing.Point(123, 271);
             this.btnCompile.Name = "btnCompile";
             this.btnCompile.Size = new System.Drawing.Size(130, 45);
             this.btnCompile.TabIndex = 14;
@@ -128,11 +128,11 @@
             // 
             // statusBox
             // 
-            this.statusBox.Location = new System.Drawing.Point(12, 469);
-            this.statusBox.Multiline = true;
+            this.statusBox.Location = new System.Drawing.Point(0, 603);
             this.statusBox.Name = "statusBox";
-            this.statusBox.Size = new System.Drawing.Size(359, 142);
+            this.statusBox.Size = new System.Drawing.Size(383, 20);
             this.statusBox.TabIndex = 15;
+            this.statusBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // MainForm
             // 

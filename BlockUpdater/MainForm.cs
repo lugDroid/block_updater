@@ -69,12 +69,15 @@ namespace CopyBlocks
 
             string ProjectPath = fileSearch.FileName.ToString();
 
-            MyTiaPortal = BlockManagement.StartTIA(sender, e);
-
             if (string.IsNullOrEmpty(ProjectPath) == false)
             {
+                MyTiaPortal = BlockManagement.StartTIA(sender, e);
                 MyProject = BlockManagement.OpenProject(ProjectPath, MyTiaPortal, statusBox);
-            }
+
+                btnCheckSelection.Enabled = true;
+                btnDeleteSelection.Enabled = true;
+                btnCompile.Enabled = true;
+            } 
         }
 
         // Close TIA Portal button
