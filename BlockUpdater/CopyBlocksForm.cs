@@ -43,6 +43,9 @@ namespace CopyBlocks
             // Determine if any blocks have been checked
             if (projectLibraryCheckList.CheckedItems.Count != 0)
             {
+                log.AppendText(projectLibraryCheckList.CheckedItems.Count + " blocks have been selected for copy");
+                log.AppendText(Environment.NewLine);
+
                 // Determine if there are any devices checked.  
                 if (devicesCheckList.CheckedItems.Count != 0)
                 {
@@ -56,7 +59,7 @@ namespace CopyBlocks
                     {
                         if (devicesCheckList.CheckedItems.Contains(device.Name))
                         {
-                            log.AppendText("Applying changes to system " + device.Name);
+                            log.AppendText("Copying blocks to system " + device.Name);
                             log.AppendText(Environment.NewLine);
 
                             // get plc software
@@ -73,6 +76,7 @@ namespace CopyBlocks
                                 {
                                     string destFolder = item.Substring(0, item.IndexOf("/"));
                                     string blockToCopy = item.Substring(item.IndexOf("/") + 1);
+
                                     log.AppendText("Copying " + blockToCopy + " to " + destFolder);
                                     log.AppendText(Environment.NewLine);
 
@@ -113,12 +117,20 @@ namespace CopyBlocks
                 }
                 else
                 {
-                    AlertForm alert = new AlertForm("No systems have been selected", "Error");
+                    AlertForm alert = new AlertForm("No devices have been selected", "Error");
                     alert.Show();
 
-                    log.AppendText("No systems have been selected");
+                    log.AppendText("No devices have been selected");
                     log.AppendText(Environment.NewLine);
                 }
+            }
+            else
+            {
+                AlertForm alert = new AlertForm("No blocks have been selected", "Error");
+                alert.ShowDialog();
+
+                log.AppendText("No blocks have been selected for copy");
+                log.AppendText(Environment.NewLine);
             }
         }
 

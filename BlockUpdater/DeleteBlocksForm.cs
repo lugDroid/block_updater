@@ -52,6 +52,12 @@ namespace CopyBlocks
                 // Determine if any devices have been checked
                 if (devicesCheckList.CheckedItems.Count != 0)
                 {
+                    log.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
+                    log.AppendText(Environment.NewLine);
+
+                    var results = new List<bool>();
+
+                    // If so loop through all devices checking if they have been selected
                     foreach (var device in activeProject.Devices)
                     {
                         if (devicesCheckList.CheckedItems.Contains(device.Name))
@@ -83,6 +89,7 @@ namespace CopyBlocks
                                             log.AppendText("Block " + name + " to be deleted found in root folder");
                                             log.AppendText(Environment.NewLine);
                                             block.Delete();
+                                            results.Add(true);
                                         }
                                     }
 
@@ -93,18 +100,34 @@ namespace CopyBlocks
                                     }
                                 }
                             }
-                            else
-                            {
-                                log.AppendText("No software found for " + device.Name);
-                                log.AppendText(Environment.NewLine);
-                            }
                         }
+                    }
+
+                    // group results
+                    bool groupResult = true;
+
+                    foreach(bool result in results)
+                    {
+                        if (result == false)
+                            groupResult = false;
+                    }
+
+                    // final notification
+                    if (groupResult)
+                    {
+                        var alert = new AlertForm("All delete operations successful", "Delete Blocks");
+                        alert.ShowDialog();
+                    }
+                    else
+                    {
+                        var alert = new AlertForm("One or more delete operations failed", "Delete Blocks");
+                        alert.ShowDialog();
                     }
                 }
                 else
                 {
                     AlertForm alert = new AlertForm("No devices have been selected", "Error");
-                    alert.Show();
+                    alert.ShowDialog();
 
                     log.AppendText("No devices have been selected for deletion");
                     log.AppendText(Environment.NewLine);
@@ -113,7 +136,7 @@ namespace CopyBlocks
             else
             {
                 AlertForm alert = new AlertForm("No blocks have been selected", "Error");
-                alert.Show();
+                alert.ShowDialog();
 
                 log.AppendText("No blocks have been selected for deletion");
                 log.AppendText(Environment.NewLine);
