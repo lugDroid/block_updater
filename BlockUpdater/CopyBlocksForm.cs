@@ -46,6 +46,8 @@ namespace CopyBlocks
                 log.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
                 log.AppendText(Environment.NewLine);
 
+                var results = new List<bool>();
+
                 // If so loop through all devices checking if they have been selected
                 foreach (var device in activeProject.Devices)
                 {
@@ -54,51 +56,56 @@ namespace CopyBlocks
                         log.AppendText("Applying changes to system " + device.Name);
                         log.AppendText(Environment.NewLine);
 
-                        foreach (var deviceItem in device.DeviceItems)
+                        // get plc software
+                        // device represents the rack
+                        // first element of DeviceItems (modules in the rack) is the plc
+                        PlcSoftware software = BlockManagement.GetSoftwareFrom(device.DeviceItems[1]);
+
+                        if (software != null)
                         {
-                            bool result = false;
+                            MasterCopyFolder masterFolder = activeProject.ProjectLibrary.MasterCopyFolder;
 
-                            PlcSoftware software = BlockManagement.GetSoftwareFrom(deviceItem);
-                            if (software != null)
+                            // get blocks to be copied info
+                            foreach (string item in projectLibraryCheckList.CheckedItems)
                             {
-                                MasterCopyFolder masterFolder = activeProject.ProjectLibrary.MasterCopyFolder;
+                                string destFolder = item.Substring(0, item.IndexOf("/"));
+                                string blockToCopy = item.Substring(item.IndexOf("/") + 1);
+                                log.AppendText("Copying " + blockToCopy + " to " + destFolder);
+                                log.AppendText(Environment.NewLine);
 
-                                // get blocks to be copied info
-                                foreach (string item in projectLibraryCheckList.CheckedItems)
+                                // check if it's a tag table or software block
+                                if (destFolder.Equals("PLC tags"))
                                 {
-                                    string destFolder = item.Substring(0, item.IndexOf("/"));
-                                    string blockToCopy = item.Substring(item.IndexOf("/") + 1);
-                                    log.AppendText("Copying " + blockToCopy + " to " + destFolder);
-                                    log.AppendText(Environment.NewLine);
-
-
-
-                                    // check if it's a tag table or software block
-                                    if (destFolder.Equals("PLC tags"))
-                                    {
-                                        if (BlockManagement.CopyTagTableToFolder(blockToCopy, masterFolder, software.TagTableGroup, destFolder, log))
-                                            result = true;
-                                    }
-                                    else
-                                    {
-                                        if (BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, software.BlockGroup, destFolder, log))
-                                            result = true;
-                                    }
-                                }
-
-                                if (result)
-                                {
-                                    var alert = new AlertForm("All copy operations successful", "Copy Blocks");
-                                    alert.Show();
+                                    results.Add(BlockManagement.CopyTagTableToFolder(blockToCopy, masterFolder, software.TagTableGroup, destFolder, log));
                                 }
                                 else
                                 {
-                                    var alert = new AlertForm("One or more copy operations failed", "Copy Blocks");
-                                    alert.Show();
+                                    results.Add(BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, software.BlockGroup, destFolder, log));
                                 }
                             }
                         }
                     }
+                }
+
+                // group results
+                bool groupResult = true;
+
+                foreach (bool result in results)
+                {
+                    if (result == false)
+                        groupResult = false;
+                }
+
+                // final notification
+                if (groupResult)
+                {
+                    var alert = new AlertForm("All copy operations successful", "Copy Blocks");
+                    alert.ShowDialog();
+                }
+                else
+                {
+                    var alert = new AlertForm("One or more copy operations failed", "Copy Blocks");
+                    alert.ShowDialog();
                 }
             }
             else
