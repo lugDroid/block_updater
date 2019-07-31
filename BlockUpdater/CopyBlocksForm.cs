@@ -10,15 +10,13 @@ namespace CopyBlocks
     public partial class CopyBlocksForm : Form
     {
         private Project activeProject;
-        private TextBox log;
 
         // Constructor
-        public CopyBlocksForm(Project activeProject, TextBox log)
+        public CopyBlocksForm(Project activeProject)
         {
             InitializeComponent();
 
             this.activeProject = activeProject;
-            this.log = log;
 
             // Read project library master copies names and add them to check list
             List<string> libMasterCopies = BlockManagement.ReadProjectLibrary(activeProject.ProjectLibrary.MasterCopyFolder, "");
@@ -43,14 +41,12 @@ namespace CopyBlocks
             // Determine if any blocks have been checked
             if (projectLibraryCheckList.CheckedItems.Count != 0)
             {
-                log.AppendText(projectLibraryCheckList.CheckedItems.Count + " blocks have been selected for copy");
-                log.AppendText(Environment.NewLine);
+                Globals.Log(projectLibraryCheckList.CheckedItems.Count + " blocks have been selected for copy");
 
                 // Determine if there are any devices checked.  
                 if (devicesCheckList.CheckedItems.Count != 0)
                 {
-                    log.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
-                    log.AppendText(Environment.NewLine);
+                    Globals.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                     var results = new List<bool>();
 
@@ -59,8 +55,7 @@ namespace CopyBlocks
                     {
                         if (devicesCheckList.CheckedItems.Contains(device.Name))
                         {
-                            log.AppendText("Copying blocks to system " + device.Name);
-                            log.AppendText(Environment.NewLine);
+                            Globals.Log("Copying blocks to system " + device.Name);
 
                             // get plc software
                             // device represents the rack
@@ -77,17 +72,16 @@ namespace CopyBlocks
                                     string destFolder = item.Substring(0, item.IndexOf("/"));
                                     string blockToCopy = item.Substring(item.IndexOf("/") + 1);
 
-                                    log.AppendText("Copying " + blockToCopy + " to " + destFolder);
-                                    log.AppendText(Environment.NewLine);
+                                    Globals.Log("Copying " + blockToCopy + " to " + destFolder);
 
                                     // check if it's a tag table or software block
                                     if (destFolder.Equals("PLC tags"))
                                     {
-                                        results.Add(BlockManagement.CopyTagTableToFolder(blockToCopy, masterFolder, software.TagTableGroup, destFolder, log));
+                                        results.Add(BlockManagement.CopyTagTableToFolder(blockToCopy, masterFolder, software.TagTableGroup, destFolder));
                                     }
                                     else
                                     {
-                                        results.Add(BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, software.BlockGroup, destFolder, log));
+                                        results.Add(BlockManagement.CopyBlockToFolder(blockToCopy, masterFolder, software.BlockGroup, destFolder));
                                     }
                                 }
                             }
@@ -120,8 +114,7 @@ namespace CopyBlocks
                     AlertForm alert = new AlertForm("No devices have been selected", "Error");
                     alert.Show();
 
-                    log.AppendText("No devices have been selected");
-                    log.AppendText(Environment.NewLine);
+                    Globals.Log("No devices have been selected");
                 }
             }
             else
@@ -129,8 +122,7 @@ namespace CopyBlocks
                 AlertForm alert = new AlertForm("No blocks have been selected", "Error");
                 alert.ShowDialog();
 
-                log.AppendText("No blocks have been selected for copy");
-                log.AppendText(Environment.NewLine);
+                Globals.Log("No blocks have been selected for copy");
             }
         }
 

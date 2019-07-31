@@ -9,15 +9,13 @@ namespace CopyBlocks
     public partial class CompileForm : Form
     {
         private Project activeProject;
-        private TextBox log;
 
         // Constructor
-        public CompileForm(Project activeProject, TextBox log)
+        public CompileForm(Project activeProject)
         {
             InitializeComponent();
 
             this.activeProject = activeProject;
-            this.log = log;
 
             // Read project Devices and add them to check list
             devicesCheckList.BeginUpdate();
@@ -37,16 +35,14 @@ namespace CopyBlocks
             //Determine if there are any devices checked.  
             if (devicesCheckList.CheckedItems.Count != 0)
             {
-                log.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
-                log.AppendText(Environment.NewLine);
+                Globals.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                 // If so loop through all devices checking if they have been selected
                 foreach (var device in activeProject.Devices)
                 {
                     if (devicesCheckList.CheckedItems.Contains(device.Name))
                     {
-                        log.AppendText("Compiling system " + device.Name);
-                        log.AppendText(Environment.NewLine);
+                        Globals.Log("Compiling system " + device.Name);
 
                         foreach (var deviceItem in device.DeviceItems)
                         {
@@ -56,13 +52,13 @@ namespace CopyBlocks
                                 ICompilable compileService = software.GetService<ICompilable>();
                                 CompilerResult result = compileService.Compile();
 
-                                log.AppendText(
+                                Globals.Log(
                                     result.State + ": Compiling finished for system " +
                                     device.Name + ", " +
                                     result.WarningCount + " warnings and " +
                                     result.ErrorCount + " errors"
                                 );
-                                log.AppendText(Environment.NewLine);
+
                             }
                         }
                     }

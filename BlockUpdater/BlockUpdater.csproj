@@ -77,6 +77,7 @@
     <Compile Include="DeleteBlocksForm.Designer.cs">
       <DependentUpon>DeleteBlocksForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Globals.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -26,6 +26,7 @@ namespace CopyBlocks
             InitializeComponent();
             AppDomain CurrentDomain = AppDomain.CurrentDomain;
             CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
+            Globals.log = statusBox;
         }
 
         // Resolver
@@ -62,7 +63,7 @@ namespace CopyBlocks
         {
             OpenFileDialog fileSearch = new OpenFileDialog
             {
-                Filter = "*.ap15|*.ap15",
+                Filter = " Tia Portal v15|*.ap15| Tia Portal v14|*.ap14",
                 RestoreDirectory = true
             };
             fileSearch.ShowDialog();
@@ -72,7 +73,7 @@ namespace CopyBlocks
             if (string.IsNullOrEmpty(ProjectPath) == false)
             {
                 MyTiaPortal = BlockManagement.StartTIA(sender, e);
-                MyProject = BlockManagement.OpenProject(ProjectPath, MyTiaPortal, statusBox);
+                MyProject = BlockManagement.OpenProject(ProjectPath, MyTiaPortal);
 
                 btnCheckSelection.Enabled = true;
                 btnDeleteSelection.Enabled = true;
@@ -141,22 +142,38 @@ namespace CopyBlocks
         // Show copy blocks form
         private void Btn_CopySelection_Click(object sender, EventArgs e)
         {
-            var copyBlocksForm = new CopyBlocksForm(MyProject, statusBox);
+            var copyBlocksForm = new CopyBlocksForm(MyProject);
             copyBlocksForm.ShowDialog();
         }
 
         // Show delete blocks form
         private void Btn_DeleteSelection_Click(object sender, EventArgs e)
         {
-            var deleteBlocksForm = new DeleteBlocksForm(MyProject, statusBox);
+            var deleteBlocksForm = new DeleteBlocksForm(MyProject);
             deleteBlocksForm.ShowDialog();
         }
 
         // Show compile form
         private void BtnCompile_Click(object sender, EventArgs e)
         {
-            var compileForm = new CompileForm(MyProject, statusBox);
+            var compileForm = new CompileForm(MyProject);
             compileForm.ShowDialog();
+        }
+
+        private void checkBoxVerbose_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxVerbose.Checked)
+            {
+                Globals.verbose = true;
+                statusBox.AppendText("Debug mode activated");
+                statusBox.AppendText(Environment.NewLine);
+            }
+            else
+            {
+                Globals.verbose = false;
+                statusBox.AppendText("Debug mode deactivated");
+                statusBox.AppendText(Environment.NewLine);
+            }
         }
     }
 }

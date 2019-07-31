@@ -39,6 +39,7 @@
             this.btnDeleteSelection = new System.Windows.Forms.Button();
             this.btnCompile = new System.Windows.Forms.Button();
             this.statusBox = new System.Windows.Forms.TextBox();
+            this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // btnOpenProject
@@ -128,11 +129,24 @@
             // 
             // statusBox
             // 
-            this.statusBox.Location = new System.Drawing.Point(0, 603);
+            this.statusBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusBox.Location = new System.Drawing.Point(0, 451);
+            this.statusBox.Multiline = true;
             this.statusBox.Name = "statusBox";
-            this.statusBox.Size = new System.Drawing.Size(383, 20);
+            this.statusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.statusBox.Size = new System.Drawing.Size(383, 172);
             this.statusBox.TabIndex = 15;
-            this.statusBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // checkBoxVerbose
+            // 
+            this.checkBoxVerbose.AutoSize = true;
+            this.checkBoxVerbose.Location = new System.Drawing.Point(12, 428);
+            this.checkBoxVerbose.Name = "checkBoxVerbose";
+            this.checkBoxVerbose.Size = new System.Drawing.Size(65, 17);
+            this.checkBoxVerbose.TabIndex = 16;
+            this.checkBoxVerbose.Text = "Verbose";
+            this.checkBoxVerbose.UseVisualStyleBackColor = true;
+            this.checkBoxVerbose.CheckedChanged += new System.EventHandler(this.checkBoxVerbose_CheckedChanged);
             // 
             // MainForm
             // 
@@ -140,6 +154,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(383, 623);
+            this.Controls.Add(this.checkBoxVerbose);
             this.Controls.Add(this.statusBox);
             this.Controls.Add(this.btnCompile);
             this.Controls.Add(this.btnDeleteSelection);
@@ -169,6 +184,7 @@
         private System.Windows.Forms.Button btnDeleteSelection;
         private System.Windows.Forms.Button btnCompile;
         private System.Windows.Forms.TextBox statusBox;
+        private System.Windows.Forms.CheckBox checkBoxVerbose;
     }
 }
 

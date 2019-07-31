@@ -15,7 +15,7 @@ using System.Windows.Forms;
 namespace CopyBlocks
 {
     public static class BlockManagement
-    {
+    {   
         /// <summary>
         /// 
         /// </summary>
@@ -30,20 +30,18 @@ namespace CopyBlocks
         /// Open existing TIA Portal project
         /// </summary>
         /// <param name="ProjectPath"></param>
-        public static Project OpenProject(string ProjectPath, TiaPortal TiaPortalInstance, TextBox log)
+        public static Project OpenProject(string ProjectPath, TiaPortal TiaPortalInstance)
         {
             Project projectInstance;
             try
             {
                 projectInstance = TiaPortalInstance.Projects.Open(new FileInfo(ProjectPath));
-                log.AppendText("Project " + ProjectPath + " opened");
-                log.AppendText(Environment.NewLine);
+                Globals.Log("Project " + ProjectPath + " opened");
             }
             catch (Exception ex)
             {
                 projectInstance = null;
-                log.AppendText("Error while opening project: " + ProjectPath + " - " + ex.Message);
-                log.AppendText(Environment.NewLine);
+                Globals.Log("Error while opening project: " + ProjectPath + " - " + ex.Message);
             }
 
             return projectInstance;
@@ -55,15 +53,14 @@ namespace CopyBlocks
         /// <param name="libraryFolder">Folder of the project library to search in</param>
         /// <param name="blockName">Name of the block to be search for</param>
         /// <returns>Block if found, null otherwise</returns>
-        public static MasterCopy GetMasterCopy(MasterCopyFolder libraryFolder, string blockName, TextBox log)
+        public static MasterCopy GetMasterCopy(MasterCopyFolder libraryFolder, string blockName)
         {
             // look for block in current folder
             foreach (var masterCopy in libraryFolder.MasterCopies)
             {
                 if (masterCopy.Name.Equals(blockName))
                 {
-                    log.AppendText("Block to be copied found in " + libraryFolder.Name);
-                    log.AppendText(Environment.NewLine);
+                    Globals.LogVerbose("Block to be copied found in " + libraryFolder.Name);
                     return masterCopy;
                 }
             }
@@ -71,14 +68,14 @@ namespace CopyBlocks
             // if not in this folder check subfolders
             foreach (var subfolder in libraryFolder.Folders)
             {
-                MasterCopy result = GetMasterCopy(subfolder, blockName, log);
+                MasterCopy result = GetMasterCopy(subfolder, blockName);
 
                 if (result != null)
                     return result;
             }
 
-            log.AppendText("Block to be copied not found");
-            log.AppendText(Environment.NewLine);
+            Globals.LogVerbose("Block to be copied not found");
+
             return null;
         }
 
@@ -88,7 +85,7 @@ namespace CopyBlocks
         /// </summary>
         /// <param name="blockName">Name of the block to be deleted</param>
         /// <param name="software">Software on which to look for the block</param
-        public static void DeleteBlock(string blockName, PlcBlockUserGroup software, TextBox log)
+        public static bool DeleteBlock(string blockName, PlcBlockUserGroup software)
         {
             PlcBlock blockToDelete = null;
 
@@ -102,20 +99,22 @@ namespace CopyBlocks
             {
                 blockToDelete.Delete();
 
-                log.AppendText("Block " + blockName + " to be deleted found in " + software.Name + " folder");
-                log.AppendText(Environment.NewLine);
+                Globals.Log("Block " + blockName + " to be deleted found in " + software.Name + " folder");
+
+                return true;
             }
             else
             {
-                log.AppendText("Block " + blockName + " not found in " + software.Name + " folder");
-                log.AppendText(Environment.NewLine);
+                Globals.LogVerbose("Block " + blockName + " not found in " + software.Name + " folder");
 
                 // if block was not found in current group check subgroups
                 foreach (PlcBlockUserGroup group in software.Groups)
                 {
-                    DeleteBlock(blockName, group, log);
+                    return DeleteBlock(blockName, group);
                 }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -124,7 +123,7 @@ namespace CopyBlocks
         /// </summary>
         /// <param name="blockName">Name of the block to be deleted</param>
         /// <param name="software">Software on which to look for the block</param
-        public static void DeleteBlock(string blockName, PlcBlockSystemGroup software, TextBox log)
+        public static bool DeleteBlock(string blockName, PlcBlockSystemGroup software)
         {
             PlcBlock blockToDelete = null;
 
@@ -138,20 +137,22 @@ namespace CopyBlocks
             {
                 blockToDelete.Delete();
 
-                log.AppendText("Block " + blockName + " to be deleted found in " + software.Name + " folder");
-                log.AppendText(Environment.NewLine);
+                Globals.Log("Block " + blockName + " to be deleted found in " + software.Name + " folder");
+
+                return true;
             }
             else
             {
-                log.AppendText("Block " + blockName + " not found in " + software.Name + " folder");
-                log.AppendText(Environment.NewLine);
+                Globals.LogVerbose("Block " + blockName + " not found in " + software.Name + " folder");
 
                 // if block was not found in current group check subgroups
                 foreach (PlcBlockUserGroup group in software.Groups)
                 {
-                    DeleteBlock(blockName, group, log);
+                    return DeleteBlock(blockName, group);
                 }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -163,29 +164,27 @@ namespace CopyBlocks
         /// <param name="software">Software to copy the block into</param>
         /// <param name="destFolder">Destination folder on which to copy the block</param>
         /// <returns>True if copied, false otherwise</returns>
-        public static bool CopyBlockToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockUserGroup software, string destFolder, TextBox log)
+        public static bool CopyBlockToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockUserGroup software, string destFolder)
         {
             // checks if it's already on the right folder to proceed with the copy
             if (software.Name.Equals(destFolder))
             {
-                log.AppendText("Destination folder found");
-                log.AppendText(Environment.NewLine);
+                Globals.LogVerbose("Destination folder found");
 
                 // delete block if it already exists
-                DeleteBlock(blockName, software, log);
+                DeleteBlock(blockName, software);
 
                 // create new block from library
-                software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName, log));
+                software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName));
+                Globals.Log("Block copied successfully");
                 return true;
             }
 
             // if it's not in the right folder, recursively check subfolders
             foreach (var group in software.Groups)
             {
-                log.AppendText("Checking " + software.Name + " subfolders");
-                log.AppendText(Environment.NewLine);
-                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder, log))
-                    return true;
+                Globals.LogVerbose("Checking " + software.Name + " subfolders");
+                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder)) return true;
             }
 
             return false;
@@ -200,30 +199,29 @@ namespace CopyBlocks
         /// <param name="software">Software to copy the block into</param>
         /// <param name="destFolder">Destination folder on which to copy the block</param>
         /// <returns>True if copied, false otherwise</returns>
-        public static bool CopyBlockToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockSystemGroup software, string destFolder, TextBox log)
+        public static bool CopyBlockToFolder(string blockName, MasterCopyFolder libraryFolder, PlcBlockSystemGroup software, string destFolder)
         {
             // if software is of PlcBlockSystemGroup it means it's on the PLC blocks root folder
             // library blocks to be copied to root folder are inside 'PLC' folder
             // checks if library block is to be copied to root
             if (destFolder.Equals("PLC"))
             {
-                log.AppendText("Destination folder found");
-                log.AppendText(Environment.NewLine);
+                Globals.LogVerbose("Destination folder found");
 
                 // delete block if it already exists
-                DeleteBlock(blockName, software, log);
+                DeleteBlock(blockName, software);
 
                 // create new block from library
-                software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName, log));
+                software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName));
+                Globals.Log("Block copied successfully");
                 return true;
             }
 
             // if library block is not to be copied to root, recursively check subfolders
             foreach (var group in software.Groups)
             {
-                log.AppendText("Checking " + software.Name + " subfolders");
-                log.AppendText(Environment.NewLine);
-                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder, log))
+                Globals.LogVerbose("Checking " + software.Name + " subfolders");
+                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder))
                     return true;
             }
 
@@ -337,27 +335,26 @@ namespace CopyBlocks
         /// <summary>
         /// Copy provided tag table from project library to provided destination folder in plc
         /// </summary>
-        public static bool CopyTagTableToFolder(string tagTableName, MasterCopyFolder libraryFolder, PlcTagTableGroup tagGroup, string destFolder, TextBox log)
+        public static bool CopyTagTableToFolder(string tagTableName, MasterCopyFolder libraryFolder, PlcTagTableGroup tagGroup, string destFolder)
         {
             // check if it's already on the right folder to proceed with the copy
             if (tagGroup.Name.Equals(destFolder))
             {
-                log.AppendText("Destination folder found");
-                log.AppendText(Environment.NewLine);
+                Globals.LogVerbose("Destination folder found");
                 // delete existing tag table if already exists
-                DeleteTagTable(tagTableName, tagGroup, log);
+                DeleteTagTable(tagTableName, tagGroup);
 
                 // create new tag table from project library
-                tagGroup.TagTables.CreateFrom(GetMasterCopy(libraryFolder, tagTableName, log));
+                tagGroup.TagTables.CreateFrom(GetMasterCopy(libraryFolder, tagTableName));
+                Globals.Log("Tag table copied successfully");
                 return true;
             }
 
             // if it's not in the right folder, recursively check subfolders
             foreach (PlcTagTableGroup group in tagGroup.Groups)
             {
-                log.AppendText("Checking " + group.Name + " subfolders");
-                log.AppendText(Environment.NewLine);
-                if (CopyTagTableToFolder(tagTableName, libraryFolder, group, destFolder, log))
+                Globals.Log("Checking " + group.Name + " subfolders");
+                if (CopyTagTableToFolder(tagTableName, libraryFolder, group, destFolder))
                     return true;
             }
 
@@ -370,7 +367,7 @@ namespace CopyBlocks
         /// <param name="tagTableName"></param>
         /// <param name="tagGroup"></param>
         /// <param name="log"></param>
-        public static void DeleteTagTable(string tagTableName, PlcTagTableGroup tagGroup, TextBox log)
+        public static void DeleteTagTable(string tagTableName, PlcTagTableGroup tagGroup)
         {
             PlcTagTable tagTableToDelete = null;
 
@@ -384,18 +381,16 @@ namespace CopyBlocks
             {
                 tagTableToDelete.Delete();
 
-                log.AppendText("Tag table " + tagTableName + " to be deleted found in " + tagGroup.Name + " tag table folder");
-                log.AppendText(Environment.NewLine);
+                Globals.Log("Tag table " + tagTableName + " to be deleted found in " + tagGroup.Name + " tag table folder");
             }
             else
             {
-                log.AppendText("Tag table " + tagTableName + " not found in " + tagGroup.Name + " tag table folder");
-                log.AppendText(Environment.NewLine);
+                Globals.LogVerbose("Tag table " + tagTableName + " not found in " + tagGroup.Name + " tag table folder");
 
                 // if tag table was not found in current group check subfolders
                 foreach (PlcTagTableGroup group in tagGroup.Groups)
                 {
-                    DeleteTagTable(tagTableName, group, log);
+                    DeleteTagTable(tagTableName, group);
                 }
             }
         }

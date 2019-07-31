@@ -9,15 +9,13 @@ namespace CopyBlocks
     public partial class DeleteBlocksForm : Form
     {
         private Project activeProject;
-        private TextBox log;
 
         // Constructor
-        public DeleteBlocksForm(Project activeProject, TextBox log)
+        public DeleteBlocksForm(Project activeProject)
         {
             InitializeComponent();
 
             this.activeProject = activeProject;
-            this.log = log;
 
             // Read project Devices and add them to check list
             devicesCheckList.BeginUpdate();
@@ -46,14 +44,12 @@ namespace CopyBlocks
             // Determine if any blocks have been checked
             if (blocksCheckList.CheckedItems.Count != 0)
             {
-                log.AppendText(blocksCheckList.CheckedItems.Count + " blocks have been selected for deletion");
-                log.AppendText(Environment.NewLine);
+                Globals.Log(blocksCheckList.CheckedItems.Count + " blocks have been selected for removal");
 
                 // Determine if any devices have been checked
                 if (devicesCheckList.CheckedItems.Count != 0)
                 {
-                    log.AppendText("Systems selected: " + devicesCheckList.CheckedItems.Count);
-                    log.AppendText(Environment.NewLine);
+                    Globals.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                     var results = new List<bool>();
 
@@ -62,8 +58,7 @@ namespace CopyBlocks
                     {
                         if (devicesCheckList.CheckedItems.Contains(device.Name))
                         {
-                            log.AppendText("Deleting blocks from " + device.Name);
-                            log.AppendText(Environment.NewLine);
+                            Globals.Log("Deleting blocks from " + device.Name);
 
                             // get plc software
                             // device represents the rack
@@ -78,16 +73,15 @@ namespace CopyBlocks
                                     // clean blockName string
                                     string name = blockName.Substring(0, blockName.IndexOf('-') - 1);
 
-                                    log.AppendText("Searching for " + name);
-                                    log.AppendText(Environment.NewLine);
+                                    Globals.LogVerbose("Searching for " + name);
 
                                     // first on root folder
                                     foreach (var block in software.BlockGroup.Blocks)
                                     {
                                         if (name.Equals(block.Name))
                                         {
-                                            log.AppendText("Block " + name + " to be deleted found in root folder");
-                                            log.AppendText(Environment.NewLine);
+                                            Globals.LogVerbose("Block " + name + " to be deleted found in root folder");
+
                                             block.Delete();
                                             results.Add(true);
                                         }
@@ -96,7 +90,7 @@ namespace CopyBlocks
                                     // check also subfolders
                                     foreach (var group in software.BlockGroup.Groups)
                                     {
-                                        BlockManagement.DeleteBlock(name, group, log);
+                                        results.Add(BlockManagement.DeleteBlock(name, group));
                                     }
                                 }
                             }
@@ -108,6 +102,7 @@ namespace CopyBlocks
 
                     foreach(bool result in results)
                     {
+                        Console.WriteLine(result);
                         if (result == false)
                             groupResult = false;
                     }
@@ -129,8 +124,7 @@ namespace CopyBlocks
                     AlertForm alert = new AlertForm("No devices have been selected", "Error");
                     alert.ShowDialog();
 
-                    log.AppendText("No devices have been selected for deletion");
-                    log.AppendText(Environment.NewLine);
+                    Globals.Log("No devices have been selected for removal");
                 }
             }
             else
@@ -138,8 +132,7 @@ namespace CopyBlocks
                 AlertForm alert = new AlertForm("No blocks have been selected", "Error");
                 alert.ShowDialog();
 
-                log.AppendText("No blocks have been selected for deletion");
-                log.AppendText(Environment.NewLine);
+                Globals.Log("No blocks have been selected for removal");
             }
         }
 
