@@ -163,7 +163,7 @@ namespace CopyBlocks
         }
 
         // Verbose output selection
-        private void checkBoxVerbose_CheckedChanged(object sender, EventArgs e)
+        private void CheckBoxVerbose_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxVerbose.Checked)
             {

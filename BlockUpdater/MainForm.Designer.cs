@@ -146,7 +146,7 @@
             this.checkBoxVerbose.TabIndex = 16;
             this.checkBoxVerbose.Text = "Verbose";
             this.checkBoxVerbose.UseVisualStyleBackColor = true;
-            this.checkBoxVerbose.CheckedChanged += new System.EventHandler(this.checkBoxVerbose_CheckedChanged);
+            this.checkBoxVerbose.CheckedChanged += new System.EventHandler(this.CheckBoxVerbose_CheckedChanged);
             // 
             // MainForm
             // 

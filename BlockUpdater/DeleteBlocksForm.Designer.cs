@@ -38,10 +38,12 @@
             this.DevicesLabel = new System.Windows.Forms.Label();
             this.devicesCheckList = new System.Windows.Forms.CheckedListBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.comboBoxPLC = new System.Windows.Forms.ComboBox();
             this.btnSelectNoneBlocks = new System.Windows.Forms.Button();
             this.btnSelectAllBlocks = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -158,11 +160,15 @@
             // 
             // tableLayoutPanel2
             // 
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tableLayoutPanel2.ColumnCount = 4;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutPanel2.Controls.Add(this.comboBoxPLC, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnSelectNoneBlocks, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnSelectAllBlocks, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.label1, 2, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 735);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -171,10 +177,24 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(474, 43);
             this.tableLayoutPanel2.TabIndex = 23;
             // 
+            // comboBoxPLC
+            // 
+            this.comboBoxPLC.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxPLC.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxPLC.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxPLC.FormattingEnabled = true;
+            this.comboBoxPLC.Location = new System.Drawing.Point(285, 3);
+            this.comboBoxPLC.Name = "comboBoxPLC";
+            this.comboBoxPLC.Size = new System.Drawing.Size(186, 23);
+            this.comboBoxPLC.Sorted = true;
+            this.comboBoxPLC.TabIndex = 5;
+            this.comboBoxPLC.SelectedIndexChanged += new System.EventHandler(this.ComboBoxPLC_SelectedIndexChanged);
+            // 
             // btnSelectNoneBlocks
             // 
             this.btnSelectNoneBlocks.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSelectNoneBlocks.Location = new System.Drawing.Point(145, 3);
+            this.btnSelectNoneBlocks.Location = new System.Drawing.Point(97, 3);
             this.btnSelectNoneBlocks.Name = "btnSelectNoneBlocks";
             this.btnSelectNoneBlocks.Size = new System.Drawing.Size(82, 22);
             this.btnSelectNoneBlocks.TabIndex = 24;
@@ -217,6 +237,18 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Location = new System.Drawing.Point(191, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 31);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Source PLC";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // DeleteBlocksForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -255,5 +287,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.CheckedListBox blocksCheckList;
+        private System.Windows.Forms.ComboBox comboBoxPLC;
+        private System.Windows.Forms.Label label1;
     }
 }

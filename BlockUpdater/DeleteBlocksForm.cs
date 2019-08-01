@@ -1,4 +1,5 @@
 ﻿using Siemens.Engineering;
+using Siemens.Engineering.HW;
 using Siemens.Engineering.SW;
 using System;
 using System.Collections.Generic;
@@ -17,25 +18,24 @@ namespace CopyBlocks
 
             this.activeProject = activeProject;
 
-            // Read project Devices and add them to check list
+            // Read project Devices and add them to check list and plc selection combo box
             devicesCheckList.BeginUpdate();
+            comboBoxPLC.BeginUpdate();
 
             foreach (var device in activeProject.Devices)
             {
                 if (device.TypeIdentifier != "System:Device.PC")
+                {
                     devicesCheckList.Items.Add(device.Name);
+                    comboBoxPLC.Items.Add(device.Name);
+                }
             }
 
             devicesCheckList.EndUpdate();
+            comboBoxPLC.EndUpdate();
 
-            // Read plc blocks and add them to check list
-            // device represents the rack
-            // first element of DeviceItems (modules in the rack) is the plc
-            PlcSoftware firstPlcSoftware = BlockManagement.GetSoftwareFrom(activeProject.Devices[0].DeviceItems[1]);
-
-            List<string> plcBlocks = BlockManagement.ReadPlcBlocks(firstPlcSoftware.BlockGroup);
-
-            blocksCheckList.Items.AddRange(plcBlocks.ToArray());
+            // Set combo box selection to first item
+            comboBoxPLC.SelectedIndex = 0;
         }
 
         // Delete blocks button
@@ -193,6 +193,24 @@ namespace CopyBlocks
             {
                 blocksCheckList.SetItemChecked(i, false);
             }
+        }
+
+        // Combo box selection changed
+        private void ComboBoxPLC_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Read plc blocks and add them to check list
+            // first get currently selected plc
+            Device selectedDevice = activeProject.Devices.Find(comboBoxPLC.Text);
+
+            // device represents the rack
+            // first element of DeviceItems (modules in the rack) is the plc
+            PlcSoftware plcSoftware = BlockManagement.GetSoftwareFrom(selectedDevice.DeviceItems[1]);
+
+            blocksCheckList.Items.Clear();
+
+            // add blocks to list
+            List<string> plcBlocks = BlockManagement.ReadPlcBlocks(plcSoftware.BlockGroup);
+            blocksCheckList.Items.AddRange(plcBlocks.ToArray());
         }
     }
 }
