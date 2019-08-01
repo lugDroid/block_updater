@@ -110,7 +110,10 @@ namespace CopyBlocks
                 // if block was not found in current group check subgroups
                 foreach (PlcBlockUserGroup group in software.Groups)
                 {
-                    return DeleteBlock(blockName, group);
+                    if (DeleteBlock(blockName, group))
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -148,7 +151,10 @@ namespace CopyBlocks
                 // if block was not found in current group check subgroups
                 foreach (PlcBlockUserGroup group in software.Groups)
                 {
-                    return DeleteBlock(blockName, group);
+                    if (DeleteBlock(blockName, group))
+                    {
+                        return true;
+                    }
                 }
             }
 

@@ -51,7 +51,8 @@ namespace CopyBlocks
                 {
                     Globals.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
 
-                    var results = new List<bool>();
+                    var resultsBlock = new List<bool>();
+                    var resultsGlobal = new List<bool>();
 
                     // If so loop through all devices checking if they have been selected
                     foreach (var device in activeProject.Devices)
@@ -83,27 +84,43 @@ namespace CopyBlocks
                                             Globals.LogVerbose("Block " + name + " to be deleted found in root folder");
 
                                             block.Delete();
-                                            results.Add(true);
+                                            resultsBlock.Add(true);
                                         }
                                     }
 
                                     // check also subfolders
                                     foreach (var group in software.BlockGroup.Groups)
                                     {
-                                        results.Add(BlockManagement.DeleteBlock(name, group));
+                                        resultsBlock.Add(BlockManagement.DeleteBlock(name, group));
                                     }
+
+                                    // aggregate results after looking for all blocks
+                                    // each one of the main folders will return true/false if the block was found in it/not found
+                                    // if one of the results is true it means the block was found
+                                    bool blockResult = false;
+
+                                    foreach(bool result in resultsBlock)
+                                    {
+                                        if (result)
+                                        {
+                                            blockResult = true;
+                                        }
+                                    }
+
+                                    resultsGlobal.Add(blockResult);
                                 }
                             }
                         }
                     }
 
                     // group results
+                    // checks if all blocks have been deleted
+                    // if so all results should be true
                     bool groupResult = true;
-
-                    foreach(bool result in results)
+                    
+                    foreach(bool result in resultsGlobal)
                     {
-                        Console.WriteLine(result);
-                        if (result == false)
+                        if (!result)
                             groupResult = false;
                     }
 
