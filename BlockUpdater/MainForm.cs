@@ -81,13 +81,15 @@ namespace CopyBlocks
             } 
         }
 
-        // Close TIA Portal button
-        // TODO remove, maybe it's not needed anymore?
+        // Close button
         private void Btn_Close_Click(object sender, EventArgs e)
         {
-            MyTiaPortal.Dispose();
-            statusBox.AppendText("TIA Portal disposed");
-            statusBox.AppendText(Environment.NewLine);
+            if (MyTiaPortal != null)
+            {
+                MyTiaPortal.Dispose();
+                Globals.Log("TIA Portal disposed");
+            }
+            System.Windows.Forms.Application.Exit();
         }
 
         // Connect to existing project button
@@ -160,6 +162,7 @@ namespace CopyBlocks
             compileForm.ShowDialog();
         }
 
+        // Verbose output selection
         private void checkBoxVerbose_CheckedChanged(object sender, EventArgs e)
         {
             if (checkBoxVerbose.Checked)

@@ -190,7 +190,8 @@ namespace CopyBlocks
             foreach (var group in software.Groups)
             {
                 Globals.LogVerbose("Checking " + software.Name + " subfolders");
-                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder)) return true;
+                if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder))
+                    return true;
             }
 
             return false;
