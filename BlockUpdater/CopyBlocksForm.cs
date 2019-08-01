@@ -26,10 +26,24 @@ namespace CopyBlocks
             // Read project Devices and add them to check list
             devicesCheckList.BeginUpdate();
 
+            // Copy device names to list to order them
+            List<String> deviceList = new List<String>();
+
             foreach (var device in activeProject.Devices)
             {
                 if (device.TypeIdentifier != "System:Device.PC")
-                    devicesCheckList.Items.Add(device.Name);
+                {
+                    deviceList.Add(device.Name);
+                }
+            }
+
+            // Sort list
+            deviceList.Sort(new Utils.NaturalStringComparer());
+
+            // Add to check list
+            foreach (var deviceName in deviceList)
+            {
+                devicesCheckList.Items.Add(deviceName);
             }
 
             devicesCheckList.EndUpdate();

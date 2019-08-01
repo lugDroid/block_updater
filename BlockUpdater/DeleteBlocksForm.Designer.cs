@@ -41,9 +41,9 @@
             this.comboBoxPLC = new System.Windows.Forms.ComboBox();
             this.btnSelectNoneBlocks = new System.Windows.Forms.Button();
             this.btnSelectAllBlocks = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -155,7 +155,6 @@
             this.devicesCheckList.Location = new System.Drawing.Point(483, 26);
             this.devicesCheckList.Name = "devicesCheckList";
             this.devicesCheckList.Size = new System.Drawing.Size(474, 703);
-            this.devicesCheckList.Sorted = true;
             this.devicesCheckList.TabIndex = 22;
             // 
             // tableLayoutPanel2
@@ -187,7 +186,6 @@
             this.comboBoxPLC.Location = new System.Drawing.Point(285, 3);
             this.comboBoxPLC.Name = "comboBoxPLC";
             this.comboBoxPLC.Size = new System.Drawing.Size(186, 23);
-            this.comboBoxPLC.Sorted = true;
             this.comboBoxPLC.TabIndex = 5;
             this.comboBoxPLC.SelectedIndexChanged += new System.EventHandler(this.ComboBoxPLC_SelectedIndexChanged);
             // 
@@ -213,6 +211,18 @@
             this.btnSelectAllBlocks.UseVisualStyleBackColor = true;
             this.btnSelectAllBlocks.Click += new System.EventHandler(this.BtnSelectAllBlocks_Click);
             // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label1.Location = new System.Drawing.Point(191, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 31);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Source PLC";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -236,18 +246,6 @@
             this.btnDelete.Text = "Delete Blocks";
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.label1.Location = new System.Drawing.Point(191, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 31);
-            this.label1.TabIndex = 25;
-            this.label1.Text = "Source PLC";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // DeleteBlocksForm
             // 

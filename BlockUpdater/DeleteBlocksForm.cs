@@ -18,16 +18,30 @@ namespace CopyBlocks
 
             this.activeProject = activeProject;
 
-            // Read project Devices and add them to check list and plc selection combo box
+            // Read project Devices
             devicesCheckList.BeginUpdate();
             comboBoxPLC.BeginUpdate();
+
+            // Copy device names to list so they can be properly ordered
+            List<String> deviceList = new List<String>();
 
             foreach (var device in activeProject.Devices)
             {
                 if (device.TypeIdentifier != "System:Device.PC")
                 {
-                    devicesCheckList.Items.Add(device.Name);
-                    comboBoxPLC.Items.Add(device.Name);
+                    deviceList.Add(device.Name);
+                }  
+            }
+
+            // Sort list
+            deviceList.Sort(new Utils.NaturalStringComparer());
+
+            // add to check list and plc selection combo box
+            foreach (var deviceName in deviceList)
+            {
+                {
+                    devicesCheckList.Items.Add(deviceName);
+                    comboBoxPLC.Items.Add(deviceName);
                 }
             }
 

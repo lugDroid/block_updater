@@ -151,7 +151,6 @@
             this.devicesCheckList.Location = new System.Drawing.Point(483, 26);
             this.devicesCheckList.Name = "devicesCheckList";
             this.devicesCheckList.Size = new System.Drawing.Size(474, 703);
-            this.devicesCheckList.Sorted = true;
             this.devicesCheckList.TabIndex = 22;
             // 
             // tableLayoutPanel2
