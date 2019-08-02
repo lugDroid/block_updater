@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace CopyBlocks
@@ -47,6 +49,31 @@ namespace CopyBlocks
             {
                 return SafeNativeMethods.StrCmpLogicalW(a.Name, b.Name);
             }
+        }
+
+        public static string CalculateAppHash()
+        {
+            string appPath = Application.StartupPath + @"\CopyBlocks.exe";
+
+            HashAlgorithm hashAlgorithm = SHA256.Create();
+            FileStream stream = File.OpenRead(appPath);
+
+            byte[] hash = hashAlgorithm.ComputeHash(stream);
+
+            return Convert.ToBase64String(hash);
+        }
+
+        public static void SetKey()
+        {
+            Console.WriteLine("Setting key...");
+
+            string keyName = "SOFTWARE\\Siemens\\Automation\\Openness\\15.0\\PublicAPI\\15.0.0.0";
+            RegistryKey key = Registry.LocalMachine.OpenSubKey(keyName);
+            Console.WriteLine(key.GetValue("PublicKeyToken"));
+
+            string keyName2 = "SOFTWARE\\Siemens\\Automation\\Openness\\15.0\\Copy.exe\\Entry";
+            RegistryKey key2 = Registry.LocalMachine.CreateSubKey(keyName2);
+            key2.SetValue("FileHash", "asdasdasd");
         }
     }
 }

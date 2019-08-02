@@ -28,6 +28,9 @@ namespace CopyBlocks
             AppDomain CurrentDomain = AppDomain.CurrentDomain;
             CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
             Utils.log = statusBox;
+
+            //Console.WriteLine(Utils.CalculateAppHash());
+            Utils.SetKey();
         }
 
         // Resolver
