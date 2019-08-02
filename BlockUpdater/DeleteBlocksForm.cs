@@ -10,32 +10,81 @@ namespace CopyBlocks
     public partial class DeleteBlocksForm : Form
     {
         private Project activeProject;
+        private List<String> types;
+        private PlcSoftware plcSoftware;
 
         // Constructor
         public DeleteBlocksForm(Project activeProject, List<String> deviceList)
         {
+            // Set types filter list
+            this.types = new List<String>
+            {
+                "OB",
+                "FC",
+                "FB",
+                "GlobalDB",
+                "InstanceDB"
+            };
+
             InitializeComponent();
 
             this.activeProject = activeProject;
 
-            // Read project Devices
-            devicesCheckList.BeginUpdate();
-            comboBoxPLC.BeginUpdate();
-
-            // Add to check list and plc selection combo box
-            foreach (var deviceName in deviceList)
-            {
-                {
-                    devicesCheckList.Items.Add(deviceName);
-                    comboBoxPLC.Items.Add(deviceName);
-                }
-            }
-
-            devicesCheckList.EndUpdate();
-            comboBoxPLC.EndUpdate();
+            // Add project devices to listbox
+            AddDeviceNames(deviceList, devicesCheckList);
+            AddDeviceNames(deviceList, comboBoxPLC);
 
             // Set combo box selection to first item
             comboBoxPLC.SelectedIndex = 0;
+        }
+
+        // Add device names to list - Overloaded > CheckedListBox
+        private void AddDeviceNames(List<String> deviceList, CheckedListBox list)
+        {
+            list.BeginUpdate();
+
+            foreach (var deviceName in deviceList)
+            {
+                list.Items.Add(deviceName);
+            }
+
+            list.EndUpdate();
+        }
+
+        // Add device names to list - Overloaded > ComboBox
+        private void AddDeviceNames(List<String> deviceList, ComboBox list)
+        {
+            list.BeginUpdate();
+
+            foreach (var deviceName in deviceList)
+            {
+                list.Items.Add(deviceName);
+            }
+
+            list.EndUpdate();
+        }
+
+        // Add plc blocks to list
+        private void AddPLCBlocks(PlcSoftware plcSoftware, CheckedListBox list, List<String> types)
+        {
+            list.Items.Clear();
+
+            List<String> plcBlocks = BlockManagement.ReadPlcBlocks(plcSoftware.BlockGroup);
+
+            list.BeginUpdate();
+
+            foreach (string type in types)
+            {
+                foreach (var block in plcBlocks)
+                {
+                    if (block.Contains(" " + type + " "))
+                    {
+                        list.Items.Add(block);
+                    }
+                }
+            }
+
+            list.EndUpdate();
         }
 
         // Delete blocks button
@@ -204,13 +253,84 @@ namespace CopyBlocks
 
             // device represents the rack
             // first element of DeviceItems (modules in the rack) is the plc
-            PlcSoftware plcSoftware = BlockManagement.GetSoftwareFrom(selectedDevice.DeviceItems[1]);
+            plcSoftware = BlockManagement.GetSoftwareFrom(selectedDevice.DeviceItems[1]);
 
-            blocksCheckList.Items.Clear();
+            AddPLCBlocks(plcSoftware, blocksCheckList, types);
+        }
 
-            // add blocks to list
-            List<string> plcBlocks = BlockManagement.ReadPlcBlocks(plcSoftware.BlockGroup);
-            blocksCheckList.Items.AddRange(plcBlocks.ToArray());
+        // Display blocks of type OB
+        private void DispOBcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!dispOBcheckBox.Checked)
+            {
+                types.Remove("OB");
+            }
+            else
+            {
+                types.Add("OB");
+            }
+
+            AddPLCBlocks(plcSoftware, blocksCheckList, types);
+        }
+
+        // Display blocks of type FC
+        private void DispFCcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!dispFCcheckBox.Checked)
+            {
+                types.Remove("FC");
+            }
+            else
+            {
+                types.Add("FC");
+            }
+
+            AddPLCBlocks(plcSoftware, blocksCheckList, types);
+        }
+
+        // Display blocks of type FB
+        private void DispFBcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!dispFBcheckBox.Checked)
+            {
+                types.Remove("FB");
+            }
+            else
+            {
+                types.Add("FB");
+            }
+
+            AddPLCBlocks(plcSoftware, blocksCheckList, types);
+        }
+
+        // Display blocks of type Global DB
+        private void DispGlobalDBcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!dispGlobalDBcheckBox.Checked)
+            {
+                types.Remove("GlobalDB");
+            }
+            else
+            {
+                types.Add("GlobalDB");
+            }
+
+            AddPLCBlocks(plcSoftware, blocksCheckList, types);
+        }
+
+        // Display blocks of type Instance DB
+        private void DispInstanceDBcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!dispInstanceDBcheckBox.Checked)
+            {
+                types.Remove("InstanceDB");
+            }
+            else
+            {
+                types.Add("InstanceDB");
+            }
+
+            AddPLCBlocks(plcSoftware, blocksCheckList, types);
         }
     }
 }

@@ -44,6 +44,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
+            this.dispFCcheckBox = new System.Windows.Forms.CheckBox();
+            this.dispFBcheckBox = new System.Windows.Forms.CheckBox();
+            this.dispGlobalDBcheckBox = new System.Windows.Forms.CheckBox();
+            this.dispOBcheckBox = new System.Windows.Forms.CheckBox();
+            this.dispInstanceDBcheckBox = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -247,11 +253,97 @@
             this.btnDelete.UseVisualStyleBackColor = true;
             this.btnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
+            // dispFCcheckBox
+            // 
+            this.dispFCcheckBox.AutoSize = true;
+            this.dispFCcheckBox.Checked = true;
+            this.dispFCcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dispFCcheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dispFCcheckBox.Location = new System.Drawing.Point(393, 829);
+            this.dispFCcheckBox.Name = "dispFCcheckBox";
+            this.dispFCcheckBox.Size = new System.Drawing.Size(48, 19);
+            this.dispFCcheckBox.TabIndex = 5;
+            this.dispFCcheckBox.Text = "FC\'s";
+            this.dispFCcheckBox.UseVisualStyleBackColor = true;
+            this.dispFCcheckBox.CheckedChanged += new System.EventHandler(this.DispFCcheckBox_CheckedChanged);
+            // 
+            // dispFBcheckBox
+            // 
+            this.dispFBcheckBox.AutoSize = true;
+            this.dispFBcheckBox.Checked = true;
+            this.dispFBcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dispFBcheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dispFBcheckBox.Location = new System.Drawing.Point(456, 829);
+            this.dispFBcheckBox.Name = "dispFBcheckBox";
+            this.dispFBcheckBox.Size = new System.Drawing.Size(47, 19);
+            this.dispFBcheckBox.TabIndex = 6;
+            this.dispFBcheckBox.Text = "FB\'s";
+            this.dispFBcheckBox.UseVisualStyleBackColor = true;
+            this.dispFBcheckBox.CheckedChanged += new System.EventHandler(this.DispFBcheckBox_CheckedChanged);
+            // 
+            // dispGlobalDBcheckBox
+            // 
+            this.dispGlobalDBcheckBox.AutoSize = true;
+            this.dispGlobalDBcheckBox.Checked = true;
+            this.dispGlobalDBcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dispGlobalDBcheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dispGlobalDBcheckBox.Location = new System.Drawing.Point(508, 829);
+            this.dispGlobalDBcheckBox.Name = "dispGlobalDBcheckBox";
+            this.dispGlobalDBcheckBox.Size = new System.Drawing.Size(86, 19);
+            this.dispGlobalDBcheckBox.TabIndex = 7;
+            this.dispGlobalDBcheckBox.Text = "Global DB\'s";
+            this.dispGlobalDBcheckBox.UseVisualStyleBackColor = true;
+            this.dispGlobalDBcheckBox.CheckedChanged += new System.EventHandler(this.DispGlobalDBcheckBox_CheckedChanged);
+            // 
+            // dispOBcheckBox
+            // 
+            this.dispOBcheckBox.AutoSize = true;
+            this.dispOBcheckBox.Checked = true;
+            this.dispOBcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dispOBcheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dispOBcheckBox.Location = new System.Drawing.Point(337, 829);
+            this.dispOBcheckBox.Name = "dispOBcheckBox";
+            this.dispOBcheckBox.Size = new System.Drawing.Size(50, 19);
+            this.dispOBcheckBox.TabIndex = 8;
+            this.dispOBcheckBox.Text = "OB\'s";
+            this.dispOBcheckBox.UseVisualStyleBackColor = true;
+            this.dispOBcheckBox.CheckedChanged += new System.EventHandler(this.DispOBcheckBox_CheckedChanged);
+            // 
+            // dispInstanceDBcheckBox
+            // 
+            this.dispInstanceDBcheckBox.AutoSize = true;
+            this.dispInstanceDBcheckBox.Checked = true;
+            this.dispInstanceDBcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dispInstanceDBcheckBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dispInstanceDBcheckBox.Location = new System.Drawing.Point(600, 828);
+            this.dispInstanceDBcheckBox.Name = "dispInstanceDBcheckBox";
+            this.dispInstanceDBcheckBox.Size = new System.Drawing.Size(96, 19);
+            this.dispInstanceDBcheckBox.TabIndex = 9;
+            this.dispInstanceDBcheckBox.Text = "Instance DB\'s";
+            this.dispInstanceDBcheckBox.UseVisualStyleBackColor = true;
+            this.dispInstanceDBcheckBox.CheckedChanged += new System.EventHandler(this.DispInstanceDBcheckBox_CheckedChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(255, 829);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(68, 15);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Block Filter:";
+            // 
             // DeleteBlocksForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 861);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.dispInstanceDBcheckBox);
+            this.Controls.Add(this.dispOBcheckBox);
+            this.Controls.Add(this.dispGlobalDBcheckBox);
+            this.Controls.Add(this.dispFBcheckBox);
+            this.Controls.Add(this.dispFCcheckBox);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -267,6 +359,7 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -287,5 +380,11 @@
         private System.Windows.Forms.CheckedListBox blocksCheckList;
         private System.Windows.Forms.ComboBox comboBoxPLC;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox dispFCcheckBox;
+        private System.Windows.Forms.CheckBox dispFBcheckBox;
+        private System.Windows.Forms.CheckBox dispGlobalDBcheckBox;
+        private System.Windows.Forms.CheckBox dispOBcheckBox;
+        private System.Windows.Forms.CheckBox dispInstanceDBcheckBox;
+        private System.Windows.Forms.Label label2;
     }
 }
