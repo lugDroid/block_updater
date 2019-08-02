@@ -35,14 +35,14 @@ namespace CopyBlocks
             //Determine if there are any devices checked.  
             if (devicesCheckList.CheckedItems.Count != 0)
             {
-                Globals.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
+                Utils.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                 // If so loop through all devices checking if they have been selected
                 foreach (var device in activeProject.Devices)
                 {
                     if (devicesCheckList.CheckedItems.Contains(device.Name))
                     {
-                        Globals.Log("Compiling system " + device.Name);
+                        Utils.Log("Compiling system " + device.Name);
 
                         foreach (var deviceItem in device.DeviceItems)
                         {
@@ -52,7 +52,7 @@ namespace CopyBlocks
                                 ICompilable compileService = software.GetService<ICompilable>();
                                 CompilerResult result = compileService.Compile();
 
-                                Globals.Log(
+                                Utils.Log(
                                     result.State + ": Compiling finished for system " +
                                     device.Name + ", " +
                                     result.WarningCount + " warnings and " +

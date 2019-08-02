@@ -36,12 +36,12 @@ namespace CopyBlocks
             try
             {
                 projectInstance = TiaPortalInstance.Projects.Open(new FileInfo(ProjectPath));
-                Globals.Log("Project " + ProjectPath + " opened");
+                Utils.Log("Project " + ProjectPath + " opened");
             }
             catch (Exception ex)
             {
                 projectInstance = null;
-                Globals.Log("Error while opening project: " + ProjectPath + " - " + ex.Message);
+                Utils.Log("Error while opening project: " + ProjectPath + " - " + ex.Message);
             }
 
             return projectInstance;
@@ -60,7 +60,7 @@ namespace CopyBlocks
             {
                 if (masterCopy.Name.Equals(blockName))
                 {
-                    Globals.LogVerbose("Block to be copied found in " + libraryFolder.Name);
+                    Utils.LogVerbose("Block to be copied found in " + libraryFolder.Name);
                     return masterCopy;
                 }
             }
@@ -74,7 +74,7 @@ namespace CopyBlocks
                     return result;
             }
 
-            Globals.LogVerbose("Block to be copied not found");
+            Utils.LogVerbose("Block to be copied not found");
 
             return null;
         }
@@ -99,13 +99,13 @@ namespace CopyBlocks
             {
                 blockToDelete.Delete();
 
-                Globals.Log("Block " + blockName + " to be deleted found in " + software.Name + " folder");
+                Utils.Log("Block " + blockName + " to be deleted found in " + software.Name + " folder");
 
                 return true;
             }
             else
             {
-                Globals.LogVerbose("Block " + blockName + " not found in " + software.Name + " folder");
+                Utils.LogVerbose("Block " + blockName + " not found in " + software.Name + " folder");
 
                 // if block was not found in current group check subgroups
                 foreach (PlcBlockUserGroup group in software.Groups)
@@ -140,13 +140,13 @@ namespace CopyBlocks
             {
                 blockToDelete.Delete();
 
-                Globals.Log("Block " + blockName + " to be deleted found in " + software.Name + " folder");
+                Utils.Log("Block " + blockName + " to be deleted found in " + software.Name + " folder");
 
                 return true;
             }
             else
             {
-                Globals.LogVerbose("Block " + blockName + " not found in " + software.Name + " folder");
+                Utils.LogVerbose("Block " + blockName + " not found in " + software.Name + " folder");
 
                 // if block was not found in current group check subgroups
                 foreach (PlcBlockUserGroup group in software.Groups)
@@ -175,21 +175,21 @@ namespace CopyBlocks
             // checks if it's already on the right folder to proceed with the copy
             if (software.Name.Equals(destFolder))
             {
-                Globals.LogVerbose("Destination folder found");
+                Utils.LogVerbose("Destination folder found");
 
                 // delete block if it already exists
                 DeleteBlock(blockName, software);
 
                 // create new block from library
                 software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName));
-                Globals.Log("Block copied successfully");
+                Utils.Log("Block copied successfully");
                 return true;
             }
 
             // if it's not in the right folder, recursively check subfolders
             foreach (var group in software.Groups)
             {
-                Globals.LogVerbose("Checking " + software.Name + " subfolders");
+                Utils.LogVerbose("Checking " + software.Name + " subfolders");
                 if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder))
                     return true;
             }
@@ -213,21 +213,21 @@ namespace CopyBlocks
             // checks if library block is to be copied to root
             if (destFolder.Equals("PLC"))
             {
-                Globals.LogVerbose("Destination folder found");
+                Utils.LogVerbose("Destination folder found");
 
                 // delete block if it already exists
                 DeleteBlock(blockName, software);
 
                 // create new block from library
                 software.Blocks.CreateFrom(GetMasterCopy(libraryFolder, blockName));
-                Globals.Log("Block copied successfully");
+                Utils.Log("Block copied successfully");
                 return true;
             }
 
             // if library block is not to be copied to root, recursively check subfolders
             foreach (var group in software.Groups)
             {
-                Globals.LogVerbose("Checking " + software.Name + " subfolders");
+                Utils.LogVerbose("Checking " + software.Name + " subfolders");
                 if (CopyBlockToFolder(blockName, libraryFolder, group, destFolder))
                     return true;
             }
@@ -347,20 +347,20 @@ namespace CopyBlocks
             // check if it's already on the right folder to proceed with the copy
             if (tagGroup.Name.Equals(destFolder))
             {
-                Globals.LogVerbose("Destination folder found");
+                Utils.LogVerbose("Destination folder found");
                 // delete existing tag table if already exists
                 DeleteTagTable(tagTableName, tagGroup);
 
                 // create new tag table from project library
                 tagGroup.TagTables.CreateFrom(GetMasterCopy(libraryFolder, tagTableName));
-                Globals.Log("Tag table copied successfully");
+                Utils.Log("Tag table copied successfully");
                 return true;
             }
 
             // if it's not in the right folder, recursively check subfolders
             foreach (PlcTagTableGroup group in tagGroup.Groups)
             {
-                Globals.Log("Checking " + group.Name + " subfolders");
+                Utils.Log("Checking " + group.Name + " subfolders");
                 if (CopyTagTableToFolder(tagTableName, libraryFolder, group, destFolder))
                     return true;
             }
@@ -388,11 +388,11 @@ namespace CopyBlocks
             {
                 tagTableToDelete.Delete();
 
-                Globals.Log("Tag table " + tagTableName + " to be deleted found in " + tagGroup.Name + " tag table folder");
+                Utils.Log("Tag table " + tagTableName + " to be deleted found in " + tagGroup.Name + " tag table folder");
             }
             else
             {
-                Globals.LogVerbose("Tag table " + tagTableName + " not found in " + tagGroup.Name + " tag table folder");
+                Utils.LogVerbose("Tag table " + tagTableName + " not found in " + tagGroup.Name + " tag table folder");
 
                 // if tag table was not found in current group check subfolders
                 foreach (PlcTagTableGroup group in tagGroup.Groups)

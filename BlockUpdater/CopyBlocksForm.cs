@@ -41,12 +41,12 @@ namespace CopyBlocks
             // Determine if any blocks have been checked
             if (projectLibraryCheckList.CheckedItems.Count != 0)
             {
-                Globals.Log(projectLibraryCheckList.CheckedItems.Count + " blocks have been selected for copy");
+                Utils.Log(projectLibraryCheckList.CheckedItems.Count + " blocks have been selected for copy");
 
                 // Determine if there are any devices checked.  
                 if (devicesCheckList.CheckedItems.Count != 0)
                 {
-                    Globals.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
+                    Utils.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                     var results = new List<bool>();
 
@@ -55,7 +55,7 @@ namespace CopyBlocks
                     {
                         if (devicesCheckList.CheckedItems.Contains(device.Name))
                         {
-                            Globals.Log("Copying blocks to system " + device.Name);
+                            Utils.Log("Copying blocks to system " + device.Name);
 
                             // get plc software
                             // device represents the rack
@@ -72,7 +72,7 @@ namespace CopyBlocks
                                     string destFolder = item.Substring(0, item.IndexOf("/"));
                                     string blockToCopy = item.Substring(item.IndexOf("/") + 1);
 
-                                    Globals.Log("Copying " + blockToCopy + " to " + destFolder);
+                                    Utils.Log("Copying " + blockToCopy + " to " + destFolder);
 
                                     // check if it's a tag table or software block
                                     if (destFolder.Equals("PLC tags"))
@@ -114,7 +114,7 @@ namespace CopyBlocks
                     AlertForm alert = new AlertForm("No devices have been selected", "Error");
                     alert.Show();
 
-                    Globals.Log("No devices have been selected");
+                    Utils.Log("No devices have been selected");
                 }
             }
             else
@@ -122,7 +122,7 @@ namespace CopyBlocks
                 AlertForm alert = new AlertForm("No blocks have been selected", "Error");
                 alert.ShowDialog();
 
-                Globals.Log("No blocks have been selected for copy");
+                Utils.Log("No blocks have been selected for copy");
             }
         }
 

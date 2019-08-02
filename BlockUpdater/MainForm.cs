@@ -27,7 +27,7 @@ namespace CopyBlocks
             InitializeComponent();
             AppDomain CurrentDomain = AppDomain.CurrentDomain;
             CurrentDomain.AssemblyResolve += new ResolveEventHandler(MyResolver);
-            Globals.log = statusBox;
+            Utils.log = statusBox;
         }
 
         // Resolver
@@ -91,7 +91,7 @@ namespace CopyBlocks
             if (MyTiaPortal != null)
             {
                 MyTiaPortal.Dispose();
-                Globals.Log("TIA Portal disposed");
+                Utils.Log("TIA Portal disposed");
             }
             System.Windows.Forms.Application.Exit();
         }
@@ -101,8 +101,7 @@ namespace CopyBlocks
         {
             // Project connection
             IList<TiaPortalProcess> processes = TiaPortal.GetProcesses();
-            statusBox.AppendText("Attempting to connect..." + processes.Count + " processes found");
-            statusBox.AppendText(Environment.NewLine);
+            Utils.Log("Attempting to connect..." + processes.Count + " processes found");
 
             switch (processes.Count)
             {
@@ -113,12 +112,11 @@ namespace CopyBlocks
 
                     if (MyTiaPortal.Projects.Count <= 0)
                     {
-                        statusBox.AppendText("No TIA Portal Project was found!");
-                        statusBox.AppendText(Environment.NewLine);
+                        Utils.Log("No TIA Portal Project was found!");
                         return;
                     }
 
-                    Globals.Log("Connected to running instance of TIA Portal");
+                    Utils.Log("Connected to running instance of TIA Portal");
 
                     activeProject = MyTiaPortal.Projects[0];
 
@@ -133,13 +131,13 @@ namespace CopyBlocks
 
                 case 0:
 
-                    Globals.Log("No running instance of TIA Portal was found!");
+                    Utils.Log("No running instance of TIA Portal was found!");
 
                     return;
 
                 default:
 
-                    Globals.Log("More than one running instance of TIA Portal was found!");
+                    Utils.Log("More than one running instance of TIA Portal was found!");
 
                     return;
             }
@@ -171,15 +169,13 @@ namespace CopyBlocks
         {
             if (checkBoxVerbose.Checked)
             {
-                Globals.verbose = true;
-                statusBox.AppendText("Debug mode activated");
-                statusBox.AppendText(Environment.NewLine);
+                Utils.verbose = true;
+                Utils.Log("Verbose mode activated");
             }
             else
             {
-                Globals.verbose = false;
-                statusBox.AppendText("Debug mode deactivated");
-                statusBox.AppendText(Environment.NewLine);
+                Utils.verbose = false;
+                Utils.Log("Verbose mode deactivated");
             }
         }
 

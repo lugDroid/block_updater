@@ -44,12 +44,12 @@ namespace CopyBlocks
             // Determine if any blocks have been checked
             if (blocksCheckList.CheckedItems.Count != 0)
             {
-                Globals.Log(blocksCheckList.CheckedItems.Count + " blocks have been selected for removal");
+                Utils.Log(blocksCheckList.CheckedItems.Count + " blocks have been selected for removal");
 
                 // Determine if any devices have been checked
                 if (devicesCheckList.CheckedItems.Count != 0)
                 {
-                    Globals.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
+                    Utils.Log("Systems selected: " + devicesCheckList.CheckedItems.Count);
 
                     var resultsBlock = new List<bool>();
                     var resultsGlobal = new List<bool>();
@@ -59,7 +59,7 @@ namespace CopyBlocks
                     {
                         if (devicesCheckList.CheckedItems.Contains(device.Name))
                         {
-                            Globals.Log("Deleting blocks from " + device.Name);
+                            Utils.Log("Deleting blocks from " + device.Name);
 
                             // get plc software
                             // device represents the rack
@@ -74,14 +74,14 @@ namespace CopyBlocks
                                     // clean blockName string
                                     string name = blockName.Substring(0, blockName.IndexOf('-') - 1);
 
-                                    Globals.LogVerbose("Searching for " + name);
+                                    Utils.LogVerbose("Searching for " + name);
 
                                     // first on root folder
                                     foreach (var block in software.BlockGroup.Blocks)
                                     {
                                         if (name.Equals(block.Name))
                                         {
-                                            Globals.LogVerbose("Block " + name + " to be deleted found in root folder");
+                                            Utils.LogVerbose("Block " + name + " to be deleted found in root folder");
 
                                             block.Delete();
                                             resultsBlock.Add(true);
@@ -141,7 +141,7 @@ namespace CopyBlocks
                     AlertForm alert = new AlertForm("No devices have been selected", "Error");
                     alert.ShowDialog();
 
-                    Globals.Log("No devices have been selected for removal");
+                    Utils.Log("No devices have been selected for removal");
                 }
             }
             else
@@ -149,7 +149,7 @@ namespace CopyBlocks
                 AlertForm alert = new AlertForm("No blocks have been selected", "Error");
                 alert.ShowDialog();
 
-                Globals.Log("No blocks have been selected for removal");
+                Utils.Log("No blocks have been selected for removal");
             }
         }
 
