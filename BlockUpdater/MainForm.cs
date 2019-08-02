@@ -14,11 +14,12 @@ namespace CopyBlocks
         {
             get; set;
         }
-        public Project MyProject
+        public Project activeProject
         {
             get; set;
         }
         public static TiaPortalProcess _tiaProcess;
+        public List<String> deviceList;
 
         // Constructor
         public MainForm()
@@ -73,12 +74,15 @@ namespace CopyBlocks
             if (string.IsNullOrEmpty(ProjectPath) == false)
             {
                 MyTiaPortal = BlockManagement.StartTIA(sender, e);
-                MyProject = BlockManagement.OpenProject(ProjectPath, MyTiaPortal);
+                activeProject = BlockManagement.OpenProject(ProjectPath, MyTiaPortal);
 
                 btnCheckSelection.Enabled = true;
                 btnDeleteSelection.Enabled = true;
                 btnCompile.Enabled = true;
-            } 
+
+                // Read project PLC devices
+                this.deviceList = ReadPLCNames(activeProject);
+            }
         }
 
         // Close button
@@ -114,28 +118,28 @@ namespace CopyBlocks
                         return;
                     }
 
-                    statusBox.AppendText("Connected to running instance of TIA Portal");
-                    statusBox.AppendText(Environment.NewLine);
+                    Globals.Log("Connected to running instance of TIA Portal");
 
-                    MyProject = MyTiaPortal.Projects[0];
+                    activeProject = MyTiaPortal.Projects[0];
 
                     btnCheckSelection.Enabled = true;
                     btnDeleteSelection.Enabled = true;
                     btnCompile.Enabled = true;
 
+                    // Read project PLC devices
+                    this.deviceList = ReadPLCNames(activeProject);
+
                     break;
 
                 case 0:
 
-                    statusBox.AppendText("No running instance of TIA Portal was found!");
-                    statusBox.AppendText(Environment.NewLine);
+                    Globals.Log("No running instance of TIA Portal was found!");
 
                     return;
 
                 default:
 
-                    statusBox.AppendText("More than one running instance of TIA Portal was found!");
-                    statusBox.AppendText(Environment.NewLine);
+                    Globals.Log("More than one running instance of TIA Portal was found!");
 
                     return;
             }
@@ -144,21 +148,21 @@ namespace CopyBlocks
         // Show copy blocks form
         private void Btn_CopySelection_Click(object sender, EventArgs e)
         {
-            var copyBlocksForm = new CopyBlocksForm(MyProject);
+            var copyBlocksForm = new CopyBlocksForm(activeProject, deviceList);
             copyBlocksForm.ShowDialog();
         }
 
         // Show delete blocks form
         private void Btn_DeleteSelection_Click(object sender, EventArgs e)
         {
-            var deleteBlocksForm = new DeleteBlocksForm(MyProject);
+            var deleteBlocksForm = new DeleteBlocksForm(activeProject, deviceList);
             deleteBlocksForm.ShowDialog();
         }
 
         // Show compile form
         private void BtnCompile_Click(object sender, EventArgs e)
         {
-            var compileForm = new CompileForm(MyProject);
+            var compileForm = new CompileForm(activeProject, deviceList);
             compileForm.ShowDialog();
         }
 
@@ -177,6 +181,26 @@ namespace CopyBlocks
                 statusBox.AppendText("Debug mode deactivated");
                 statusBox.AppendText(Environment.NewLine);
             }
+        }
+
+        // Read project devices and return list of strings with names
+        private List<String> ReadPLCNames(Project activeProject)
+        {
+            // Copy device names to list so they can be ordered
+            List<String> deviceList = new List<String>();
+
+            foreach (var device in activeProject.Devices)
+            {
+                if (device.TypeIdentifier != "System:Device.PC")
+                {
+                    deviceList.Add(device.Name);
+                }
+            }
+
+            // Sort list
+            deviceList.Sort(new Utils.NaturalStringComparer());
+
+            return deviceList;
         }
     }
 }

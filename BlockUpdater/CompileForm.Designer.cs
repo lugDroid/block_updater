@@ -104,7 +104,6 @@
             this.devicesCheckList.Location = new System.Drawing.Point(3, 26);
             this.devicesCheckList.Name = "devicesCheckList";
             this.devicesCheckList.Size = new System.Drawing.Size(454, 697);
-            this.devicesCheckList.Sorted = true;
             this.devicesCheckList.TabIndex = 23;
             // 
             // DevicesLabel

@@ -2,6 +2,7 @@
 using Siemens.Engineering.Compiler;
 using Siemens.Engineering.SW;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace CopyBlocks
@@ -11,7 +12,7 @@ namespace CopyBlocks
         private Project activeProject;
 
         // Constructor
-        public CompileForm(Project activeProject)
+        public CompileForm(Project activeProject, List<String> deviceList)
         {
             InitializeComponent();
 
@@ -20,10 +21,9 @@ namespace CopyBlocks
             // Read project Devices and add them to check list
             devicesCheckList.BeginUpdate();
 
-            foreach (var device in activeProject.Devices)
+            foreach (var deviceName in deviceList)
             {
-                if (device.TypeIdentifier != "System:Device.PC")
-                    devicesCheckList.Items.Add(device.Name);
+                devicesCheckList.Items.Add(deviceName);
             }
 
             devicesCheckList.EndUpdate();

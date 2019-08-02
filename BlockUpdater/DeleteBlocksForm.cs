@@ -12,7 +12,7 @@ namespace CopyBlocks
         private Project activeProject;
 
         // Constructor
-        public DeleteBlocksForm(Project activeProject)
+        public DeleteBlocksForm(Project activeProject, List<String> deviceList)
         {
             InitializeComponent();
 
@@ -22,21 +22,7 @@ namespace CopyBlocks
             devicesCheckList.BeginUpdate();
             comboBoxPLC.BeginUpdate();
 
-            // Copy device names to list so they can be properly ordered
-            List<String> deviceList = new List<String>();
-
-            foreach (var device in activeProject.Devices)
-            {
-                if (device.TypeIdentifier != "System:Device.PC")
-                {
-                    deviceList.Add(device.Name);
-                }  
-            }
-
-            // Sort list
-            deviceList.Sort(new Utils.NaturalStringComparer());
-
-            // add to check list and plc selection combo box
+            // Add to check list and plc selection combo box
             foreach (var deviceName in deviceList)
             {
                 {

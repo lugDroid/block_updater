@@ -12,7 +12,7 @@ namespace CopyBlocks
         private Project activeProject;
 
         // Constructor
-        public CopyBlocksForm(Project activeProject)
+        public CopyBlocksForm(Project activeProject, List<String> deviceList)
         {
             InitializeComponent();
 
@@ -25,20 +25,6 @@ namespace CopyBlocks
 
             // Read project Devices and add them to check list
             devicesCheckList.BeginUpdate();
-
-            // Copy device names to list to order them
-            List<String> deviceList = new List<String>();
-
-            foreach (var device in activeProject.Devices)
-            {
-                if (device.TypeIdentifier != "System:Device.PC")
-                {
-                    deviceList.Add(device.Name);
-                }
-            }
-
-            // Sort list
-            deviceList.Sort(new Utils.NaturalStringComparer());
 
             // Add to check list
             foreach (var deviceName in deviceList)
