@@ -40,6 +40,7 @@
             this.btnCompile = new System.Windows.Forms.Button();
             this.statusBox = new System.Windows.Forms.TextBox();
             this.checkBoxVerbose = new System.Windows.Forms.CheckBox();
+            this.exportBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnOpenProject
@@ -130,11 +131,11 @@
             // statusBox
             // 
             this.statusBox.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusBox.Location = new System.Drawing.Point(0, 451);
+            this.statusBox.Location = new System.Drawing.Point(12, 451);
             this.statusBox.Multiline = true;
             this.statusBox.Name = "statusBox";
             this.statusBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.statusBox.Size = new System.Drawing.Size(383, 172);
+            this.statusBox.Size = new System.Drawing.Size(359, 169);
             this.statusBox.TabIndex = 15;
             // 
             // checkBoxVerbose
@@ -148,12 +149,25 @@
             this.checkBoxVerbose.UseVisualStyleBackColor = true;
             this.checkBoxVerbose.CheckedChanged += new System.EventHandler(this.CheckBoxVerbose_CheckedChanged);
             // 
+            // exportBtn
+            // 
+            this.exportBtn.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.exportBtn.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exportBtn.Location = new System.Drawing.Point(302, 421);
+            this.exportBtn.Name = "exportBtn";
+            this.exportBtn.Size = new System.Drawing.Size(69, 27);
+            this.exportBtn.TabIndex = 17;
+            this.exportBtn.Text = "Export";
+            this.exportBtn.UseVisualStyleBackColor = true;
+            this.exportBtn.Click += new System.EventHandler(this.ExportBtn_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(383, 623);
+            this.Controls.Add(this.exportBtn);
             this.Controls.Add(this.checkBoxVerbose);
             this.Controls.Add(this.statusBox);
             this.Controls.Add(this.btnCompile);
@@ -185,6 +199,7 @@
         private System.Windows.Forms.Button btnCompile;
         private System.Windows.Forms.TextBox statusBox;
         private System.Windows.Forms.CheckBox checkBoxVerbose;
+        private System.Windows.Forms.Button exportBtn;
     }
 }
 

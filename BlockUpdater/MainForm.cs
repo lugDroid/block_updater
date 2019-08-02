@@ -198,5 +198,17 @@ namespace CopyBlocks
 
             return deviceList;
         }
+
+        // Export contents of statusBox to text file
+        private void ExportBtn_Click(object sender, EventArgs e)
+        {
+            string dateTime = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string userName = Environment.UserName;
+            string path = @"C:\Users\" + userName + @"\Desktop\" + dateTime + "_BlockUpdater.log";
+
+            System.IO.File.WriteAllText(path, statusBox.Text);
+
+            Utils.Log("Log exported to " + path);
+        }
     }
 }
